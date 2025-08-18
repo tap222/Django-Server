@@ -1,0 +1,142 @@
+<nav class="bg-white">
+  <div
+    class="container mx-auto px-4 flex flex-wrap items-center justify-between lg:justify-evenly py-4"
+  >
+    <!-- Hamburger Menu for Small Screens -->
+    <button
+      id="menuToggle"
+      class="text-gray-600 lg:hidden focus:outline-none"
+      onclick="toggleMenu()"
+    >
+      <i id="menuIcon" class="fas fa-bars text-2xl"></i>
+    </button>
+
+    <!-- Navigation Links -->
+    <div
+      id="menu"
+      class="absolute lg:static top-16 left-0 bg-white w-full lg:w-auto lg:flex lg:items-center lg:space-x-8 lg:py-0 hidden transition-all duration-300"
+    >
+        <a
+        href="/"
+        class="block text-gray-600 hover:text-teal-500 py-2 px-4 lg:px-0"
+        >Home</a
+      >
+      <a
+        href="/apply/server"
+        class="block text-gray-600 hover:text-teal-500 py-2 px-4 lg:px-0"
+        >Server Apply</a
+      >
+      <a
+        href="/apply/teacher"
+        class="block text-gray-600 hover:text-teal-500 py-2 px-4 lg:px-0"
+        >Teacher Apply</a
+      >
+      <a
+        href="/events"
+        class="block text-gray-600 hover:text-teal-500 py-2 px-4 lg:px-0"
+        >Events</a
+      >
+      <a
+        href="/lessons"
+        class="block text-gray-600 hover:text-teal-500 py-2 px-4 lg:px-0"
+        >Lessons</a
+      >
+      <a
+        href="/faq"
+        class="block text-gray-600 hover:text-teal-500 py-2 px-4 lg:px-0"
+        >FAQs</a
+      >
+    </div>
+
+    <!-- Right-side icons -->
+    <div class="flex items-center gap-4">
+      <!-- Cart Icon -->
+      <button class="text-gray-600 hover:text-teal-500 lg:hidden">
+        <i class="fas fa-shopping-cart text-xl"></i>
+      </button>
+      <button class="text-gray-600 hover:text-teal-500 hidden lg:block">
+        <i class="fas fa-shopping-cart text-xl"></i>
+      </button>
+
+      <!-- Sign In Button -->
+      <div id="authButton" class="flex"></div>
+    </div>
+  </div>
+</nav>
+<script>
+  function navigateToInstructor1() {
+    window.location.href = "./instructordeatil/instructor1.html";
+  }
+  function navigateToInstructor2() {
+    window.location.href = "./instructordeatil/instructor2.html";
+  }
+  function navigateToInstructor3() {
+    window.location.href = "./instructordeatil/instructor3.html";
+  }
+  function navigateToInstructor4() {
+    window.location.href = "./instructordeatil/instructor4.html";
+  }
+
+  // Function to handle navigation to become an instructor
+  function navigateToBecomeInstructor() {
+    window.location.href = "/apply/server";
+  }
+  function toggleMenu() {
+    const menu = document.getElementById("menu");
+    const menuIcon = document.getElementById("menuIcon");
+
+    const isOpen = menu.classList.contains("hidden");
+    if (isOpen) {
+      menu.classList.remove("hidden");
+      menu.classList.add("block", "shadow-lg", "py-4");
+      menuIcon.classList.remove("fa-bars");
+      menuIcon.classList.add("fa-times");
+    } else {
+      menu.classList.remove("block", "shadow-lg", "py-4");
+      menu.classList.add("hidden");
+      menuIcon.classList.remove("fa-times");
+      menuIcon.classList.add("fa-bars");
+    }
+  }
+  document
+    .getElementById("applyButton")
+    .addEventListener("click", function () {
+      window.location.href = "./ServerForm.html"; // Navigate to the "Become Server" page
+    });
+
+  document
+    .getElementById("createAccountButton")
+    .addEventListener("click", function () {
+      window.location.href = "./Signup.html"; // Redirect to the signup page
+    });
+
+  const toggleFAQ = (index) => {
+    const faqItem = document.getElementById(`faq${index}`);
+    const faqAnswer = document.getElementById(`faq${index}-answer`);
+    const faqIcon = document.getElementById(`faq${index}-icon`);
+
+    // Toggle the answer visibility
+    faqAnswer.classList.toggle("hidden");
+
+    // Update the icon (rotate it when open)
+    faqIcon.textContent = faqAnswer.classList.contains("hidden")
+      ? "+"
+      : "-";
+    faqIcon.classList.toggle("rotate-180");
+
+    // Toggle background color for open/close state
+    faqItem.classList.toggle("open");
+    faqItem.classList.toggle("closed");
+  };
+
+  const socialLinks = document.querySelectorAll(".social-icons a");
+  socialLinks.forEach((link) => {
+    link.addEventListener("mouseover", function () {
+      this.style.color = "#d1d5db"; // Light gray hover color
+    });
+    link.addEventListener("mouseout", function () {
+      this.style.color = ""; // Reset color
+    });
+  });
+</script>
+<script defer src="{{ url_for('static', filename='bundles/home.bundle.js')}}"></script>
