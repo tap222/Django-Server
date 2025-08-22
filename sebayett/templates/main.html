@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
-    <!-- <script src="{{ url_for('static', filename='htmx/htmx.min.js')}}"></script> -->
+    <!-- <script src="{% static 'htmx/htmx.min.js' %}"></script> -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome -->
     <link
@@ -16,6 +17,6 @@
 </head>
 <body>    
     {% block body %}{% endblock %}
-    <script src="{{ url_for('static', filename='scripts/timezone.js') }}"></script>
+    <script src="{%static 'scripts/timezone.js' %}"></script>
 </body>
 </html>

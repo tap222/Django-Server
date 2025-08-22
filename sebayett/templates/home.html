@@ -1,5 +1,6 @@
 {% extends "main.html" %}
 
+
 {% block head %}
   <title>Home</title>
 {% endblock %}
@@ -7,6 +8,7 @@
 
 {% block body %}
 {% include 'navbar.html' %}
+{% load static %}
 
 <!-- herosection -->
 <div class="bg-gray-100 min-h-screen flex items-center justify-center">
@@ -36,7 +38,7 @@
       <!-- Image Section -->
       <div class="flex-1">
         <img
-          src="{{url_for('static', filename='assets/heroimg.png')}}"
+          src="{% static 'assets/heroimg.png' %}"
           alt="Empowering Discord Community"
           class="object-cover w-full max-h-[400px] md:max-h-[500px]"
         />
