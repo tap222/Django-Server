@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load i18n %}
+{% load socialaccount %}
 {% load account socialaccount %}
 
 {% block head %}
@@ -10,6 +11,9 @@
 
 
 {% block body %}
+{% if form.errors %}
+    <p class="error">{% trans "Invalid login details. Please try again." %}</p>
+{% endif %}
 {% include 'navbar.html' %}
     <div class="row">
         <div class="col"></div>
@@ -21,11 +25,17 @@
                             <p class="fs-2 text-align-center">Welcome to Sebayett</p>
                             <p class="text-wrap my-2">Sign up to access a world of top-tier coaching</p>
                             <!-- <a href="#" class="d-flex btn btn-light my-3">Sign in with Discord</a> -->
-                            <a href="{% provider_login_url 'discord' %}" class="w-100 btn btn-light my-2" role="click" id="signInAndUp">
+                             <form class="login-form" method="POST" action="{% url 'account_login' %}">
+                                {% csrf_token %}
+                                {{ form.as_p }}  <!-- Renders username/password fields -->
+                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                                <button type="submit" class="w-100 btn btn-light my-2">{% trans "Sign in with Discord" %}</button>
+                            </form>
+                            {% comment %} <a href="{% provider_login_url 'discord' %}" class="w-100 btn btn-light my-2" role="click" id="signInAndUp">
                                 <img class="me-2" src="{% static 'icon/icons8-discord.svg' %}" width="20" height="20" alt="Discord Logo">
                                 </img>
                                 Sign in with Discord
-                            </a>
+                            </a> {% endcomment %}
                         </div>
                         
                     </div>  

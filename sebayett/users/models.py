@@ -5,4 +5,4 @@ from django.db import models
 class Users(models.Model):
     title = models.CharField()
     description = models.TextField()
-    id = models.UUIDField()
+    id = models.UUIDField(primary_key=True)
