@@ -2,7 +2,8 @@
 
 {% load static %}
 {% load i18n %}
-{% load socialaccount %}
+{% load allauth %}
+{% comment %} {% load socialaccount %} {% endcomment %}
 
 {% block head %}
     <title>Sign in</title>
@@ -12,7 +13,7 @@
 {% block body %}
 {% if form.errors %}
     <p class="error">{% trans "Invalid login details. Please try again." %}</p>
-{% endif %}
+{% else %}
 {% include 'navbar.html' %}
     <div class="row">
         <div class="col"></div>
@@ -27,24 +28,18 @@
                              {% element form method="post" no_visible_fields=True %}
                                 {% slot actions %}
                                     {% csrf_token %}
-                                    {% element button type="submit" %}
-                                        {% trans "Continue" %}
-                                    {% endelement %}
+                                    <button class="w-100 btn btn-light my-2" type="submit">
+                                         <img class="me-2" src="{% static 'icon/icons8-discord.svg' %}" width="40" height="40" alt="Discord Logo"></img>
+                                        {% trans "Sign in with Discord" %}
+                                    </button>
                                 {% endslot %}
                             {% endelement %}
-                            {% comment %} <a href="{% provider_login_url 'discord' %}" class="w-100 btn btn-light my-2" role="click" id="signInAndUp">
-                                <img class="me-2" src="{% static 'icon/icons8-discord.svg' %}" width="20" height="20" alt="Discord Logo">
-                                </img>
-                                Sign in with Discord
-                            </a> {% endcomment %}
                         </div>
-                        
                     </div>  
                 </div>
             </div>
         </div>
         <div class="col"></div>
     </div>
-
-    {% comment %} <script  defer src="{{ url_for('static', filename='bundles/sign_in.bundle.js')}}"></script> {% endcomment %}
+    {% endif %}
 {% endblock %}
