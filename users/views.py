@@ -8,8 +8,8 @@ def register(request):
     return render(request, "users/register.html")
 
 def login(request):
-    # return redirect('/')
-    return render(request, 'users/login.html')
+    return redirect('/accounts/discord/login/')
+    # return render(request, 'users/login.html')
 
 
 # a view for logging out

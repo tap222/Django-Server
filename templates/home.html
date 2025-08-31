@@ -30,8 +30,9 @@
         <button
           class="mt-6 px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-teal-600"
           onclick="navigateToBecomeInstructor()"
-        >
+        ><a href="{% url 'servers:application' %}">
           Join Us
+        </a>
         </button>
       </div>
 
@@ -62,7 +63,7 @@
           onclick="navigateToInstructor1()"
         >
           <img
-            src="./assests/i1.png"
+            src="{% static 'assets/i1.png' %}"
             alt="Devon Lane"
             class="w-full h-60 object-cover"
           />
@@ -90,7 +91,7 @@
           onclick="navigateToInstructor2()"
         >
           <img
-            src="./assests/i2.png"
+            src="{% static 'assets/i2.png' %}"
             alt="Darrell Steward"
             class="w-full h-60 object-cover"
           />
@@ -118,7 +119,7 @@
           onclick="navigateToInstructor3()"
         >
           <img
-            src="./assests/i3.png"
+            src="{% static 'assets/i3.png' %}"
             alt="Jane Cooper"
             class="w-full h-60 object-cover"
           />
@@ -146,7 +147,7 @@
           onclick="navigateToInstructor4()"
         >
           <img
-            src="./assests/i4.png"
+            src="{% static 'assets/i4.png' %}"
             alt="Albert Flores"
             class="w-full h-60 object-cover"
           />
@@ -229,7 +230,7 @@
     <!-- Right Content -->
     <div class="flex justify-center">
       <div class="image-container">
-        <img src="./assests//ourstory.png" alt="Team" class="shadow-lg" />
+        <img src="{% static 'assets/ourstory.png' %}" alt="Team" class="shadow-lg" />
         <div class="border-right"></div>
         <div class="border-bottom"></div>
       </div>
@@ -243,7 +244,7 @@
     <!-- Left Section (Image) -->
     <div class="flex justify-center">
       <div class="image-container">
-        <img src="./assests/ourstory.png" alt="Team" class="shadow-lg" />
+        <img src="{% static 'assets/ourstory.png' %}" alt="Team" class="shadow-lg" />
         <div class="border-right"></div>
         <div class="border-bottom"></div>
       </div>

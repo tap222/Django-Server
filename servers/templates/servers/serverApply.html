@@ -1,0 +1,134 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block head %}
+ <title>Server Apply</title>
+{% endblock %}
+
+{% block body %}
+{% include "navbar.html" %}
+<div class="min-h-screen flex flex-col items-center justify-center">
+    <h1 class="w-full max-w-md text-xl font-semibold text-center mb-4 mt-4">
+      Want To Apply As Server? Fill Out Our Form
+    </h1>
+    <div
+      class="bg-white p-6 rounded-lg shadow-md w-full max-w-md mb-16 border border-gray-400"
+    >
+      {% comment %} <form 
+      id="instructor-form" 
+      class="space-y-4"
+      hx-post="/apply/server"
+      hx-trigger="submit"
+      hx-target="#response"
+      hx-indicator="#loading"
+      >
+        <input
+          id="firstName"
+          type="text"
+          required
+          class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+          placeholder="First Name"
+          name="first_name"
+        />
+        <input
+          id="lastName"
+          type="text"
+          required
+          class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+          placeholder="Last Name"
+          name="last_name"
+        />
+        <input
+          id="serverName"
+          type="text"
+          required
+          class="w-full p-2 border border-gray-400 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 appearance-none"
+          placeholder="Server Name"
+          name="server_name"
+        />
+        <input
+          id="serverId"
+          type="text"
+          required
+          class="w-full p-2 border border-gray-400 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 appearance-none"
+          placeholder="Server ID"
+          name="server_id"
+          />
+        <input
+          id="serverInterests"
+          type="text"
+          required
+          class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+          placeholder="Server Interest"
+          name="server_interests"
+        />
+        <div class="relative">
+          <textarea
+            id="serverDescription"
+            maxlength="500"
+            required
+            class="w-full h-32 p-2 pr-10 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
+            placeholder="Server Description"
+            name="server_description"
+          ></textarea>
+          <span
+            id="bio-length"
+            class="absolute bottom-2 right-4 text-sm text-gray-600 pb-2"
+            >0 / 500</span
+          >
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-teal-500 text-white py-2 rounded-full font-medium hover:bg-teal-600"
+        >
+          Submit
+        </button>
+        <div class="text-center">
+                <div id="loading" class="htmx-indicator">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div id="response"></div>
+            </div>
+      </form> {% endcomment %}
+      {% comment %} <form class="space-y-4" action="{% url 'servers:application' %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" class="w-full bg-teal-500 text-white py-2 rounded-full font-medium hover:bg-teal-600">Submit</button>
+      </form> {% endcomment %}
+      {% include 'servers/form.html' %}
+    </div>
+  </div>
+
+  {% include 'footer.html' %}
+  <!-- Script -->
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("menu");
+      const menuIcon = document.getElementById("menuIcon");
+
+      const isOpen = menu.classList.contains("hidden");
+      if (isOpen) {
+        menu.classList.remove("hidden");
+        menu.classList.add("block", "shadow-lg", "py-4");
+        menuIcon.classList.remove("fa-bars");
+        menuIcon.classList.add("fa-times");
+      } else {
+        menu.classList.remove("block", "shadow-lg", "py-4");
+        menu.classList.add("hidden");
+        menuIcon.classList.remove("fa-times");
+        menuIcon.classList.add("fa-bars");
+      }
+    }
+
+    const bioTextArea = document.getElementById("serverDescription");
+    const bioLengthSpan = document.getElementById("bio-length");
+
+    bioTextArea.addEventListener("input", () => {
+      const bioLength = bioTextArea.value.length;
+      bioLengthSpan.textContent = `${bioLength} / 500`;
+    });
+  </script>
+{% endblock %}
