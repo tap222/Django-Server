@@ -1,60 +1,41 @@
 <form id="instructor-form"  class="space-y-4" method="post">
     {% csrf_token %}
-    <input
-        id="firstName"
-        type="text"
-        required
-        class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-        placeholder="First Name"
-        name="first_name"
-    />
-    <input
-        id="lastName"
-        type="text"
-        required
-        class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-        placeholder="Last Name"
-        name="last_name"
-    />
-    <input
-        id="serverName"
-        type="text"
-        required
-        class="w-full p-2 border border-gray-400 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 appearance-none"
-        placeholder="Server Name"
-        name="server_name"
-    />
-    <input
-        id="serverId"
-        type="text"
-        required
-        class="w-full p-2 border border-gray-400 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 appearance-none"
-        placeholder="Server ID"
-        name="server_id"
-        />
-    <input
-        id="serverInterests"
-        type="text"
-        required
-        class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
-        placeholder="Server Interest"
-        name="server_interests"
-    />
-    <div class="relative">
-        <textarea
-        id="serverDescription"
-        maxlength="500"
-        required
-        class="w-full h-32 p-2 pr-10 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
-        placeholder="Server Description"
-        name="server_description"
-        ></textarea>
-        <span
-        id="bio-length"
-        class="absolute bottom-2 right-4 text-sm text-gray-600 pb-2"
-        >0 / 500</span
-        >
-    </div>
+    
+    {% render_field form.first_name class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder=form.first_name.label type="text"%}
+    {% if form.first_name.errors %}
+        <span class="error">{{ form.first_name.errors }}</span>
+    {% endif %}
+
+
+    {% render_field form.last_name class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder=form.last_name.label type="text"%}
+    {% if form.last_name.errors %}
+        <span class="error">{{ form.last_name.errors }}</span>
+    {% endif %}
+
+
+    {% render_field form.server_name class="w-full p-2 border border-gray-400 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 appearance-none" placeholder=form.server_name.label type="text"%}
+    {% if form.server_name.errors %}
+        <span class="error">{{ form.server_name.errors }}</span>
+    {% endif %}
+
+
+    {% render_field form.server_id class="w-full p-2 border border-gray-400 text-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 appearance-none" placeholder=form.server_id.label type="text"%}
+    {% if form.server_id.errors %}
+        <span class="error">{{ form.server_id.errors }}</span>
+    {% endif %}
+
+
+    {% render_field form.server_interests class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500" placeholder=form.server_interests.label type="text"  %}
+    {% if form.server_interests.errors %}
+        <span class="error">{{ form.server_interests.errors }}</span>
+    {% endif %}
+
+
+    {% render_field form.server_description class="w-full h-32 p-2 pr-10 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none" placeholder=form.server_description.label type="textarea" %}
+    {% if form.server_description.errors %}
+        <span class="error">{{ form.server_description.errors }}</span>
+    {% endif %}
+
 
     <button
         type="submit"

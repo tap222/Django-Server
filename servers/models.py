@@ -10,7 +10,7 @@ class Servers(models.Model):
     server_id = models.BigIntegerField(primary_key=True)
     server_name = models.CharField(max_length=50)
     server_description = models.TextField()
-    server_interests = models.TextField()
+    server_interests = models.CharField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
