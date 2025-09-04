@@ -49,11 +49,14 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.discord',
 
+    # My django apps
     'base.apps.BaseConfig',
     'users.apps.UsersConfig',
     'lessons.apps.LessonsConfig',
     'events.apps.EventsConfig',
-    'servers.apps.ServersConfig'
+    'servers.apps.ServersConfig',
+    'teachers.apps.TeachersConfig',
+    'dashboard.apps.DashboardConfig',
 
 ]
 
@@ -66,10 +69,10 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 # Account settings
-ACCOUNT_EMAIL_REQUIRED = False  # Set to True if you want email verification
-ACCOUNT_EMAIL_VERIFICATION = 'none'  # 'mandatory', 'optional', or 'none'
+# ACCOUNT_EMAIL_REQUIRED = False  # Set to True if you want email verification
+# ACCOUNT_EMAIL_VERIFICATION = 'none'  # 'mandatory', 'optional', or 'none'
 # ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-ACCOUNT_USERNAME_REQUIRED = True
+# ACCOUNT_USERNAME_REQUIRED = True
 
 # Social account settings
 SOCIALACCOUNT_LOGIN_ON_GETREQUEST = True

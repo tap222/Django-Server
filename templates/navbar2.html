@@ -28,13 +28,13 @@
       >
     </button>
     <div class="flex items-center">
-      <!-- <img id="avatar" src="{{ url_for('dashboard.get_avatar') }}" alt="User" class="h-10 w-10 rounded-full"> -->
+      {% comment %} <img id="avatar" src="{{ url_for('dashboard.get_avatar') }}" alt="User" class="h-10 w-10 rounded-full"> {% endcomment %}
       <div
-        hx-get="{{ url_for('dashboard.get_avatar') }}"
+        {% comment %} hx-get="{{ url_for('dashboard.get_avatar') }}" {% endcomment %}
         hx-trigger="load"
         hx-target="this"
       >
-      <img id="avatar" src="{{ url_for('dashboard.get_avatar') }}" alt="User" class="h-10 w-10 rounded-full">
+      {% comment %} <img id="avatar" src="{{ url_for('dashboard.get_avatar') }}" alt="User" class="h-10 w-10 rounded-full"> {% endcomment %}
       </div>
     </div>
     <div>

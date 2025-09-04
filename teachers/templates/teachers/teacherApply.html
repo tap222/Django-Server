@@ -1,40 +1,34 @@
 {% extends "main.html" %}
-{% load static %}
 
 {% block head %}
- <title>Server Apply</title>
+    <title>Teacher Apply</title>
 {% endblock %}
 
 {% block body %}
 {% include "navbar.html" %}
 <div class="min-h-screen flex flex-col items-center justify-center">
     <h1 class="w-full max-w-md text-xl font-semibold text-center mb-4 mt-4">
-      Want To Apply As Server? Fill Out Our Form
+      Want To Apply As For Our Services? Fill Out Our Form
     </h1>
     <div
       class="bg-white p-6 rounded-lg shadow-md w-full max-w-md mb-16 border border-gray-400"
     >
-     <form id="instructor-form"  class="space-y-4" method="post">
-    {% csrf_token %}
+    <form class="space-y-4" method="post">
+      {% csrf_token %}
 
-    {% for field in form %}
-        {{ field }}
-        {% if field.errors %}
-            <span class="error">{{ field.errors }}</span>
-        {% endif %}
-    {% endfor %}
+      {{form}}
 
-    <button
+      <button
         type="submit"
         class="w-full bg-teal-500 text-white py-2 rounded-full font-medium hover:bg-teal-600"
-    >
+      >
         Submit
-    </button>
-</form>
+      </button>
+    </form>
     </div>
   </div>
 
-  {% include 'footer.html' %}
+  
   <!-- Script -->
   <script>
     function toggleMenu() {
@@ -55,7 +49,7 @@
       }
     }
 
-    const bioTextArea = document.getElementById("serverDescription");
+    const bioTextArea = document.getElementById("expertise");
     const bioLengthSpan = document.getElementById("bio-length");
 
     bioTextArea.addEventListener("input", () => {

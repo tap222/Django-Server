@@ -1,0 +1,55 @@
+{% extends "main.html" %}
+
+{% block head %}
+<title>Manage Bots</title>
+{% endblock %}
+
+{% block body %}
+{% include "sidebaradmin.html" %}
+{% include "navbar2.html" %}
+
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+
+
+  
+
+<div id="dashboard" class="flex flex-col lg:flex-row">
+    <div class="flex-1 p-4 sm:p-6">
+        <div class="mb-6 overflow-x-auto">
+            <h2 class="text-xl font-bold mb-4"></h2>
+            <table class="w-full bg-white rounded shadow">
+            <thead class="bg-gray-100">
+                <tr>
+                <th class="p-2 text-sm text-left">⚡ Server ID</th>
+                <th class="p-2 text-sm text-left">Bot ID</th>
+                <th class="p-2 text-sm text-left">Bot Token</th>
+                <th class="p-2 text-sm text-left">Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                <tr class="border-b">
+                    <td class="p-2 text-sm">{{item[1]}}</td>
+                    <td class="p-2 text-sm">{{item[2]}}</td>
+                    <td class="p-2 text-sm">{{item[3]}}</td>
+                    <td class="p-2 text-sm">{{item[4]}}</td>
+                </tr>
+                {% endfor %}                
+            </tbody>
+            </table>
+            <div id="add_bot" class>
+                <div id="authButton">
+                    <a
+                    href="/dashboard/admin/bot/add"
+                    class="lg:block py-2 ml-4 px-4 bg-teal-500 text-white rounded-lg font-medium hover:bg-teal-600"
+                  >
+                    Add Bot
+                  </a>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

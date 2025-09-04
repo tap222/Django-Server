@@ -70,7 +70,7 @@
             href="{% url 'account_logout' %}"
             >Log Out</a>
             <a
-            href="/dashboard"
+            href="{% url 'dashboard:dashboard' %}"
             class="lg:block py-2 ml-4 mr-4 px-4 bg-teal-500 text-white rounded-lg font-medium hover:bg-teal-600"
             >Dashboard</a>
         {% else  %}

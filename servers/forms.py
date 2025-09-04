@@ -1,7 +1,7 @@
 from django import forms
 from . import models
 
-class CreateApplication(forms.ModelForm):
+class CreateServerApplication(forms.ModelForm):
     class Meta:
         model = models.Server_Application
         fields = ['first_name', 'last_name', 'server_name', 'server_id','server_interests', 'server_description']
@@ -34,4 +34,13 @@ class CreateApplication(forms.ModelForm):
 
             })
         }
+
+    def clean_server_id(self):
+        value = self.cleaned_data['server_id']
+        digit_count = len(str(value))
+
+        if digit_count< 18 or digit_count > 20:
+            raise forms.ValidationError("Server ID must be between 18 and 20 digits.")
+        
+        return value
 

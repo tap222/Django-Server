@@ -29,7 +29,6 @@
         </p>
         <button
           class="mt-6 px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-teal-600"
-          onclick="navigateToBecomeInstructor()"
         ><a href="{% url 'servers:application' %}">
           Join Us
         </a>
@@ -467,23 +466,8 @@
 </div>
 
 <script>
-  function navigateToInstructor1() {
-    window.location.href = "./instructordeatil/instructor1.html";
-  }
-  function navigateToInstructor2() {
-    window.location.href = "./instructordeatil/instructor2.html";
-  }
-  function navigateToInstructor3() {
-    window.location.href = "./instructordeatil/instructor3.html";
-  }
-  function navigateToInstructor4() {
-    window.location.href = "./instructordeatil/instructor4.html";
-  }
 
-  // Function to handle navigation to become an instructor
-  function navigateToBecomeInstructor() {
-    window.location.href = "/apply/server";
-  }
+  // Function to handle navigation on small screens
   function toggleMenu() {
     const menu = document.getElementById("menu");
     const menuIcon = document.getElementById("menuIcon");
