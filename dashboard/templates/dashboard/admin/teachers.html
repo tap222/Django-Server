@@ -1,0 +1,57 @@
+{% extends "main.html" %}
+
+{% block head %}
+    <title>Teachers</title>
+{% endblock %}
+
+{% block body %}
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+    {% include 'dashboard/admin/sideBarAdmin.html' %}
+    {% include 'navbar2.html' %}
+    
+        <div id="dashboard" class="flex flex-col lg:flex-row">
+            <div class="flex-1 p-4 sm:p-6">
+                
+    
+                <div class="overflow-x-auto">
+                <h2 class="text-xl font-bold mb-4">Applications From Servers & Teachers</h2>
+                {% if not teacher %}
+                <div>
+                    <h1>No teachers are available</h1>
+                </div>
+                {% else %}
+                <table class="w-full bg-white rounded shadow">
+                    <thead class="bg-gray-100">
+                    <tr>
+                        <th class="p-2 text-sm text-left">First Name</th>
+                        <th class="p-2 text-sm text-left">Last Name</th>
+                        <th class="p-2 text-sm text-left">Expertise</th>
+                        <th class="p-2 text-sm text-left">Gender</th>
+                        <th class="p-2 text-sm text-left">Date Of Birth</th>
+                        <th class="p-2 text-sm text-left">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for teacher in teachers %}
+                        <tr class="border-b">
+                        <td class="p-2 text-sm"><a href="">{{ teacher.first_name}}</a></td>
+                        <td class="p-2 text-sm"><a href="">{{ teacher.last_name}}</a></td>
+                        <td class="p-2 text-sm"><a href="">{{ teacher.expertise}}</a></td>
+                        <td class="p-2 text-sm"><a href="">{{ teacher.gender}}</a></td>
+                        <td class="p-2 text-sm"><a href="">{{ teacher.date_of_birth}}</a></td>
+                        <td class="p-2 text-sm">
+                            <button class="px-3 py-1 bg-green-500 text-white rounded">Manage</button>
+                            <button class="px-3 py-1 bg-red-500 text-white rounded">Delete</button>
+                        </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

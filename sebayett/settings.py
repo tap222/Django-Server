@@ -43,13 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 'django-extensions',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.discord',
 
-    # My django apps
+    # Safedelete
+    'safedelete',
+
+    # my django apps
     'base.apps.BaseConfig',
     'users.apps.UsersConfig',
     'lessons.apps.LessonsConfig',

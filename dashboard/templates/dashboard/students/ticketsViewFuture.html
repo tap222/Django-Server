@@ -1,0 +1,66 @@
+{% extends "main.html" %}
+
+{% block head %}
+  <title>View Tickets</title>
+{% endblock %}
+
+{% block body %}
+{% if not data %}
+<div class="row">
+  <div class="col">
+      <div class="d-flex justify-content-center align-items-center vh-100">
+          <div class="container-fluid">
+              <div class="">
+                  <div class="text-center">
+                      <h1 class="fs-2 text-align-center">You have no Tickets</h1>
+                  </div>
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% else %}
+<div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="container-fluid">
+                <div class="">
+                    <div class="text-center">
+                        <h1 class="fs-2 text-align-center">These are your Upcoming ticket</h1>
+                    </div>
+                    <form class="text-center">
+                        <div>
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Event Title</th>
+                                    <th scope="col">Event Date</th>
+                                    <th scope="col">Event Time</th>
+
+                                    
+                                  </tr>
+                                </thead>
+                                <tbody id="table_body">
+                                    {% for ticket in data %}
+                                    <tr>
+                                        <td>{{ticket[5]}}</td>
+                                        <td>{{ticket[6].strftime('%Y-%m-%d %H:%M:%S').split(" ")[0]}}</td>
+                                        <td>{{ticket[6].strftime('%Y-%m-%d %H:%M:%S').split(" ")[1]}}</td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                
+                              </table>
+                        </div>
+                        <div><a class="btn btn-primary" href="/dashboard/tickets/past">Past Tickets</a></div>
+                        <div><a class="btn btn-primary my-2" href="/dashboard">Go Back to main dashboard</a></div>
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+</div
+{% endif %}
+{% endblock %}

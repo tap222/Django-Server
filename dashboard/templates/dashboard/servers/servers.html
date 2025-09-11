@@ -1,0 +1,53 @@
+{% extends "main.html" %}
+
+{% block head %}
+<title>Servers</title>
+{% endblock %}
+
+{% block body %}
+
+
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+  {% include "dashboard/admin/sideBarAdmin.html" %}
+  {% include "navbar2.html" %}
+    <div id="dashboard" class="flex flex-col lg:flex-row">
+        <div class="flex-1 p-4 sm:p-6">
+            {% if not servers %}
+                <div>
+                    <h1>No servers are available</h1>
+                </div>
+            {% else %}
+                <div class="mb-6 overflow-x-auto">
+                    <h2 class="text-xl font-bold mb-4">Accepted Servers</h2>
+                    <table class="w-full bg-white rounded shadow">
+                        <thead class="bg-gray-100">
+                            <tr>
+                            <th class="p-2 text-sm text-left">Server Name</th>
+                            <th class="p-2 text-sm text-left">Server Interests</th>
+                            <th class="p-2 text-sm text-left">Server Description</th>
+                            <th class="p-2 text-sm text-left">Joined</th>
+                            <th class="p-2 text-sm text-left">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for server in servers %}
+                            <tr class="border-b">
+                                <td class="p-2 text-sm">{{server.name}}</td>
+                                <td class="p-2 text-sm">{{server.interests}}</td>
+                                <td class="p-2 text-sm">{{server.description}}</td>
+                                <td class="p-2 text-sm">{{server.created_at}}</td>
+                                <td class="p-2 text-sm">
+                                    <button class="px-3 py-1 bg-green-500 text-white rounded">Manage</button>
+                                    <button class="px-3 py-1 bg-red-500 text-white rounded">Delete</button>
+                                </td>
+                            </tr>
+                            {% endfor %}                
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

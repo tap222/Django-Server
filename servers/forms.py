@@ -1,9 +1,9 @@
 from django import forms
-from . import models
+from servers import models
 
 class CreateServerApplication(forms.ModelForm):
     class Meta:
-        model = models.Server_Application
+        model = models.Server_Applications
         fields = ['first_name', 'last_name', 'server_name', 'server_id','server_interests', 'server_description']
         widgets = {
             'first_name': forms.TextInput(attrs={

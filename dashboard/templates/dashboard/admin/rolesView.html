@@ -1,0 +1,47 @@
+{% extends "main.html" %}
+
+{% block head %}
+  <title>Lesson View</title>
+{% endblock %}
+
+{% block body %}
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+    {% include 'dashboard/admin/sideBarAdmin.html' %}
+    {% include 'navbar2.html' %}
+    
+        <div id="dashboard" class="flex flex-col lg:flex-row">
+            <div class="flex-1 p-4 sm:p-6">
+                
+    
+                <div class="overflow-x-auto">
+                <h2 class="text-xl font-bold mb-4">Roles:</h2>
+                <table class="w-full bg-white rounded shadow">
+                    <thead class="bg-gray-100">
+                    <tr>
+                        <th class="p-2 text-sm text-left">Role Name</th>
+                        <th class="p-2 text-sm text-left">Permission</th>
+                        <th class="p-2 text-sm text-left">View</th>
+                        <th class="p-2 text-sm text-left">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% if not groups %}
+                        <h1 class="fs-2 text-align-center">You do not have any roles</h1>
+                        {% else %}
+                        {% for group in groups %}
+                        <tr class="border-b">
+                        <td class="p-2 text-sm"><a href="">{{ group.name }}</a></td>
+                        <td class="p-2 text-sm"><a href=""></a></td>
+                        <td class="p-2 text-sm"><a class="px-3 py-1 bg-green-500 text-white rounded" href="">View Users with this role</a></td>
+                        <td class="p-2 text-sm"><a class="px-3 py-1 bg-red-500 text-white rounded" href="/home/achraf/Documents/GitHub/Flask-Server/templates/serverApplication.html">Delete</a></td>
+                            </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>  
+{% endblock %}

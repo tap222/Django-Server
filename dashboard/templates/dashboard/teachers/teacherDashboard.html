@@ -1,0 +1,122 @@
+{% extends "main.html" %}
+
+{% block head %}
+    <title>Teacher Dashboard</title>
+{% endblock %}
+
+{% block body%}
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+    {% include "dashboard/teachers/sideBarTeacher.html" %}
+    {% include "navbar2.html" %}
+    <!-- Pending Events -->
+    <div id="dashboard" class="flex flex-col lg:flex-row">
+        <div class="flex-1 p-4 sm:p-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <!-- <div class="bg-green-100 p-4 rounded shadow text-center">
+              <h3 class="text-sm sm:text-lg font-semibold">Accepted</h3>
+              <p class="text-xl sm:text-2xl font-bold"></p>
+            </div>
+            <div class="bg-red-100 p-4 rounded shadow text-center">
+              <h3 class="text-sm sm:text-lg font-semibold">Rejected</h3>
+              <p class="text-xl sm:text-2xl font-bold"></p>
+            </div> -->
+            <div class="bg-yellow-100 p-4 rounded shadow text-center">
+              <h3 class="text-sm sm:text-lg font-semibold">Pending Events:</h3>
+              <p class="text-xl sm:text-2xl font-bold">{{amount}}</p>
+            </div>
+          </div>
+        </div>
+    </div>
+
+
+    <!-- Upcoming Events -->
+    <div class="p-6">
+        <h2 class="text-2xl font-bold mb-4">Upcoming Events</h2>
+        <div id="upcomingEvents" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% if not events %}
+                <h2 class="text-2xl font-bold mb-4">You have no upcoming events</h2>
+            {% else %}
+            <table class="w-full bg-white rounded shadow">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="p-2 text-sm text-left">Event Title</th>
+                    <th class="p-2 text-sm text-left">Event Date</th>
+                    <th class="p-2 text-sm text-left">Event Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                    <tr class="border-b">
+                    <td class="p-2 text-sm"><a href=""></a></td>
+                    <td class="p-2 text-sm"><a href=""></a></td>
+                    {% comment %} <td class="{% if item[6] %}alert alert-info{% else %}alert alert-warning{% endif %}">{{ item[8] }}</td> {% endcomment %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Lessons -->
+    <div class="p-6">
+        <h2 class="text-2xl font-bold mb-4">Lessons</h2>
+        <div id="lessons" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% if not lesson_data %}
+                <h2 class="text-2xl font-bold mb-4">You have no lessons</h2>
+            {% else %}
+            <table class="w-full bg-white rounded shadow">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="p-2 text-sm text-left">Lesson Title</th>
+                    <th class="p-2 text-sm text-left">Lesson Categories</th>
+                    <th class="p-2 text-sm text-left">Lesson Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for item in lesson_data %}
+                    <tr class="border-b">
+                    <td class="p-2 text-sm"><a href="/dashboard/teacher/lessons/{{ item[2] }}">{{ item[3] }}</a></td>
+                    <td class="p-2 text-sm"><a href="/dashboard/teacher/lessons/{{ item[2] }}">{{ item[4] }}</a></td>
+                    <td class="{% if item[6] %}alert alert-info{% else %}alert alert-warning{% endif %}">{% if item[6] %}Active{% else %}Paused{% endif %}</td>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Vacations -->
+    <div class="p-6">
+        <h2 class="text-2xl font-bold mb-4">Vacations</h2>
+        <div id="vacations" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% if not vacation_data %}
+                <h2 class="text-2xl font-bold mb-4">You have no vacations</h2>
+            {% else %}
+            <table class="w-full bg-white rounded shadow">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="p-2 text-sm text-left">Vacation Title</th>
+                    <th class="p-2 text-sm text-left">Starts At</th>
+                    <th class="p-2 text-sm text-left">Ends At</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for item in vacation_data %}
+                    <tr class="border-b">
+                    <td class="p-2 text-sm"><a href="/dashboard/teacher/vacation">{{ item[3] }}</a></td>
+                    <td class="p-2 text-sm"><a href="/dashboard/teacher/vacation">{{ item[4]}}</a></td>
+                    <td class="p-2 text-sm"><a href="/dashboard/teacher/vacation">{{ item[5]}}</a></td>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+
+
+  </div>
+</body>
+
+
+{% endblock %}

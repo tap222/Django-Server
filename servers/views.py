@@ -10,10 +10,10 @@ def server_apply(request):
     if request.method == 'POST':
         form = forms.CreateServerApplication(request.POST)
         if form.is_valid():
-            # save data HERE
-            # server_application = form.save(commit=False)
-            # server_application.user = request.user
-            # server_application.save()
+            # save data
+            server_application = form.save(commit=False)
+            server_application.user = request.user
+            server_application.save()
 
             return redirect('/')
 
