@@ -1,0 +1,96 @@
+{% extends "main.html" %}
+
+{% block head %}
+  <title>Server View</title>
+{% endblock %}
+
+{% block body %}
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+
+{% include "dashboard/admin/sideBarAdmin.html" %}
+{% include "navbar2.html" %}
+
+  {% if not server %}
+  <div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="container-fluid">
+                <div class="">
+                    <div class="text-center">
+                        <h1 class="fs-2 text-align-center">This Server does not exists</h1>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="container-fluid">
+                <div class="">
+                    <div class="text-center">
+                        <h1 class="fs-2 text-align-center">Discord Server: {{ server.server_name }}</h1>
+                    </div>
+                    <form class="text-center">
+                        <div>
+                          <div class="text-center">
+                            <div>First Name: </div>
+                            <p class="text-nowrap bg-body-secondary border">{{ server.first_name }}</p>
+                          </div>
+                          <div class="text-center">
+                            <div>Last Name: </div>
+                            <p class="text-nowrap bg-body-secondary border">{{ server.last_name }}</p>
+                          </div>
+                          <div class="text-center">
+                            <div>Server Name: </div>
+                            <p class="text-nowrap bg-body-secondary border">{{ server.server_name }}</p>
+                          </div>
+                          <div class="text-center">
+                            <div>Server ID: </div>
+                            <p class="text-nowrap bg-body-secondary border">{{ server.server_id }}</p>
+                          </div>
+                          <div class="text-center">
+                            <div>Server Description: </div>
+                            <p class="text-nowrap bg-body-secondary border">{{ server.server_description }}</p>
+                          </div>
+                          <div class="text-center">
+                            <div>Server Interests: </div>
+                            <p class="text-nowrap bg-body-secondary border">{{ server.server_interests }}</p>
+                          </div>
+                          <div class="text-center">
+                            <div>Accepted On The: </div>
+                            <p class="text-nowrap bg-body-secondary border">{{ server.created_at }}</p>
+                          </div>
+                            <div>
+                              {% csrf_token %}
+                              {% comment %} <button class="btn btn-primary" 
+                              hx-post="/dashboard/admin/application/server/accept/{{ data[3] }}"
+                              hx-target="#response"
+                              hx-indicator="#loading"
+                              >Manage</button> {% endcomment %}
+                              <button class="btn btn-danger" 
+                              hx-post="{% url 'dashboard:server_delete' server.server_id %}"
+                              hx-target="#response"
+                              hx-indicator="#loading"
+                              role="delete"
+                              >Delete</button>
+                            </div>
+                            <div id="loading" class="htmx-indicator">
+                              <div class="spinner-border" role="status">
+                                  <span class="visually-hidden">Loading...</span>
+                              </div>
+                          </div>
+                          <div id="response"></div>
+                      </div>
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

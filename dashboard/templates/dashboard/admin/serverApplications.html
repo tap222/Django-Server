@@ -31,13 +31,27 @@
                     <tbody>
                         {% for application in applications %}
                         <tr class="border-b">
-                        <td class="p-2 text-sm"><a href="}">{{ application.first_name }}</a></td>
-                        <td class="p-2 text-sm"><a href="">{{ application.last_name }}</a></td>
-                        <td class="p-2 text-sm"><a href="">{{ application.server_name  }}</a></td>
-                        <td class="p-2 text-sm"><a href="">{{ application.server_id  }}</a></td>
+                        <td class="p-2 text-sm"><a href="{% url 'dashboard:server_application_view' application.server_id %}">{{ application.first_name }}</a></td>
+                        <td class="p-2 text-sm"><a href="{% url 'dashboard:server_application_view' application.server_id %}">{{ application.last_name }}</a></td>
+                        <td class="p-2 text-sm"><a href="{% url 'dashboard:server_application_view' application.server_id %}">{{ application.server_name  }}</a></td>
+                        <td class="p-2 text-sm"><a href="{% url 'dashboard:server_application_view' application.server_id %}">{{ application.server_id  }}</a></td>
                         <td class="p-2 text-sm">
-                            <button class="px-3 py-1 bg-green-500 text-white rounded">Accept</button>
-                            <button class="px-3 py-1 bg-red-500 text-white rounded">Reject</button>
+                            <button 
+                                hx-post="/clicked"
+                                hx-trigger="click"
+                                hx-target="#parent-div"
+                                hx-swap="outerHTML"
+                                class="px-3 py-1 bg-green-500 text-white rounded">
+                                Accept
+                            </button>
+                            <button 
+                                hx-post="/clicked"
+                                hx-trigger="click"
+                                hx-target="#parent-div"
+                                hx-swap="outerHTML"
+                                class="px-3 py-1 bg-red-500 text-white rounded">
+                                Reject
+                            </button>
                         </td>
                         </tr>
                         {% endfor %}

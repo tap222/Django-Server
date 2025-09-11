@@ -19,28 +19,32 @@
                 </div>
             {% else %}
                 <div class="mb-6 overflow-x-auto">
-                    <h2 class="text-xl font-bold mb-4">Accepted Servers</h2>
+                    <h2 class="text-xl font-bold mb-4">Servers</h2>
                     <table class="w-full bg-white rounded shadow">
                         <thead class="bg-gray-100">
                             <tr>
+                            <th class="p-2 text-sm text-left">Server ID</th>
                             <th class="p-2 text-sm text-left">Server Name</th>
                             <th class="p-2 text-sm text-left">Server Interests</th>
                             <th class="p-2 text-sm text-left">Server Description</th>
                             <th class="p-2 text-sm text-left">Joined</th>
-                            <th class="p-2 text-sm text-left">Action</th>
+                            {% comment %} <th class="p-2 text-sm text-left">Action</th> {% endcomment %}
                             </tr>
                         </thead>
                         <tbody>
                             {% for server in servers %}
                             <tr class="border-b">
-                                <td class="p-2 text-sm">{{server.name}}</td>
-                                <td class="p-2 text-sm">{{server.interests}}</td>
-                                <td class="p-2 text-sm">{{server.description}}</td>
-                                <td class="p-2 text-sm">{{server.created_at}}</td>
-                                <td class="p-2 text-sm">
-                                    <button class="px-3 py-1 bg-green-500 text-white rounded">Manage</button>
-                                    <button class="px-3 py-1 bg-red-500 text-white rounded">Delete</button>
-                                </td>
+                                <td class="p-2 text-sm"><a href="{% url 'dashboard:server_view' server.server_id %}">{{server.server_id}}</a></td>
+                                <td class="p-2 text-sm"><a href="{% url 'dashboard:server_view' server.server_id %}">{{server.server_name}}</a></td>
+                                <td class="p-2 text-sm"><a href="{% url 'dashboard:server_view' server.server_id %}">{{server.server_interests}}</a></td>
+                                <td class="p-2 text-sm"><a href="{% url 'dashboard:server_view' server.server_id %}">{{server.server_description}}</a></td>
+                                <td class="p-2 text-sm"><a href="{% url 'dashboard:server_view' server.server_id %}">{{server.created_at}}</a></td>
+                                {% comment %} <td class="p-2 text-sm">
+                                    <div>
+                                        <button class="px-3 py-1 bg-green-500 text-white rounded">Manage</button>
+                                        <button class="px-3 py-1 bg-red-500 text-white rounded">Delete</button>
+                                    </div>
+                                </td> {% endcomment %}
                             </tr>
                             {% endfor %}                
                         </tbody>

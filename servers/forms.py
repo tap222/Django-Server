@@ -1,5 +1,7 @@
 from django import forms
 from servers import models
+from servers.models import Servers, Server_Applications
+
 
 class CreateServerApplication(forms.ModelForm):
     class Meta:
@@ -41,6 +43,14 @@ class CreateServerApplication(forms.ModelForm):
 
         if digit_count< 18 or digit_count > 20:
             raise forms.ValidationError("Server ID must be between 18 and 20 digits.")
+
+        server = Servers.objects.filter(server_id=value)
+        server_application = Server_Applications.objects.filter(server_id=value)
+
+        if server or server_application:
+            raise forms.ValidationError("This server already signed with us.")
+
+            
         
         return value
 
