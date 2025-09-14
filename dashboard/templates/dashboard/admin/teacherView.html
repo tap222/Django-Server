@@ -1,0 +1,143 @@
+{% extends "main.html" %}
+
+{% block head %}
+  <title>Teacher View</title>
+{% endblock %}
+
+{% block body %}
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+  {% include 'dashboard/admin/sideBarAdmin.html' %}
+  {% include 'navbar2.html' %}
+  {% if not teacher %}
+  <div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="container-fluid">
+                    <div class="text-center">
+                        <h1 class="fs-2 text-align-center">This Teacher does not exists</h1>
+                    </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="container-fluid">
+                <div class="">
+                    <div class="text-center">
+                        <h1 class="fs-2 text-align-center">Teacher: {{ teacher.first_name }} {{ teacher.last_name }}</h1>
+                    </div>
+                    <form class="text-center">
+                        <div>
+                              <div class="text-center">
+                                <div>Teacher ID: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ teacher.teacher_id }}</p>
+                              </div>
+                              <div class="text-center">
+                                <div>First Name: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ teacher.first_name }}</p>
+                              </div>
+                              <div class="text-center">
+                                <div>Last Name: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ teacher.last_name }}</p>
+                              </div>
+                              <div class="text-center">
+                                <div>Date Of Birth </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ teacher.date_of_birth }}</p>
+                              </div>
+                              <div class="text-center">
+                                <div>Gender: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ teacher.gender }}</p>
+                              </div>
+                              <div class="text-center">
+                                <div>Experitse: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ teacher.expertise }}</p>
+                              </div>
+                              <div>
+                                {% comment %} <button class="px-3 py-1 bg-green-500 text-white rounded" 
+                                hx-post="/dashboard/admin/application/server/accept/{{ data[3] }}"
+                                hx-target="#response"
+                                hx-indicator="#loading"
+                                >Manage</button> {% endcomment %}
+                                <button class="px-3 py-1 bg-red-500 text-white rounded" 
+                                hx-post=""
+                                hx-target="#response"
+                                hx-indicator="#loading"
+                                role="refuse">Delete</button>
+                              </div>
+                              <div id="loading" class="htmx-indicator">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div id="response"></div>
+                        </div>
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+
+
+
+{% comment %} {% if not data %}
+<div class="row">
+  <div class="col">
+      <div class="d-flex justify-content-center align-items-center vh-100">
+          <div class="container-fluid">
+              <div class="">
+                  <div class="text-center">
+                      <h1 class="fs-2 text-align-center">This Teacher does not exists</h1>
+                  </div>
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% else %}
+<div class="row">
+  <div class="col">
+      <div class="d-flex justify-content-center align-items-center vh-100">
+          <div class="container-fluid">
+              <div class="">
+                  <div class="text-center">
+                      <h1 class="fs-2 text-align-center">Teacher: </h1>
+                      <h3>{{data[2]}} {{ data[3] }}</h3>
+                  </div>
+                  <form class="text-center">
+                      <div>
+                            
+                            <div class="text-center">
+                              <div>Date of Birth: </div>
+                              <p>{{ data[4] }}</p>
+                            </div>
+                            <div class="text-center">
+                              <div>Gender: </div>
+                              <p>{{ data[5].capitalize() }}</p>
+                            </div>
+                            <div class="text-center">
+                              <div>Expertise: </div>
+                              <p>{{ data[6] }}</p>
+                            </div>
+                            <div class="text-center">
+                                <div>Accepted On the : </div>
+                                <p>{{ data[7] }}</p>
+                              </div>
+                      </div>
+                  </form> 
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endif %} {% endcomment %}
+{% endblock %}

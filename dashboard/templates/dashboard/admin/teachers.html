@@ -16,7 +16,7 @@
     
                 <div class="overflow-x-auto">
                 <h2 class="text-xl font-bold mb-4">Teachers</h2>
-                {% if not teacher %}
+                {% if not teachers %}
                 <div>
                     <h1>No teachers are available</h1>
                 </div>
@@ -35,11 +35,11 @@
                     <tbody>
                         {% for teacher in teachers %}
                         <tr class="border-b">
-                        <td class="p-2 text-sm"><a href="">{{ teacher.first_name}}</a></td>
-                        <td class="p-2 text-sm"><a href="">{{ teacher.last_name}}</a></td>
-                        <td class="p-2 text-sm"><a href="">{{ teacher.expertise}}</a></td>
-                        <td class="p-2 text-sm"><a href="">{{ teacher.gender}}</a></td>
-                        <td class="p-2 text-sm"><a href="">{{ teacher.date_of_birth}}</a></td>
+                        <td class="p-2 text-sm"><a href="{% url 'dashboard:admin_teacher_view' teacher.teacher_id %}">{{ teacher.first_name}}</a></td>
+                        <td class="p-2 text-sm"><a href="{% url 'dashboard:admin_teacher_view' teacher.teacher_id %}">{{ teacher.last_name}}</a></td>
+                        <td class="p-2 text-sm"><a href="{% url 'dashboard:admin_teacher_view' teacher.teacher_id %}">{{ teacher.expertise}}</a></td>
+                        <td class="p-2 text-sm"><a href="{% url 'dashboard:admin_teacher_view' teacher.teacher_id %}">{{ teacher.gender}}</a></td>
+                        <td class="p-2 text-sm"><a href="{% url 'dashboard:admin_teacher_view' teacher.teacher_id %}">{{ teacher.date_of_birth}}</a></td>
                         <td class="p-2 text-sm">
                             <button class="px-3 py-1 bg-green-500 text-white rounded">Manage</button>
                             <button class="px-3 py-1 bg-red-500 text-white rounded">Delete</button>

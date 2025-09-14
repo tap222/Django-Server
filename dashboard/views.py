@@ -10,7 +10,6 @@ from django.contrib.auth.models import User, Group
 
 @login_required(login_url='users:login')
 def dashboard(request):
-    user = request.user
 
     if request.user.groups.filter(name='Admin').exists():
         return redirect('dashboard:admin')
@@ -72,7 +71,7 @@ def admin_dashboard_server_applications(request):
 @login_required(login_url='users:login')
 def admin_dashboard_server_application_view(request, server_id):
     if request.user.groups.filter(name='Admin').exists():
-        server_application = Server_Applications.objects.get(server_id=server_id)
+        server_application = Server_Applications.filter(server_id=server_id).first()
         
         return render(request, 'dashboard/admin/serverApplicationView.html', { 'application': server_application })
     return redirect('dashboard:dashboard')
@@ -83,7 +82,7 @@ def admin_dashboard_server_application_view(request, server_id):
 def admin_dashboard_server_application_accept(request, server_id):
     if request.method == 'POST':
         if request.user.groups.filter(name='Admin').exists():
-            server_application = Server_Applications.objects.get(server_id=server_id)
+            server_application = Server_Applications.objects.filter(server_id=server_id).first()
 
             if not server_application:
                 return HttpResponse("""
@@ -106,7 +105,7 @@ def admin_dashboard_server_application_accept(request, server_id):
                     )
                 server.save()
                 
-                user = request.user
+                user = server_application.user
                 group, _ = Group.objects.get_or_create(name='Server')
                 user.groups.add(group)
                 user.save()
@@ -126,24 +125,25 @@ def admin_dashboard_server_application_accept(request, server_id):
 @login_required(login_url='users:login')
 def admin_dashboard_server_application_reject(request, server_id):
     if request.user.groups.filter(name='Admin').exists():
-        server_application = Server_Applications.objects.get(server_id=server_id)
+        if request.method == 'POST':
+            server_application = Server_Applications.objects.filter(server_id=server_id).first()
 
-        if not server_application:
+            if not server_application:
+                    return HttpResponse("""
+                                        <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                            <h3 class="text-sm sm:text-lg font-semibold">Server Application Not Found</h3>
+                                        </div>
+                                        """)
+            else:
+                server_application.status = 'rejected'
+                server_application.save()
+                server_application.delete()
+
                 return HttpResponse("""
-                                    <div class="bg-yellow-100 p-4 rounded shadow text-center">
-                                        <h3 class="text-sm sm:text-lg font-semibold">Server Application Not Found</h3>
+                                    <div class="bg-red-100 p-4 rounded shadow text-center">
+                                        <h3 class="text-sm sm:text-lg font-semibold">Server Rejected</h3>
                                     </div>
                                     """)
-        else:
-            server_application.status = 'rejected'
-            server_application.save()
-            server_application.delete()
-
-            return HttpResponse("""
-                                <div class="bg-red-100 p-4 rounded shadow text-center">
-                                    <h3 class="text-sm sm:text-lg font-semibold">Server Rejected</h3>
-                                </div>
-                                """)
 
         return redirect('base:home')
 
@@ -152,7 +152,7 @@ def admin_dashboard_server_application_reject(request, server_id):
 @login_required(login_url='users:login')
 def admin_dashboard_server_view(request, server_id):
     if request.user.groups.filter(name='Admin').exists():
-        server = Servers.objects.get(server_id=server_id)
+        server = Servers.objects.filter(server_id=server_id).first()
         if not server:
             return redirect('dashborad:admin_servers')
         return render(request, 'dashboard/admin/serverView.html', { 'server': server})
@@ -163,20 +163,27 @@ def admin_dashboard_server_view(request, server_id):
 @login_required(login_url='users:login')
 def admin_dashboard_server_delete(request, server_id):
     if request.user.groups.filter(name='Admin').exists():
-        server = Servers.objects.get(server_id=server_id)
-        if not server:
-            return HttpResponse("""
-                                    <div class="bg-yellow-100 p-4 rounded shadow text-center">
-                                        <h3 class="text-sm sm:text-lg font-semibold">Server Not Found</h3>
+        if request.method == 'POST':
+            server = Servers.objects.filter(server_id=server_id).first()
+            if not server:
+                return HttpResponse("""
+                                        <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                            <h3 class="text-sm sm:text-lg font-semibold">Server Not Found</h3>
+                                        </div>
+                                    """)
+            else:
+                user = server.user
+                if user.groups.filter(name='Server').exists():
+                    group = Group.objects.get(name='Server')
+                    user.groups.remove(group)
+
+
+                server.delete()
+                return HttpResponse("""
+                                    <div class="bg-red-100 p-4 rounded shadow text-center">
+                                        <h3 class="text-sm sm:text-lg font-semibold">Server Deleted</h3>
                                     </div>
-                                """)
-        else:
-            # server.delete()
-            return HttpResponse("""
-                                <div class="bg-red-100 p-4 rounded shadow text-center">
-                                    <h3 class="text-sm sm:text-lg font-semibold">Server Rejected</h3>
-                                </div>
-                                """)
+                                    """)
 
 
 
@@ -193,15 +200,95 @@ def admin_dashboard_servers(request):
 
 
 @login_required(login_url='users:login')
-def admin_dashboard_teacher_application_view(request):
+def admin_dashboard_teacher_applications(request):
     if request.user.groups.filter(name='Admin').exists():
-        teacher_applications = Teacher_Applications.objects.all()
+        applications = Teacher_Applications.objects.all()
 
-        return render(request, 'dashboard/admin/teacherApplication.html', {
-            'application': teacher_applications
-        })
+        return render(request, 'dashboard/admin/teacherApplications.html', { 'applications': applications })
     return redirect('dashboard:dashboard')
-        
+
+
+@login_required(login_url='users:login')
+def admin_dashboard_teacher_application_view(request, application_id):
+    if request.user.groups.filter(name='Admin').exists():
+        application = Teacher_Applications.objects.filter(application_id=application_id).first()
+
+        return render(request, 'dashboard/admin/teacherApplicationView.html', { 'application' : application })
+
+
+
+
+@login_required(login_url='users:login')
+def admin_dashboard_teacher_application_accept(request, application_id):
+    if request.user.groups.filter(name='Admin').exists():
+        if request.method == 'POST':
+            teacher_application = Teacher_Applications.objects.filter(application_id=application_id).first()
+            if not teacher_application:
+                return HttpResponse("""
+                                        <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                            <h3 class="text-sm sm:text-lg font-semibold">Teacher Application Not Found</h3>
+                                        </div>
+                                    """)
+            else:
+                teacher_application.status = "accepted"
+                teacher_application.save()
+
+                teacher = Teachers(
+                        user=teacher_application.user, 
+                        teacher_id=teacher_application.teacher_id,
+                        first_name=teacher_application.first_name,
+                        last_name=teacher_application.last_name,
+                        date_of_birth=teacher_application.date_of_birth,
+                        gender=teacher_application.gender,
+                        expertise=teacher_application.expertise
+                        )
+                teacher.save()
+
+                
+                user = teacher.user
+                
+                group, _ = Group.objects.get_or_create(name='Teacher')
+                user.groups.add(group)
+                user.save()
+
+                teacher_application.delete()
+
+                return HttpResponse("""
+                                        <div class="bg-green-100 p-4 rounded shadow text-center">
+                                            <h3 class="text-sm sm:text-lg font-semibold">Teacher Accepted</h3>
+                                        </div>
+                                        """)
+
+        return redirect('base:home')
+
+
+@login_required(login_url='users:login')
+def admin_dashboard_teacher_application_reject(request, application_id):
+    if request.user.groups.filter(name='Admin').exists():
+        if request.method == 'POST':
+            teacher_application = Teacher_Applications.objects.filter(application_id=application_id).first()
+            if not application:
+                return HttpResponse("""
+                                        <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                            <h3 class="text-sm sm:text-lg font-semibold">Teacher Application Not Found</h3>
+                                        </div>
+                                    """)
+            else:
+                teacher_application.status = "rejected"
+                teacher_application.save()
+                teacher_application.delete()
+                return HttpResponse("""
+                                    <div class="bg-red-100 p-4 rounded shadow text-center">
+                                        <h3 class="text-sm sm:text-lg font-semibold">Teacher Rejected</h3>
+                                    </div>
+                                    """)
+
+        return redirect('base:home')
+
+
+
+
+
 
 
 @login_required(login_url='users:login')
@@ -209,11 +296,52 @@ def admin_dashboard_teachers(request):
     if request.user.groups.filter(name='Admin').exists():
         teachers = Teachers.objects.all()
 
-        return render(request, 'dashboard/admin/teachers.html', {
-            'teachers': teachers
-        })
+        return render(request, 'dashboard/admin/teachers.html', { 'teachers': teachers })
     
     return redirect('dashboard:dashboard')
+
+
+
+@login_required(login_url='users:login')
+def admin_dashboard_teacher_view(request, teacher_id):
+    if request.user.groups.filter(name='Admin').exists():
+        teacher = Teachers.objects.filter(teacher_id=teacher_id).first()
+
+        return render(request, 'dashboard/admin/teacherView.html', { 'teacher': teacher })
+    
+    return redirect('dashboard:dashboard')
+
+
+@login_required(login_url='users:login')
+def admin_dashboard_teacher_delete(request, teacher_id):
+    if request.user.groups.filter(name='Admin').exists():
+        if request.method == 'POST':
+            teacher = Teachers.objects.filter(teacher_id=teacher_id).first()
+            if not teacher:
+                return HttpResponse("""
+                                        <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                            <h3 class="text-sm sm:text-lg font-semibold">Teacher Not Found</h3>
+                                        </div>
+                                    """)
+            else:
+                user = teacher.user
+                if user.groups.filter(name='Teacher').exists():
+                    group = Group.objects.get(name='Teacher')
+                    user.groups.remove(group)
+
+                teacher.delete()
+
+                return HttpResponse("""
+                                    <div class="bg-red-100 p-4 rounded shadow text-center">
+                                        <h3 class="text-sm sm:text-lg font-semibold">Teacher Deleted</h3>
+                                    </div>
+                                    """)
+    return redirect('base:home')
+    
+
+
+
+
 
 @login_required(login_url='users:login')
 def admin_dashboard_events(request):

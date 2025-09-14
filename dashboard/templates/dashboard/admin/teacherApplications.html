@@ -25,7 +25,6 @@
                     <th class="p-2 text-sm text-left">Last Name</th>
                     <th class="p-2 text-sm text-left">Gender</th>
                     <th class="p-2 text-sm text-left">Expertise</th>
-                    <th class="p-2 text-sm text-left">Status</th>
                     <th class="p-2 text-sm text-left">Action</th>
 
                 </tr>
@@ -33,12 +32,11 @@
                 <tbody>
                     {% for application in applications %}
                     <tr class="border-b">
-                    <td class="p-2 text-sm"><a href="">{{ application.application_id}}</a></td>
-                    <td class="p-2 text-sm"><a href="">{{ application.first_name }}</a></td>
-                    <td class="p-2 text-sm"><a href="">{{ application.last_name }}</a></td>
-                    <td class="p-2 text-sm"><a href="">{{ application.gender }}</a></td>
-                    <td class="p-2 text-sm"><a href="">{{ application.expertise }}</a></td>
-                    <td class="p-2 text-sm"><a href="">{{ application.status }}</a></td>
+                    <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_application_view' application.application_id %}">{{ application.application_id}}</a></td>
+                    <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_application_view' application.application_id %}">{{ application.first_name }}</a></td>
+                    <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_application_view' application.application_id %}">{{ application.last_name }}</a></td>
+                    <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_application_view' application.application_id %}">{{ application.gender }}</a></td>
+                    <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_application_view' application.application_id %}">{{ application.expertise }}</a></td>
                         
                     <td class="p-2 text-sm">
                         <button class="px-3 py-1 bg-green-500 text-white rounded">Accept</button>

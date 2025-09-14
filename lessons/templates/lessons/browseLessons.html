@@ -28,14 +28,14 @@
     {% else %}
         {% for lesson in lessons %}
         <div class="bg-white shadow-md rounded-lg p-4">
-            {% comment %} <img src="${event.imgSrc}" alt="${event.title }" class="h-40 w-full rounded-md object-cover"> {% endcomment %}
+            <img src="{{ lesson.banner.url }}" alt="{{ lesson.lesson_title }}" class="h-40 w-full rounded-md object-cover">
                 <div class="mt-4">
                 <div class="flex justify-between items-center">
-                    <span class="text-xs text-red-500 uppercase bg-teal-100">{{ lesson }}</span>
+                    <span class="text-xs text-red-500 uppercase bg-teal-100">{{ lesson.lesson_category }}</span>
                     <button class="text-base text-white bg-teal-500 px-3 py-1 rounded"><a href="">Check Availability</a></button>
                 </div>
                 <h3 class="text-lg font-semibold mt-2">{{ lesson.lesson_title }}</h3>
-                <p class="text-gray-600 mt-1">{{ lessons.lesson_description }}</p>
+                {% comment %} <p class="text-gray-600 mt-1">{{ lessons.lesson_description }}</p> {% endcomment %}
                 </div>
         </div>
         {% endfor %}

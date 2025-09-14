@@ -8,7 +8,7 @@ urlpatterns = [
     #ADMIN
     path('admin/', views.admin_dashboard, name='admin'),
     path('admin/settings/', views.admin_dashboard_settings, name='admin_settings'),
-    path('admin/roles/', views.admin_dashboard_roles, name='roles'),
+    path('admin/groups/', views.admin_dashboard_roles, name='groups'),
 
     path('admin/servers', views.admin_dashboard_servers, name='admin_servers'),
     path('admin/servers/<int:server_id>', views.admin_dashboard_server_view, name='server_view'),
@@ -16,11 +16,15 @@ urlpatterns = [
 
     path('admin/server/applications', views.admin_dashboard_server_applications, name='server_applications'),
     path('admin/server/application/<int:server_id>', views.admin_dashboard_server_application_view , name='server_application_view'),
-    path('admin/server/application/accept/<int:server_id>', views.admin_dashboard_server_application_accept, name='server_application_accept'),
-    path('admin/server/application/reject/<int:server_id>', views.admin_dashboard_server_application_reject, name='server_application_reject'),
+    path('admin/server/application/accept/<int:server_id>', views.admin_dashboard_teacher_application_accept, name='server_application_accept'),
+    path('admin/server/application/reject/<int:server_id>', views.admin_dashboard_teacher_application_reject, name='server_application_reject'),
     
     path('admin/teachers', views.admin_dashboard_teachers, name='admin_teachers'),
-    path('admin/teacher/applications', views.admin_dashboard_teacher_application_view, name='teacher_applications'),
+    path('admin/teachers/<uuid:teacher_id>', views.admin_dashboard_teacher_view, name='admin_teacher_view'),
+    path('admin/teacher/applications', views.admin_dashboard_teacher_applications, name='teacher_applications'),
+    path('admin/teacher/applications/<uuid:application_id>', views.admin_dashboard_teacher_application_view, name='teacher_application_view'),
+    path('admin/teacher/applications/accept/<uuid:application_id>', views.admin_dashboard_teacher_application_accept, name='teacher_application_accept'),
+    path('admin/teacher/applications/reject/<uuid:application_id>', views.admin_dashboard_teacher_application_reject, name='teacher_application_reject'),
 
     path('admin/events', views.admin_dashboard_events, name='admin_events'),
     #SERVERS

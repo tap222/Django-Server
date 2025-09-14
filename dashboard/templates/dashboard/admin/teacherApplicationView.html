@@ -1,0 +1,89 @@
+{% extends "main.html" %}
+
+{% block head %}
+  <title>Teacher Application View</title>
+{% endblock %}
+
+{% block body %}
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+  {% include 'navbar2.html' %}
+  {% include 'dashboard/admin/sideBarAdmin.html' %}
+  {% if not application %}
+  <div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="container-fluid">
+                    <div class="text-center">
+                        <h1 class="fs-2 text-align-center">This Application does not exists</h1>
+                    </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="container-fluid">
+                <div class="">
+                    <div class="text-center">
+                        <h1 class="fs-2 text-align-center">Application for Teacher: {{ application.first_name }} {{ application.last_name }}</h1>
+                    </div>
+                    <form class="text-center">
+                        <div>
+                              <div class="text-center">
+                                <div>First Name: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ application.first_name }}</p>
+                              </div>
+                              <div class="text-center">
+                                <div>Last Name: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ application.last_name }}</p>
+                              </div>
+                              <div class="text-center">
+                                <div>Gender:</div>
+                                <p class="text-nowrap bg-body-secondary border">{{ application.gender }}</p>
+                              </div>
+                              <div class="text-center">
+                                <div>Date Of Birth:</div>
+                                <p class="text-nowrap bg-body-secondary border">{{ application.date_of_birth }}</p>
+                              </div>
+                              <div class="text-center">
+                                <div>Expertise:</div>
+                                <p class="text-nowrap bg-body-secondary border">{{ application.expertise }}</p>
+                              </div>
+                              <div class="text-center">
+                                <div>Status: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ application.status }}</p>
+                              </div>
+                              <div>
+                                {% csrf_token %}
+                                <button class="px-3 py-1 bg-green-500 text-white rounded" 
+                                hx-post="{% url 'dashboard:teacher_application_accept' application.application_id %}"
+                                hx-target="#response"
+                                hx-indicator="#loading"
+                                >Accept</button>
+                                <button class="px-3 py-1 bg-red-500 text-white rounded" 
+                                hx-post="{% url 'dashboard:teacher_application_reject' application.application_id %}"
+                                hx-target="#response"
+                                hx-indicator="#loading"
+                                role="refuse">Refuse</button>
+                              </div>
+                              <div id="loading" class="htmx-indicator">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div id="response"></div>
+                        </div>
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+
+{% endblock %}
