@@ -16,7 +16,8 @@ def lessons(request):
 
 
 @login_required(login_url='users:login')
-def lesson_view(request):
+def lesson_view(request, lesson_id):
     if request.user.groups.filter(name='Server').exists():
-        return redirect('base:home')
+        lesson = Lessons.objects.filter(lesson_id=lesson_id).first()
+        return render(request, 'lessons/lessonDetails.html', { 'lesson': lesson})
     return redirect('base:home')

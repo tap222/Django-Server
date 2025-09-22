@@ -51,6 +51,9 @@ INSTALLED_APPS = [
     # Safedelete
     'safedelete',
 
+    # django-agend
+    # 'django_agenda',
+
     # my django apps
     'base.apps.BaseConfig',
     'users.apps.UsersConfig',

@@ -76,9 +76,9 @@
                 <tbody>
                     {% for item in lesson_data %}
                     <tr class="border-b">
-                    <td class="p-2 text-sm"><a href="/dashboard/teacher/lessons/{{ item[2] }}">{{ item[3] }}</a></td>
-                    <td class="p-2 text-sm"><a href="/dashboard/teacher/lessons/{{ item[2] }}">{{ item[4] }}</a></td>
-                    <td class="{% if item[6] %}alert alert-info{% else %}alert alert-warning{% endif %}">{% if item[6] %}Active{% else %}Paused{% endif %}</td>
+                    <td class="p-2 text-sm"><a href=""></a></td>
+                    <td class="p-2 text-sm"><a href=""></a></td>
+                    {% comment %} <td class="{% if item[6] %}alert alert-info{% else %}alert alert-warning{% endif %}">{% if item[6] %}Active{% else %}Paused{% endif %}</td> {% endcomment %}
                     {% endfor %}
                 </tbody>
             </table>
@@ -104,9 +104,9 @@
                 <tbody>
                     {% for item in vacation_data %}
                     <tr class="border-b">
-                    <td class="p-2 text-sm"><a href="/dashboard/teacher/vacation">{{ item[3] }}</a></td>
-                    <td class="p-2 text-sm"><a href="/dashboard/teacher/vacation">{{ item[4]}}</a></td>
-                    <td class="p-2 text-sm"><a href="/dashboard/teacher/vacation">{{ item[5]}}</a></td>
+                    <td class="p-2 text-sm"><a href="/dashboard/teacher/vacation"></a></td>
+                    <td class="p-2 text-sm"><a href="/dashboard/teacher/vacation"></a></td>
+                    <td class="p-2 text-sm"><a href="/dashboard/teacher/vacation"></a></td>
                     {% endfor %}
                 </tbody>
             </table>
@@ -116,7 +116,23 @@
 
 
   </div>
-</body>
+<!-- JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Toggle Sidebar
+  const sidebar = document.getElementById("sidebar");
+  const openSidebar = document.getElementById("openSidebar");
+  const closeSidebar = document.getElementById("closeSidebar");
+
+  openSidebar.addEventListener("click", () => {
+    sidebar.classList.remove("-translate-x-full");
+  });
+
+  closeSidebar.addEventListener("click", () => {
+    sidebar.classList.add("-translate-x-full");
+  });
+});
+</script>
 
 
 {% endblock %}

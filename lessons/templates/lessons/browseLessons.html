@@ -32,7 +32,7 @@
                 <div class="mt-4">
                 <div class="flex justify-between items-center">
                     <span class="text-xs text-red-500 uppercase bg-teal-100">{{ lesson.lesson_category }}</span>
-                    <button class="text-base text-white bg-teal-500 px-3 py-1 rounded"><a href="">Check Availability</a></button>
+                    <button class="text-base text-white bg-teal-500 px-3 py-1 rounded"><a href="{% url 'lessons:lesson_view' lesson.lesson_id %}">Check Availability</a></button>
                 </div>
                 <h3 class="text-lg font-semibold mt-2">{{ lesson.lesson_title }}</h3>
                 {% comment %} <p class="text-gray-600 mt-1">{{ lessons.lesson_description }}</p> {% endcomment %}

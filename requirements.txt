@@ -6,9 +6,12 @@ charset-normalizer==3.4.2
 cryptography==45.0.6
 defusedxml==0.7.1
 Django==5.2.5
+django-agenda==0.7.2
 django-allauth==65.11.0
 django-extensions==4.1
+django-recurrence==1.11.1
 django-safedelete==1.4.1
+django-timezone-field==7.1
 django-webpack-loader==3.2.1
 gunicorn==23.0.0
 idna==3.10
@@ -17,10 +20,13 @@ packaging==25.0
 pillow==11.3.0
 pycparser==2.22
 PyJWT==2.10.1
+python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 python3-openid==3.2.0
+pytz==2025.2
 requests==2.32.4
 requests-oauthlib==2.0.0
+six==1.17.0
 social-auth-app-django==5.5.1
 social-auth-core==4.7.0
 sqlparse==0.5.3

@@ -1,0 +1,145 @@
+{% extends "main.html" %}
+
+{% block head %}
+
+<title>Edit Lesson</title>
+{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-2"></div>
+    <div class="col-8">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="container-fluid">
+                <div class="text-center">
+                    <p class="fs-2 text-align-center">Edit your lesson</p>
+                </div>
+                <div class="text-center">
+                    <form hx-post="/dashboard/teacher/submitlesson"
+                        hx-trigger="submit"
+                        hx-indicator="#loading"
+                        hx-target="#response"
+                        hx-headers='{"X-CSRFToken": "{{ csrf_token() }}"}'>
+                        <div class="input-group my-2">
+                            <span class="input-group-text">Lesson Title</span>
+                            <input type="text" class="form-control" name="lesson_title" id="" value="{{data[3]}}">
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text">Lesson Description</span>
+                            <textarea type="text" class="form-control" name="lesson_description" id="" ">{{data[5]}}</textarea>
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text">Category</span>
+                            <select class="form-select" name="category" id="" value="data[4]">
+                                <option value="{{data[4]}}">{{data[4].capitalize()}}</option>
+                                <option value="math">Math</option>
+                                <option value="history">History</option>
+                                <option value="computer science">Computer Science</option>
+                                <option value="gaming">Gaming</option>
+                            </select>
+                        </div>
+                        <div>
+                          
+                            <div class="my-2">
+                                {% for day in days %}
+                                <div class="">
+                                    <span class="input-group-text">{{ day.capitalize() }}</span>
+                                    <div class="input-group">
+                                        <div class="input-group-text"><input class="form-check-input" type="checkbox" name="{{ day }}" value="on" ></div>
+                                        <label class="input-group-text">Start At</label>
+                                        <select class="form-select" name="{{ day }}_start_at" id="">
+                                            <option value="">No work</option>
+                                            <option value="00">0 AM</option>
+                                            <option value="01">1 AM</option>
+                                            <option value="02">2 AM</option>
+                                            <option value="03">3 AM</option>
+                                            <option value="04">4 AM</option>
+                                            <option value="05">5 AM</option>
+                                            <option value="06">6 AM</option>
+                                            <option value="07">7 AM</option>
+                                            <option value="08">8 AM</option>
+                                            <option value="09">9 AM</option>
+                                            <option value="10">10 AM</option>
+                                            <option value="11">11 AM</option>
+                                            <option value="12">12 AM</option>
+                                            <option value="13">1 PM</option>
+                                            <option value="14">2 PM</option>
+                                            <option value="15">3 PM</option>
+                                            <option value="16">4 PM</option>
+                                            <option value="17">5 PM</option>
+                                            <option value="18">6 PM</option>
+                                            <option value="19">7 PM</option>
+                                            <option value="20">8 PM</option>
+                                            <option value="21">9 PM</option>
+                                            <option value="22">10 PM</option>
+                                            <option value="23">11 PM</option>
+                                            <option value="24">12 PM</option>
+                                        </select>
+                                        <label class="input-group-text">End At</label>
+                                        <select class="form-select" name="{{ day }}_end_at" id="">
+                                            <option value="">No work</option>
+                                            <option value="00">0 AM</option>
+                                            <option value="01">1 AM</option>
+                                            <option value="02">2 AM</option>
+                                            <option value="03">3 AM</option>
+                                            <option value="04">4 AM</option>
+                                            <option value="05">5 AM</option>
+                                            <option value="06">6 AM</option>
+                                            <option value="07">7 AM</option>
+                                            <option value="08">8 AM</option>
+                                            <option value="09">9 AM</option>
+                                            <option value="10">10 AM</option>
+                                            <option value="11">11 AM</option>
+                                            <option value="12">12 AM</option>
+                                            <option value="13">1 PM</option>
+                                            <option value="14">2 PM</option>
+                                            <option value="15">3 PM</option>
+                                            <option value="16">4 PM</option>
+                                            <option value="17">5 PM</option>
+                                            <option value="18">6 PM</option>
+                                            <option value="19">7 PM</option>
+                                            <option value="20">8 PM</option>
+                                            <option value="21">9 PM</option>
+                                            <option value="22">10 PM</option>
+                                            <option value="23">11 PM</option>
+                                            <option value="24">12 PM</option>
+                                        </select>
+                                    </div>                                    
+                                </div>
+                                {% endfor %}
+                            </div>
+                        
+                        <div class="input-group">
+                                <div class="input-group-text"><input class="form-check-input" type="checkbox" name="limited_period"></div>
+                                <span class="input-group-text">Limited Period Lesson</span>
+                        </div>
+                        <div class="input-group">
+                            <label class="input-group-text">Start Date</label>
+                            <input class="form-control" type="date" id="startDate" name="startDate">
+                            <label class="input-group-text">End Date</label>
+                            <input class="form-control" type="date" id="endDate" name="endDate">
+
+                        </div> 
+                        </div>
+                            <button class="btn btn-primary" role="submit">Create Lesson</button>
+                        </div>
+
+                    </form>
+                    <div id="loading" class="htmx-indicator">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div id="response"></div>
+                </div> 
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+    <script>
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("startDate").min = today
+        document.getElementById("endDate").min = today
+    </script>
+{% endblock %}

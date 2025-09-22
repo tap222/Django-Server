@@ -14,7 +14,7 @@ def server_apply(request):
             server_application.user = request.user
             server_application.save()
 
-            return redirect('/')
+            return redirect('base:home')
 
     else: 
         form = forms.CreateServerApplication()

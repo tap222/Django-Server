@@ -1,0 +1,99 @@
+{% extends "main.html" %}
+
+{% block head %}
+  <title>Lesson View</title>
+{% endblock %}
+
+{% block body %}
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+  {% include "dashboard/teachers/sideBarTeacher.html" %}
+  {% include "navbar2.html" %}
+
+  <!-- Upcoming Events -->
+  <div class="p-6">
+      <div >
+          <h2 class="text-2xl font-bold mb-4">Lesson: {{ lesson.lesson_title }}</h2>
+      </div>
+      <div id="upcomingEvents" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% if not lesson %}
+            <div class="text-center">
+              <h1 class="fs-2 text-align-center">This Lesson does not exists</h1>
+            </div>
+          {% else %}
+          <form class="text-center">
+            <div>
+
+                  <div class="text-center">
+                    <div>Lesson Title: </div>
+                    <p class="text-nowrap bg-body-secondary border">{{ lesson.lesson_title }}</p>
+                  </div>
+                  <div class="text-center">
+                    <div>Lesson Description: </div>
+                    <p class="text-nowrap bg-body-secondary border">{{ lesson.lesson_description }}</p>
+                  </div>
+                  <div class="text-center">
+                  <div class="text-center">
+                    <div>Category: </div>
+                    <p class="text-nowrap bg-body-secondary border">{{ lesson.lesson_category }}</p>
+                  </div>
+        </form> 
+        <table class="w-full bg-white rounded shadow">
+                <thead class="bg-gray-100">
+                <tr>
+                    <th class="p-2 text-sm text-left">Day Of The Week</th>
+                    <th class="p-2 text-sm text-left">Start Time</th>
+                    <th class="p-2 text-sm text-left">End Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% comment %} {% for item in schedule %}
+                    <tr class="border-b">
+                    <td class="p-2 text-sm">{{ item[3].capitalize() }}</td>
+                    <td class="p-2 text-sm">{{ item[4] }}</td>
+                    <td class="p-2 text-sm">{{ item[5] }}</td>
+                    {% endfor %} {% endcomment %}
+                </tbody>
+            </table>
+          {% endif %}
+      </div>
+      <div>
+        <button class="btn btn-primary" 
+                id="pauseButton"
+                hx-post=""
+        >{% if lesson.is_active %}Pause{% else %}Unpause{% endif %} Lesson</button>
+        <button class="btn btn-danger" 
+                hx-post=""
+                hx-target="#response"
+                hx-indicator="#loading"
+                role="refuse">Delete Lesson</button>
+        </div>
+        <div id="loading" class="htmx-indicator">
+          <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+          </div>
+      </div>
+      <div id="response"></div>
+      </div>
+  </div>
+</div>
+<!-- JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Toggle Sidebar
+  const sidebar = document.getElementById("sidebar");
+  const openSidebar = document.getElementById("openSidebar");
+  const closeSidebar = document.getElementById("closeSidebar");
+
+  openSidebar.addEventListener("click", () => {
+    sidebar.classList.remove("-translate-x-full");
+  });
+
+  closeSidebar.addEventListener("click", () => {
+    sidebar.classList.add("-translate-x-full");
+  });
+});
+</script>
+
+
+{% endblock %}

@@ -2,8 +2,11 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from servers.models import Server_Applications, Servers
 from teachers.models import Teacher_Applications, Teachers
+from lessons.models import Lessons
+from lessons import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
+
 
 
 # Create your views here.
@@ -15,6 +18,8 @@ def dashboard(request):
         return redirect('dashboard:admin')
     elif request.user.groups.filter(name='Server').exists():
         return redirect('dashboard:server')
+    elif request.user.groups.filter(name='Teacher').exists():
+        return redirect('dashboard:teacher')
     else:
         return redirect('dashboard:student')
     
@@ -384,8 +389,44 @@ def server_dashboard_events(request):
 
 @login_required(login_url='users:login')
 def teacher_dashboard(request):
-    if request.user.groups.filter(name="Teacher)").exists():
+    if request.user.groups.filter(name="Teacher").exists():
         return render(request, 'dashboard/teachers/teacherDashboard.html')
+    return redirect('dashboard:dashboard')
+
+
+@login_required(login_url='users:login')
+def teacher_dashboard_lessons(request):
+    if request.user.groups.filter(name="Teacher").exists():
+        lessons = Lessons.objects.filter(user=request.user)
+        return render(request, 'dashboard/teachers/teacherLessons.html', { 'lessons': lessons })
+    return redirect('dashboard:dashboard')
+
+@login_required(login_url='users:login')
+def teacher_dashboard_lesson_view(request, lesson_id):
+    if request.user.groups.filter(name="Teacher").exists():
+        lesson = Lessons.objects.filter(lesson_id=lesson_id).first()
+        return render(request, 'dashboard/teachers/teacherLessonView.html', { 'lesson': lesson})
+    return redirect('dashboard:dashboard')
+
+
+@login_required(login_url='users:login')
+def teacher_dashboard_create_lesson(request):
+    if request.user.groups.filter(name="Teacher").exists():
+        if request.method == 'POST':
+            form = forms.CreateLesson(request.POST)
+            # availability = forms.AvailabilityForm(request.POST)
+            print(availability.is_valid())
+            print(availability.cleaned_data)
+            print(request.user.teachers_set.first())
+
+            # if form.is_valid() and availability.is_valid():
+            #     #save data
+            #     return redirect('base:home')
+        form = forms.CreateLesson()
+        # availability = forms.AvailabilityForm()
+        return render(request, 'dashboard/teachers/createLesson.html', {
+            'form': form,
+            })
     return redirect('dashboard:dashboard')
 
 
