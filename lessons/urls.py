@@ -7,6 +7,7 @@ app_name = 'lessons'
 
 urlpatterns = [
     path('', views.lessons, name='lessons'),
-    path('details/<uuid:lesson_id>', views.lesson_view, name='lesson_view')
+    path('details/<uuid:lesson_id>', views.lesson_view, name='lesson_view'),
+    path('book/<uuid:lesson_id>', views.lesson_book, name='lesson_book')
 
 ]

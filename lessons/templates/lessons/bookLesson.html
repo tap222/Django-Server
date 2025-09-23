@@ -1,0 +1,118 @@
+{% extends "main.html" %}
+
+{% block head %}
+    <title>Lesson</title>
+{% endblock %}
+
+{% block body %}
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+    {% include "navbar.html" %}
+    {% if not lesson %}
+    <div class="text-center">
+      <h1 class="fs-2 text-align-center">This Lesson does not exists</h1>
+    </div>
+    {% else %}
+    <!-- Upcoming Events -->
+    <div class="p-6">
+        <div class="container">
+            <div class="col-2"></div>
+            <div class="col grid text-center">
+                <div>
+                    <div class="input-group-text">Lesson Title: </div>
+                    <p>{{ lesson.lesson_title }}</p>
+                  </div>
+                  <div>
+                    <div class="input-group-text">Lesson Category: </div>
+                    <p>{{ lesson.lesson_category }}</p>
+                  </div>
+                  <div>
+                    <div class="input-group-text">Lesson Description: </div>
+                    <p>{{ lesson.lesson_description }}</p>
+                  </div>
+                </div>
+                <h1>Schedule</h1>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Day Of The Week</th>
+                      <th scope="col">Start Time</th>
+                      <th scope="col">End Time</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody id="table_body">
+                      {% for item in availability %}
+                      <tr>
+                          <td>{{ item.day  }}</td>
+                          <td>{{ item.start_time }}</td>
+                          <td>{{ item.end_time }}</td>
+                         
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+                  
+                </table>
+                
+                <div class="input-group-text">This Lesson is limited From : <span class="input-group-text">{{ lesson.start_date }}</span> To : <span class="input-group-text">{{ lesson.end_date }}</span></div>
+                
+    
+                <div class="text-center">
+                    <form
+                            hx-encoding="multipart/form-data">
+                        <span class="input-group-text">Choose The Time and Date you want</span>
+                        <div class="input-group my-2">
+                            <span class="input-group-text">Event Title</span>
+                            <input type="text" class="form-control" name="event_name" id="">
+                        </div>
+                        <div class="input-group my-2">
+                            <span class="input-group-text">Event Description</span>
+                            <textarea type="text" class="form-control" name="event_description" id=""></textarea>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text">Date</span>
+                            
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text">Time</span>
+                            <select class="form-select" name="time" id="">
+                                <option value="">Select A time</option>
+                                {% for n in range %}
+                                <option value="{{n}}">{{n}} to {{n|add:1}} AM</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <span class="input-group-text">Upload an Event Banner</span>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text" type="submit" value="Upload">Upload A Banner</span>
+                            <input type="file" name="file"/>
+                          </div>
+                        <button role="submit" class="btn btn-primary">Book Event</button>
+                    </form>
+    
+                </div>
+                <div class="text-center">
+                    <div id="loading" class="htmx-indicator">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div id="response"></div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+        
+    </div>
+        
+<script>
+    const today = new Date();
+    const minDate = new Date(today);
+    minDate.setDate(today.getDate() + 3);
+    const formattedDate = minDate.toISOString().split("T")[0];
+    document.getElementById("bookingDate").min = formattedDate
+
+</script>
+{% endif %}
+    
+{% endblock %}

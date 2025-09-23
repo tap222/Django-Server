@@ -23,20 +23,19 @@
           {% else %}
           <form class="text-center">
             <div>
-
-                  <div class="text-center">
-                    <div>Lesson Title: </div>
-                    <p class="text-nowrap bg-body-secondary border">{{ lesson.lesson_title }}</p>
-                  </div>
-                  <div class="text-center">
-                    <div>Lesson Description: </div>
-                    <p class="text-nowrap bg-body-secondary border">{{ lesson.lesson_description }}</p>
-                  </div>
-                  <div class="text-center">
-                  <div class="text-center">
-                    <div>Category: </div>
-                    <p class="text-nowrap bg-body-secondary border">{{ lesson.lesson_category }}</p>
-                  </div>
+                <div class="text-center">
+                  <div>Lesson Title: </div>
+                  <p class="text-nowrap bg-body-secondary border">{{ lesson.lesson_title }}</p>
+                </div>
+                <div class="text-center">
+                  <div>Lesson Description: </div>
+                  <p class="text-nowrap bg-body-secondary border">{{ lesson.lesson_description }}</p>
+                </div>
+                <div class="text-center">
+                <div class="text-center">
+                  <div>Category: </div>
+                  <p class="text-nowrap bg-body-secondary border">{{ lesson.lesson_category }}</p>
+                </div>
         </form> 
         <table class="w-full bg-white rounded shadow">
                 <thead class="bg-gray-100">
@@ -47,12 +46,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                    {% comment %} {% for item in schedule %}
+                    {% for item in availability %}
                     <tr class="border-b">
-                    <td class="p-2 text-sm">{{ item[3].capitalize() }}</td>
-                    <td class="p-2 text-sm">{{ item[4] }}</td>
-                    <td class="p-2 text-sm">{{ item[5] }}</td>
-                    {% endfor %} {% endcomment %}
+                    <td class="p-2 text-sm">{{ item.day }}</td>
+                    <td class="p-2 text-sm">{{ item.start_time }}</td>
+                    <td class="p-2 text-sm">{{ item.end_time }}</td>
+                    {% endfor %}
                 </tbody>
             </table>
           {% endif %}

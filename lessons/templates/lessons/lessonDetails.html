@@ -47,17 +47,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% comment %} {% for item in schedule %}
+                            {% for item in availability %}
                             <tr class="border-b">
-                            <td class="p-2 text-sm">{{ item[3].capitalize() }}</td>
-                            <td class="p-2 text-sm">{{ item[4] }}</td>
-                            <td class="p-2 text-sm">{{ item[5] }}</td>
-                            {% endfor %} {% endcomment %}
+                            <td class="p-2 text-sm">{{ item.day }}</td>
+                            <td class="p-2 text-sm">{{ item.start_time }}</td>
+                            <td class="p-2 text-sm">{{ item.end_time }}</td>
+                            {% endfor %}
                         </tbody>
                     </table>
                     {% endif %}
                     <div class="text-center">
-                        <a href="" class="btn btn-primary">Book</a>
+                        <a href="{% url 'lessons:lesson_book' lesson.lesson_id %}" class="btn btn-primary">Book</a>
                     </div>
         </div>
            

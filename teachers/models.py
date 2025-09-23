@@ -27,6 +27,9 @@ class Teachers(models.Model):
         verbose_name = "Teacher"
         verbose_name_plural = "Teachers"
 
+    def __str__(self):
+        return self.user.username
+
 
 class Teacher_Applications(models.Model):
     GENDERS = {

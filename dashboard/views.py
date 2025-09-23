@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from servers.models import Server_Applications, Servers
 from teachers.models import Teacher_Applications, Teachers
-from lessons.models import Lessons
+from lessons.models import Lessons, Teacher_Availability
+from events.models import Events
 from lessons import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
@@ -398,6 +399,7 @@ def teacher_dashboard(request):
 def teacher_dashboard_lessons(request):
     if request.user.groups.filter(name="Teacher").exists():
         lessons = Lessons.objects.filter(user=request.user)
+        print(lessons)
         return render(request, 'dashboard/teachers/teacherLessons.html', { 'lessons': lessons })
     return redirect('dashboard:dashboard')
 
@@ -405,30 +407,51 @@ def teacher_dashboard_lessons(request):
 def teacher_dashboard_lesson_view(request, lesson_id):
     if request.user.groups.filter(name="Teacher").exists():
         lesson = Lessons.objects.filter(lesson_id=lesson_id).first()
-        return render(request, 'dashboard/teachers/teacherLessonView.html', { 'lesson': lesson})
+        availability = Teacher_Availability.objects.filter(lesson_id=lesson_id)
+        return render(request, 'dashboard/teachers/teacherLessonView.html', { 
+            'lesson': lesson,
+            'availability': availability
+            })
     return redirect('dashboard:dashboard')
+
+
+
 
 
 @login_required(login_url='users:login')
 def teacher_dashboard_create_lesson(request):
     if request.user.groups.filter(name="Teacher").exists():
         if request.method == 'POST':
-            form = forms.CreateLesson(request.POST)
-            # availability = forms.AvailabilityForm(request.POST)
-            print(availability.is_valid())
-            print(availability.cleaned_data)
-            print(request.user.teachers_set.first())
+            form = forms.CreateLesson(request.POST, request.FILES)
+            if form.is_valid():
+            #save data
+                teacher = Teachers.objects.filter(user=request.user).first()
+                print(teacher.teacher_id)
+                # lesson = form.save(commit=False)
+                form.teacher = teacher
+                form.save()
 
-            # if form.is_valid() and availability.is_valid():
-            #     #save data
-            #     return redirect('base:home')
-        form = forms.CreateLesson()
-        # availability = forms.AvailabilityForm()
+                return redirect('dashboard:teacher_lessons')
+        else:
+            form = forms.CreateLesson()
         return render(request, 'dashboard/teachers/createLesson.html', {
             'form': form,
             })
     return redirect('dashboard:dashboard')
 
+
+
+
+
+@login_required(login_url='users:login')
+def teacher_dashboard_events(request):
+    if request.user.groups.filter(name="Teacher").exists():
+        events = Events.objects.filter(user=request.user)
+        return render(request, 'dashboard/teachers/adminEvents.html', {
+            'events': events
+        })
+    
+    return redirect('dashboard:dashboard')
 
 
 ####################################USER SECTION####################################

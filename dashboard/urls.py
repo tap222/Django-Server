@@ -36,6 +36,8 @@ urlpatterns = [
     path('teacher/lessons/', views.teacher_dashboard_lessons, name='teacher_lessons'),
     path('teacher/lessons/<uuid:lesson_id>', views.teacher_dashboard_lesson_view, name='teacher_lesson_view'),
     path('teacher/lessons/create', views.teacher_dashboard_create_lesson, name='teacher_create_lesson'),
+
+    path('teacher/events/', views.teacher_dashboard_events, name='teacher_events'),
     #STUDENTS
     path('student/', views.student_dashboard, name='student'),
     path('student/settings/', views.student_dashboard_settings, name='student_settings'),
@@ -43,3 +45,6 @@ urlpatterns = [
 
     
 ]
+
+
+

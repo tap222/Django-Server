@@ -6,7 +6,7 @@ from lessons.models import Lessons, Archived_Lessons
 def archive_lesson_on_delete(sender, instance, **kwargs):
     Archived_Lessons.objects.create(
         user=instance.user,
-        teacher_id=instance.teacher_id,
+        teacher=instance.teacher,
         lesson_id=instance.lesson_id,
         lesson_title=instance.lesson_id,
         lesson_category=instance.lesson_category,
