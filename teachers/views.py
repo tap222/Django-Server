@@ -14,7 +14,7 @@ def teacher_apply(request):
             teacher_application.user = request.user
             teacher_application.save()
 
-            return redirect('/')
+            return redirect('base:home')
     else:
         form = forms.CreateTeacherApplication()
     return render(request, 'teachers/teacherApply.html', {'form': form})

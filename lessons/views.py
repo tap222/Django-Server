@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
-from lessons.models import Lessons, Teacher_Availability
 from django.contrib.auth.decorators import login_required
+from lessons.models import Lessons, Teacher_Availability
+from events.forms import Create_Event
+from teachers.models import Teachers
+
 
 # Create your views here.
 
@@ -32,11 +35,19 @@ def lesson_book(request, lesson_id):
     if request.user.groups.filter(name='Server').exists():
         lesson = Lessons.objects.filter(lesson_id=lesson_id).first()
         availability = Teacher_Availability.objects.filter(lesson=lesson)
-        hour_range = range(0, 24)
+        if request.method == 'POST':
+            form = Create_Event(request.POST, request.FILES)
+            form.lesson = lesson
+            form.user = request.user
+            if form.is_valid():
+                form.save()
+                return redirect('base:home')
+        else:
+            form = Create_Event()
         return render(request, 'lessons/bookLesson.html', { 
             'lesson': lesson,
             'availability': availability,
-            'range': hour_range,
+            'form': form,
         })
     return redirect('base:home')
 

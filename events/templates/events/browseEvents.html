@@ -25,14 +25,14 @@
     {% else %}
         {% for event in events %}
         <div class="bg-white shadow-md rounded-lg p-4">
-            <img src="" alt="Event Banner" class="h-40 w-full rounded-md object-cover">
+            <img src="{{ event.event_banner.url }}" alt="Event Banner" class="h-40 w-full rounded-md object-cover">
                 <div class="mt-4">
                 <div class="flex justify-between items-center">
-                    <span class="text-xs text-red-500 uppercase bg-teal-100"></span>
-                    <a class="text-base text-white bg-teal-500 px-3 py-1 rounded" href="">Check it out</a>
+                    <span class="text-xs text-red-500 uppercase bg-teal-100">{{ event.server }}</span>
+                    <a class="text-base text-white bg-teal-500 px-3 py-1 rounded" href="{% url 'events:event_view' event.event_id %}">Check it out</a>
                 </div>
-                <h3 class="text-lg font-semibold mt-2"></h3>
-                <p class="text-gray-600 mt-1"></p>
+                <h3 class="text-lg font-semibold mt-2">{{ event.event_title }}</h3>
+                <p class="text-gray-600 mt-1">{{ event_description }}</p>
                 </div>
         </div>
         {% endfor %}

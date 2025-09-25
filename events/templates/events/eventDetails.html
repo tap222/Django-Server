@@ -1,0 +1,58 @@
+{% extends "main.html" %}
+
+{% block head %}
+    <title>Event</title>
+{% endblock %}
+
+{% block body %}
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+    {% include "navbar.html" %}
+    <!-- Upcoming Events -->
+        <div class="p-6">
+            <h2 class="text-2xl font-bold mb-4">Events</h2>
+            <div
+            id="upcomingEvents"
+            class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            ></div>
+        </div>
+        <div
+            id="upcomingEvents"
+            class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+        {% if not event %}
+            <h1>No Events Available</h1>
+        {% else %}
+        <form class="text-center">
+              <div>Event Server: </div>
+              <p class="text-nowrap bg-body-secondary border">{{ event.server }}</p>
+            
+                <div>Event Title: </div>
+                <p class="text-nowrap bg-body-secondary border">{{ event.event_title }}</p>
+                <div>Event Description: </div>
+                <p class="text-nowrap bg-body-secondary border">{{ event.event_description }}</p>
+                <div>Event Date: </div>
+                <p class="text-nowrap bg-body-secondary border">{{ event.event_date }}</p>
+                <div>Event Time: </div>
+                <p class="text-nowrap bg-body-secondary border">{{ event.event_time }}</p>
+
+                <div class="text-center">
+                    <a href="{% url 'events:event_buy_ticket' event.event_id %}" class="btn btn-primary">Buy Ticket</a>
+                </div>
+                <div id="loading" class="htmx-indicator">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div id="response"></div>
+            
+        </form> 
+        {% endif %}
+        </div>
+        <!-- <div class="">
+            <h5>Your Current Time</h5>
+            <iframe src="https://free.timeanddate.com/clock/i9paibn8/n206/fn7/fs20/tct/pct/ftb/th2" frameborder="0" width="136" height="25" allowtransparency="true"></iframe>
+        </div> -->
+    </div>
+
+{% endblock %}

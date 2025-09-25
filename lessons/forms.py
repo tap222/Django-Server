@@ -106,18 +106,24 @@ class CreateLesson(forms.Form):
         end_date = cleaned_data['end_date']
 
         if not start_date:
-            raise forms.ValidationError("Start date must be choosen")
+            self.add_error(start_date, "Start date must be choosen")
+            # raise forms.ValidationError("Start date must be choosen")
         if not end_date:
-            raise forms.ValidationError("End date must be choosen")
+            self.add_error(end_date, "End date must be choosen")
+            # raise forms.ValidationError("End date must be choosen")
 
         if start_date < datetime.date.today():
-            raise forms.ValidationError("Start date can not come before today.")
+            self.add_error(start_date, "Start date can not come before today.")
+            # raise forms.ValidationError("Start date can not come before today.")
         if start_date >= end_date:
-            raise forms.ValidationError("Start date can not come after end date.")
+            self.add_error(start_date, "Start date can not come after end date.")
+            # raise forms.ValidationError("Start date can not come after end date.")
         if end_date < datetime.date.today():
-            raise forms.ValidationError("End date can not come before today.")
+            self.add_error(end_date, "End date can not come before today.")
+            # raise forms.ValidationError("End date can not come before today.")
         if end_date <= start_date:
-            raise forms.ValidationError("End date can not come before start date.")
+            self.add_error(end_date, "End date can not come before start date.")
+            # raise forms.ValidationError("End date can not come before start date.")
 
         flag = False
 
@@ -138,13 +144,19 @@ class CreateLesson(forms.Form):
                 
                 if start_time and end_time:
                     if end_time <= start_time:
-                        self.add_error(nd_field, f'{day_name} end time must be after start time.')
+                        self.add_error(end_field, f'{day_name} end time must be after start time.')
+
+                flag = True
+        
             else:
                 if cleaned_data.get(start_field) or cleaned_data.get(end_field):
                     self.add_error(check_field, f'{day_name} must be selected to specify start and end times.')
 
                     return cleaned_data
         
+        if not flag:
+            raise forms.ValidationError("You must check atleast one week day to create a lesson.")
+
     def save(self):
         if not self.teacher:
             raise ValueError("Teacher ID must be provided to save the lesson.")

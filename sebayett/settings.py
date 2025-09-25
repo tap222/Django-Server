@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'servers.apps.ServersConfig',
     'teachers.apps.TeachersConfig',
     'dashboard.apps.DashboardConfig',
+    'tickets.apps.TicketsConfig',
 
 ]
 

@@ -4,6 +4,7 @@ from servers.models import Server_Applications, Servers
 from teachers.models import Teacher_Applications, Teachers
 from lessons.models import Lessons, Teacher_Availability
 from events.models import Events
+from tickets.models import Tickets
 from lessons import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
@@ -472,12 +473,11 @@ def student_dashboard_settings(request):
 
 @login_required(login_url='users:login')
 def student_dashboard_tickets(request):
-    future_tickets = None
-    past_tickets = None
+    tickets = Tickets.objects.filter(user=request.user)
+        
 
     return render(request, 'dashboard/students/tickets.html', {
-        'future_tickets': future_tickets,
-        'past_tickets': past_tickets,
+        'tickets': tickets,
     })
 
 
