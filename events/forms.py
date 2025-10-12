@@ -43,6 +43,25 @@ class Create_Event(forms.Form):
             'class': 'w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500'
         })
     )
+    event_server = forms.ChoiceField(
+        label="Select your server",
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+            'palceholder': 'Choose a time block'
+            })
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)  # Pop user from kwargs
+        self.lesson = kwargs.pop('lesson', None)  # Pop user from kwargs
+
+        super().__init__(*args, **kwargs)
+
+        if self.user:
+            # Get the user's servers and populate the choices
+            servers = Servers.objects.filter(user=self.user)
+            self.fields['event_server'].choices = [(server.server_id, server.server_name) for server in servers]
+        
 
         
 
@@ -51,8 +70,7 @@ class Create_Event(forms.Form):
         if not self.lesson:
             raise ValueError("A lesson must be supplied.")
 
-        lesson = self.lesson
-        availability = Teacher_Availability.objects.filter(lesson=lesson)
+        availability = Teacher_Availability.objects.filter(lesson=self.lesson)
 
         event_date = cleaned_data.get('event_date')
         event_time = cleaned_data.get('event_time')
@@ -76,10 +94,11 @@ class Create_Event(forms.Form):
         event_date = cleaned_data.get('event_date')
         event_time = cleaned_data.get('event_time')
         event_banner = cleaned_data.get('event_banner')
+        event_server = cleaned_data.get('event_server')
 
         Events.objects.create(
             user=user,
-            server=Servers.objects.filter(user=user).first(),
+            server=Servers.objects.filter(server_id=event_server).first(),
             lesson=lesson,
             event_title=event_title,
             event_description=event_description,

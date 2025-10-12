@@ -24,13 +24,14 @@ urlpatterns = [
     path('auth/admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', include('base.urls')),
+    path('api/', include('api.urls')),
     path('users/', include('users.urls')),
     path('server/', include('servers.urls')),
     path('teacher/', include('teachers.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('lessons/', include('lessons.urls')),
     path('events/', include('events.urls')),
-    path('tickets/', include('tickets.urls'))
+    path('tickets/', include('tickets.urls')),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -1,0 +1,123 @@
+{% extends 'main.html' %}
+
+{% block head %}
+<title>Add bot</title>
+{% endblock %}
+{% block body %}
+{% include "dashboard/admin/sideBarAdmin.html" %}
+{% include "navbar2.html" %}
+
+<nav class="bg-white">
+  </nav>
+  <main class="min-h-screen flex flex-col items-center justify-center">
+    <h1 class="w-full max-w-md text-xl font-semibold text-center mb-4 mt-4">
+      Add a self-bot
+    </h1>
+    <div
+      class="bg-white p-6 rounded-lg shadow-md w-full max-w-md mb-16 border border-gray-400"
+    >
+      <form class="space-y-4" method="post">
+        {% csrf_token %}
+
+        {{ form }}
+
+
+        <button
+            type="submit"
+            class="w-full bg-teal-500 text-white py-2 rounded-full font-medium hover:bg-teal-600"
+        >Submit</button>
+      </form>
+      <!-- <form id="serverForm" class="space-y-4">
+        <input
+          name="server_id"
+          type="text"
+          required
+          class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+          placeholder="Server ID"
+        />
+        <input
+          name="discord_account_id"
+          type="text"
+          required
+          class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+          placeholder="Discord Account ID"
+        />
+        <input
+          name="self_token"
+          type="text"
+          required
+          class="w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+          placeholder="Discord Account Token"
+        />
+        <button
+        hx-post="/dashboard/admin/bot/add"
+        hx-indicator="#loading"
+        hx-target="#response"
+          type="submit"
+          class="w-full bg-teal-500 text-white py-2 rounded-full font-medium hover:bg-teal-600"
+        >
+          Sumbit
+        </button>
+        <div id="loading" class="htmx-indicator">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div id="response"></div>
+      </form> -->
+    </div>
+  </main>
+  
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById("menu");
+      const menuIcon = document.getElementById("menuIcon");
+
+      const isOpen = menu.classList.contains("hidden");
+      if (isOpen) {
+        menu.classList.remove("hidden");
+        menu.classList.add("block", "shadow-lg", "py-4");
+        menuIcon.classList.remove("fa-bars");
+        menuIcon.classList.add("fa-times");
+      } else {
+        menu.classList.remove("block", "shadow-lg", "py-4");
+        menu.classList.add("hidden");
+        menuIcon.classList.remove("fa-times");
+        menuIcon.classList.add("fa-bars");
+      }
+    }
+
+    const bio1 = document.getElementById("bio1");
+    const bio2 = document.getElementById("bio2");
+    const bio1Counter = document.getElementById("bio1Counter");
+    const bio2Counter = document.getElementById("bio2Counter");
+
+    bio1.addEventListener("input", () => {
+      bio1Counter.textContent = `${bio1.value.length} / 500`;
+    });
+
+    bio2.addEventListener("input", () => {
+      bio2Counter.textContent = `${bio2.value.length} / 500`;
+    });
+
+    document
+      .getElementById("serverForm")
+      .addEventListener("submit", function (event) {
+        event.preventDefault();
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const bio1Text = bio1.value;
+        const bio2Text = bio2.value;
+        const domainLanguage =
+          document.getElementById("domainLanguage").value;
+
+        console.log("Form submitted:", {
+          firstName,
+          lastName,
+          bio1Text,
+          bio2Text,
+          domainLanguage,
+        });
+      });
+  </script>
+{% endblock %}

@@ -31,33 +31,34 @@
                         <h1 class="fs-2 text-align-center">Application for Server: {{ application.server_name }}</h1>
                     </div>
                     <form class="text-center">
-                        <div>
-                              <div class="text-center">
-                                <div>First Name: </div>
-                                <p class="text-nowrap bg-body-secondary border">{{ application.first_name }}</p>
-                              </div>
-                              <div class="text-center">
-                                <div>Last Name: </div>
-                                <p class="text-nowrap bg-body-secondary border">{{ application.last_name }}</p>
-                              </div>
-                              <div class="text-center">
-                                <div>Server Name: </div>
-                                <p class="text-nowrap bg-body-secondary border">{{ application.server_name }}</p>
-                              </div>
-                              <div class="text-center">
-                                <div>Server ID: </div>
-                                <p class="text-nowrap bg-body-secondary border">{{ application.server_id }}</p>
-                              </div>
-                              <div class="text-center">
-                                <div>Server Description: </div>
-                                <p class="text-nowrap bg-body-secondary border">{{ application.server_description }}</p>
-                              </div>
-                              <div class="text-center">
-                                <div>Server Interests: </div>
-                                <p class="text-nowrap bg-body-secondary border">{{ application.server_interests }}</p>
-                              </div>
-                              <div>
-                                {% csrf_token %}
+                      {% csrf_token %}
+                      
+                      <div>
+                            <div class="text-center">
+                              <div>First Name: </div>
+                              <p class="text-nowrap bg-body-secondary border">{{ application.first_name }}</p>
+                            </div>
+                            <div class="text-center">
+                              <div>Last Name: </div>
+                              <p class="text-nowrap bg-body-secondary border">{{ application.last_name }}</p>
+                            </div>
+                            <div class="text-center">
+                              <div>Server Name: </div>
+                              <p class="text-nowrap bg-body-secondary border">{{ application.server_name }}</p>
+                            </div>
+                            <div class="text-center">
+                              <div>Server ID: </div>
+                              <p class="text-nowrap bg-body-secondary border">{{ application.server_id }}</p>
+                            </div>
+                            <div class="text-center">
+                              <div>Server Description: </div>
+                              <p class="text-nowrap bg-body-secondary border">{{ application.server_description }}</p>
+                            </div>
+                            <div class="text-center">
+                              <div>Server Interests: </div>
+                              <p class="text-nowrap bg-body-secondary border">{{ application.server_interests }}</p>
+                            </div>
+                            <div>
                                 <button class="px-3 py-1 bg-green-500 text-white rounded" 
                                 hx-post="{% url 'dashboard:server_application_accept' application.server_id %}"
                                 hx-target="#response"
@@ -74,7 +75,7 @@
                                     <span class="visually-hidden">Loading...</span>
                                 </div>
                             </div>
-                            <div id="response"></div>
+                          <div id="response"></div>
                         </div>
                     </form> 
                 </div>

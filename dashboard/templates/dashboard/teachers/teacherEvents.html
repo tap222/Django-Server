@@ -1,0 +1,46 @@
+{% extends 'main.html' %}
+
+
+{% block head %}
+<title>Events</title>
+{% endblock %}
+
+
+{% block body %}
+
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+  {% include "dashboard/teachers/sideBarTeacher.html" %}
+  {% include "navbar2.html" %}
+
+  <!-- Account Settings -->
+  <div class="p-6">
+    <h2 class="text-2xl font-bold mb-4">Teacher</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" >
+        {% if not events %}
+        <h2 class="text-2xl font-bold mb-4">You have no upcoming events</h2>
+        {% else %}
+        <table class="w-full bg-white rounded shadow">
+            <thead class="bg-gray-100">
+            <tr>
+                <th class="p-2 text-sm text-left">Teacher</th>
+                <th class="p-2 text-sm text-left">Event Title</th>
+                <th class="p-2 text-sm text-left">Event Date</th>
+                <th class="p-2 text-sm text-left">Event Status</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for event in events %}
+                <tr class="border-b">
+                <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_event_details' event.event_id %}" hx-post="" hx-swap="innerHTML" hx-trigger="load"></a></td>
+                <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_event_details' event.event_id %}">{{ event.event_title }}</a></td>
+                <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_event_details' event.event_id %}">{{ event.event_date }}</a></td>
+                <td class="{% if event.event_status == 'PENDING' %}alert alert-info{% elif event.event_status == 'ACCEPTED' %}alert alert-success{% elif event.event_status == 'REJECTED' %}alert alert-warning{% endif %}">{{ event.event_status }}</td>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

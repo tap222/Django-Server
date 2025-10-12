@@ -99,7 +99,15 @@
                              {% if form.event_banner.errors %}
                                 <span class="error">{{ form.event_banner.errors }}</span>
                             {% endif %}
-                          </div>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text">Server</span>
+                            {{ form.event_server }}
+                            {% if form.event_server.errors %}
+                                <span class="error">{{ form.event_server.errors }}</span>
+                            {% endif %}
+                            
+                        </div>
                         <button role="submit" class="btn btn-primary">Book Event</button>
                     </form>
     

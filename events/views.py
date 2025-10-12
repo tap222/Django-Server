@@ -7,7 +7,7 @@ from tickets.models import Tickets
 # Create your views here.
 # @login_required(login_url='users:login')
 def events(request):
-    events = Events.objects.all()
+    events = Events.objects.filter(event_status="ACCEPTED")
 
     return render(request, 'events/browseEvents.html', { 'events': events})
 

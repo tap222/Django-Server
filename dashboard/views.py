@@ -4,6 +4,8 @@ from servers.models import Server_Applications, Servers
 from teachers.models import Teacher_Applications, Teachers
 from lessons.models import Lessons, Teacher_Availability
 from events.models import Events
+from bots.models import Bots
+from bots.forms import AddBot
 from tickets.models import Tickets
 from lessons import forms
 from django.contrib.auth.decorators import login_required
@@ -78,7 +80,7 @@ def admin_dashboard_server_applications(request):
 @login_required(login_url='users:login')
 def admin_dashboard_server_application_view(request, server_id):
     if request.user.groups.filter(name='Admin').exists():
-        server_application = Server_Applications.filter(server_id=server_id).first()
+        server_application = Server_Applications.objects.filter(server_id=server_id).first()
         
         return render(request, 'dashboard/admin/serverApplicationView.html', { 'application': server_application })
     return redirect('dashboard:dashboard')
@@ -97,6 +99,7 @@ def admin_dashboard_server_application_accept(request, server_id):
                                         <h3 class="text-sm sm:text-lg font-semibold">Server Application Not Found</h3>
                                     </div>
                                     """)
+                                    
             else:
                 server_application.status = 'accepted'
                 server_application.save()
@@ -204,6 +207,64 @@ def admin_dashboard_servers(request):
         return render(request, 'dashboard/admin/servers.html', { 'servers': servers})
     
     return redirect('dashboard:dashboard')
+
+
+@login_required(login_url='users:login')
+def admin_dashboard_discord_bots(request):
+    if request.user.groups.filter(name='Admin').exists():
+        bots = Bots.objects.all()
+
+        return render(request, 'dashboard/admin/bots.html', { 'bots': bots })
+    
+    return redirect('dashboard:dashboard')
+
+
+@login_required(login_url='users:login')
+def admin_dashboard_add_discord_bot(request):
+    if request.user.groups.filter(name='Admin').exists():
+        if request.method == 'POST':
+            form = AddBot(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard:discord_bots')
+        else:
+            form = AddBot()
+        return render(request, 'dashboard/admin/addBot.html', { 'form': form })
+
+@login_required(login_url='users:login')
+def admin_dashboard_discord_bot_view(request, bot_id):
+    if request.user.groups.filter(name='Admin').exists():
+        bot = Bots.objects.filter(bot_id=bot_id).first()
+        server = Servers.objects.filter(server_id=bot.server_id).first()
+        return render(request, 'dashboard/admin/botView.html', { 
+            'bot': bot,
+            'server': server,
+            })
+
+
+@login_required(login_url='users:login')
+def admin_dashboard_remove_discord_bot(request, bot_id):
+    if request.user.groups.filter(name='Admin').exists():
+        if request.method == 'POST':
+            bot = Bots.objects.filter(bot_id=bot_id).first()
+            if bot:
+                bot.delete()
+                return HttpResponse("""
+                                        <div class="bg-red-100 p-4 rounded shadow text-center">
+                                            <h3 class="text-sm sm:text-lg font-semibold">Self Bot has been deleted</h3>
+                                        </div>
+                                    """)
+            else:
+                return HttpResponse("""
+                                        <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                            <h3 class="text-sm sm:text-lg font-semibold">Self Bot Not Found</h3>
+                                        </div>
+                                    """)
+
+
+
+
+
 
 
 @login_required(login_url='users:login')
@@ -427,7 +488,6 @@ def teacher_dashboard_create_lesson(request):
             if form.is_valid():
             #save data
                 teacher = Teachers.objects.filter(user=request.user).first()
-                print(teacher.teacher_id)
                 # lesson = form.save(commit=False)
                 form.teacher = teacher
                 form.save()
@@ -448,12 +508,87 @@ def teacher_dashboard_create_lesson(request):
 def teacher_dashboard_events(request):
     if request.user.groups.filter(name="Teacher").exists():
         events = Events.objects.filter(user=request.user)
-        return render(request, 'dashboard/teachers/adminEvents.html', {
+        return render(request, 'dashboard/teachers/teacherEvents.html', {
             'events': events
         })
     
     return redirect('dashboard:dashboard')
 
+
+@login_required(login_url='users:login')
+def teacher_dashboard_event_details(request, event_id):
+    if request.user.groups.filter(name="Teacher").exists():
+        event = Events.objects.filter(event_id=event_id, user=request.user).first()
+        return render(request, 'dashboard/teachers/teacherEventView.html', { 'event':event })
+    return redirect('dashboard:dashboard')
+
+
+@login_required(login_url='users:login')
+def teacher_dashboard_event_accept(request, event_id):
+    if request.method == "POST":
+        if request.user.groups.filter(name="Teacher").exists():
+            event = Events.objects.filter(event_id=event_id, user=request.user).first()
+        if not event:
+            return HttpResponse("""
+                                <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                    <h3 class="text-sm sm:text-lg font-semibold">Event Not Found</h3>
+                                </div>
+                                """)
+        elif event.event_status == "REJECTED" :
+            return HttpResponse("""
+                                <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                    <h3 class="text-sm sm:text-lg font-semibold">Events that have been rejected can not be accepted afterword.</h3>
+                                </div>
+                                """)
+        else:
+            if event.event_status == "ACCEPTED":
+                return HttpResponse("""
+                                <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                    <h3 class="text-sm sm:text-lg font-semibold">Event Already Accepted</h3>
+                                </div>
+                                """)
+            event.event_status = "ACCEPTED"
+            event.save()
+            return HttpResponse("""
+                                <div class="bg-green-100 p-4 rounded shadow text-center">
+                                    <h3 class="text-sm sm:text-lg font-semibold">Event Accepted</h3>
+                                </div>
+                                """)
+    return redirect('dashboard:dashboard')
+
+@login_required(login_url='users:login')
+def teacher_dashboard_event_reject(request, event_id):
+    if request.method == "POST":
+        if request.user.groups.filter(name="Teacher").exists():
+            event = Events.objects.filter(event_id=event_id, user=request.user).first()
+        if not event:
+            return HttpResponse("""
+                                <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                    <h3 class="text-sm sm:text-lg font-semibold">Event Not Found</h3>
+                                </div>
+                                """)
+        elif event.event_status == "ACCEPTED" :
+            return HttpResponse("""
+                                <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                    <h3 class="text-sm sm:text-lg font-semibold">Events that have been accepted can not be rejected afterword.</h3>
+                                </div>
+                                """)
+
+        else:
+            if event.event_status == "REJECTED":
+                return HttpResponse("""
+                                <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                    <h3 class="text-sm sm:text-lg font-semibold">Event Already Rejected</h3>
+                                </div>
+                                """)
+            event.event_status = "REJECTED"
+            event.save()
+            return HttpResponse("""
+                                <div class="bg-red-100 p-4 rounded shadow text-center">
+                                    <h3 class="text-sm sm:text-lg font-semibold">Event Rejected</h3>
+                                </div>
+                                """)
+    return redirect('dashboard:dashboard')
 
 ####################################USER SECTION####################################
 

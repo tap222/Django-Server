@@ -1,0 +1,69 @@
+{% extends 'main.html' %}
+
+
+{% block head %}
+<title>Event</title>
+{% endblock %}
+
+
+{% block body %}
+
+<!-- Main Content -->
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+  {% include "dashboard/teachers/sideBarTeacher.html" %}
+  {% include "navbar2.html" %}
+
+  <!-- Account Settings -->
+  <div class="p-6">
+    <h2 class="text-2xl font-bold mb-4">Event Details: {{ event.event_title }}</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" >
+        {% if not event %}
+        <h2 class="text-2xl font-bold mb-4">This event does not exists</h2>
+        {% else %}
+        <form class="text-center">
+            {% csrf_token %}
+            <div>Event Server: </div>
+            <p class="text-nowrap bg-body-secondary border">{{ event.server.server_name }}</p>
+            <div>Event Teacher: </div>
+              <p class="text-nowrap bg-body-secondary border">{{ event.teacher.first_name }}</p>
+              <div>Event Title: </div>
+              <p class="text-nowrap bg-body-secondary border">{{ event.event_title }}</p>
+              <div>Event Description: </div>
+              <p class="text-nowrap bg-body-secondary border">{{ event.event_description }}</p>
+              <div>Event Date: </div>
+              <p class="text-nowrap bg-body-secondary border">{{ event.event_date  }}</p>
+              <div>Event Time: </div>
+              <p class="text-nowrap bg-body-secondary border">{{ event.event_time }}</p>
+
+              <div class="text-center">
+                <div>
+                  <button class="px-3 py-1 bg-green-500 text-white rounded" 
+                  hx-post="{% url 'dashboard:teacher_event_accept' event.event_id %}"
+                  hx-target="#response"
+                  hx-indicator="#loading"
+                  >Accept</button>
+                  <button class="px-3 py-1 bg-red-500 text-white rounded" 
+                  hx-post="{% url 'dashboard:teacher_event_reject' event.event_id %}"
+                  hx-target="#response"
+                  hx-indicator="#loading"
+                  role="refuse">Reject</button>
+                </div>
+                  <div id="loading" class="htmx-indicator">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+              </div>
+              <div id="loading" class="htmx-indicator">
+                  <div class="spinner-border" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                  </div>
+              </div>
+              <div id="response"></div>
+          
+        </form> 
+        {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

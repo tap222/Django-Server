@@ -36,14 +36,12 @@ def lesson_book(request, lesson_id):
         lesson = Lessons.objects.filter(lesson_id=lesson_id).first()
         availability = Teacher_Availability.objects.filter(lesson=lesson)
         if request.method == 'POST':
-            form = Create_Event(request.POST, request.FILES)
-            form.lesson = lesson
-            form.user = request.user
+            form = Create_Event(request.POST, request.FILES, user=request.user, lesson=lesson)
             if form.is_valid():
                 form.save()
                 return redirect('base:home')
         else:
-            form = Create_Event()
+            form = Create_Event(user=request.user)
         return render(request, 'lessons/bookLesson.html', { 
             'lesson': lesson,
             'availability': availability,

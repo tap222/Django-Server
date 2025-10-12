@@ -1,0 +1,83 @@
+{% extends "main.html" %}
+
+{% block head %}
+  <title>Server View</title>
+{% endblock %}
+
+{% block body %}
+<div id="main" class="flex-1 transition-all duration-300 ml-0 lg:ml-64">
+
+{% include "dashboard/admin/sideBarAdmin.html" %}
+{% include "navbar2.html" %}
+
+  {% if not bot %}
+  <div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="container-fluid">
+                <div class="">
+                    <div class="text-center">
+                        <h1 class="fs-2 text-align-center">This Self Bot does not exists</h1>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="row">
+    <div class="col">
+        <div class="d-flex justify-content-center align-items-center vh-100">
+            <div class="container-fluid">
+                <div class="">
+                    <div class="text-center">
+                        <h1 class="fs-2 text-align-center">Self Bot: {{ bot.bot_id }}</h1>
+                    </div>
+                    <form class="text-center">
+                        <div>
+                            <div class="text-center">
+                                <div>Self Bot ID: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ bot.bot_id }}</p>
+                            </div>
+                            <div class="text-center">
+                                <div>Self Bot Token: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ bot.bot_self_token }}</p>
+                            </div>
+                            <div class="text-center">
+                                <div>Server Name: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ server.server_name }}</p>
+                            </div>
+                            <div class="text-center">
+                                <div>Server ID: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ bot.server_id }}</p>
+                            </div>
+                            <div class="text-center">
+                                <div>Added On The: </div>
+                                <p class="text-nowrap bg-body-secondary border">{{ bot.created_at }}</p>
+                            </div>
+                            <div>
+                                {% csrf_token %}
+                                <button class="btn btn-danger" 
+                                hx-post="{% url 'dashboard:remove_discord_bot' bot.bot_id %}"
+                                hx-target="#response"
+                                hx-indicator="#loading"
+                                role="delete"
+                                >Delete</button>
+                            </div>
+                            <div id="loading" class="htmx-indicator">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div id="response"></div>
+                        </div>
+                    </form> 
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
