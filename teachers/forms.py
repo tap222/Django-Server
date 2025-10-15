@@ -5,9 +5,9 @@ from teachers import models
 class CreateTeacherApplication(forms.ModelForm):
     GENDERS = {
         "": "Select Gender",
-        "F": "Female",
-        "M": "Male",
-        "O": "Other",
+        "female": "Female",
+        "male": "Male",
+        "other": "Other",
     }
     gender = forms.ChoiceField(
         choices=GENDERS,

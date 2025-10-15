@@ -23,7 +23,7 @@
         <table class="w-full bg-white rounded shadow">
             <thead class="bg-gray-100">
             <tr>
-                <th class="p-2 text-sm text-left">Teacher</th>
+                <th class="p-2 text-sm text-left">Server</th>
                 <th class="p-2 text-sm text-left">Event Title</th>
                 <th class="p-2 text-sm text-left">Event Date</th>
                 <th class="p-2 text-sm text-left">Event Status</th>
@@ -31,8 +31,7 @@
             </thead>
             <tbody>
                 {% for event in events %}
-                <tr class="border-b">
-                <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_event_details' event.event_id %}" hx-post="" hx-swap="innerHTML" hx-trigger="load"></a></td>
+                <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_event_details' event.event_id %}" hx-post="" hx-swap="innerHTML" hx-trigger="load">{{ event.server.server_name }}</a></td>
                 <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_event_details' event.event_id %}">{{ event.event_title }}</a></td>
                 <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_event_details' event.event_id %}">{{ event.event_date }}</a></td>
                 <td class="{% if event.event_status == 'PENDING' %}alert alert-info{% elif event.event_status == 'ACCEPTED' %}alert alert-success{% elif event.event_status == 'REJECTED' %}alert alert-warning{% endif %}">{{ event.event_status }}</td>

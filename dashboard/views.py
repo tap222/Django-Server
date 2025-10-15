@@ -453,7 +453,12 @@ def server_dashboard_events(request):
 @login_required(login_url='users:login')
 def teacher_dashboard(request):
     if request.user.groups.filter(name="Teacher").exists():
-        return render(request, 'dashboard/teachers/teacherDashboard.html')
+        lessons = Lessons.objects.filter(user=request.user)
+        pending_events_count = Events.objects.filter(lesson__user=request.user, event_status='PENDING').count()
+        return render(request, 'dashboard/teachers/teacherDashboard.html', { 
+            'lessons': lessons,
+            'pending_events_count': pending_events_count
+            })
     return redirect('dashboard:dashboard')
 
 
@@ -461,7 +466,6 @@ def teacher_dashboard(request):
 def teacher_dashboard_lessons(request):
     if request.user.groups.filter(name="Teacher").exists():
         lessons = Lessons.objects.filter(user=request.user)
-        print(lessons)
         return render(request, 'dashboard/teachers/teacherLessons.html', { 'lessons': lessons })
     return redirect('dashboard:dashboard')
 
@@ -487,7 +491,7 @@ def teacher_dashboard_create_lesson(request):
             form = forms.CreateLesson(request.POST, request.FILES)
             if form.is_valid():
             #save data
-                teacher = Teachers.objects.filter(user=request.user).first()
+                teacher = Teachers.objects.filter(user=request.user,).first()
                 # lesson = form.save(commit=False)
                 form.teacher = teacher
                 form.save()

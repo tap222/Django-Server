@@ -31,7 +31,7 @@
                     <tr class="border-b">
                     <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_lesson_view' lesson.lesson_id %}">{{ lesson.lesson_title }}</a></td>
                     <td class="p-2 text-sm"><a href="{% url 'dashboard:teacher_lesson_view' lesson.lesson_id %}">{{ lesson.lesson_category }}</a></td>
-                    <td class="{% if lesson.is_active %}alert alert-info{% else %}alert alert-warning{% endif %}">{% if lesson_is_active %}Active{% else %}Paused{% endif %}</td>
+                    <td class="{% if lesson.is_active %}alert alert-info{% else %}alert alert-warning{% endif %}">{% if lesson.is_active %}Active{% else %}Paused{% endif %}</td>
                     {% endfor %}
                 </tbody>
             </table>
