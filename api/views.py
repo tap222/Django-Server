@@ -38,12 +38,14 @@ def event_details(request):
 
     if event_id:
         event = Events.objects.filter(event_id=event_id).first()
+        bot = Bots.objects.filter(server=event.server).first()
 
         data = {
             'server_id': event.server.server_id,
             'username': event.lesson.teacher.user.username,
             'event_title': event.event_title,
             'event_description': event.event_description,
+            'self_token': bot.bot_self_token,
         }
 
         return Response(data, status=200)
