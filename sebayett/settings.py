@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv('.env.local')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,12 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5%gu0mg8gsz3f*25+0@m=jzvb$*$!)ol!=)9m3-nu04bd32ek0'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-5%gu0mg8gsz3f*25+0@m=jzvb$*$!)ol!=)9m3-nu04bd32ek0")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False 
+DEBUG = os.getenv('DEBUG', 'False')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(',')
+CSRF_TRUSTED_ORIGINS = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', 'http://127.0.0.1').split(',')
 
 
 # Application definition
@@ -91,7 +92,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'APP':{
             'client_id': os.getenv('DISCORD_CLIENT_ID'),
             'secret': os.getenv('DISCORD_CLIENT_SECRET'),
-            'key': '' #os.getenv('BOT_TOKEN')
+            'key': '',
         },
         'SCOPE': ['identify', 'email', 'guilds'],
         'METHOD': 'oauth2',
@@ -196,8 +197,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
 
-STATIC_ROOT = BASE_DIR / 'assets'
-MEDIA_ROOT = os.getenv('MEDIA_ROOT', '/home/achraf/sebayett_media')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_ROOT = os.getenv('MEDIA_ROOT', '/home/achraf/sebayett/media')
 
 STATICFILES_DIRS = [
     BASE_DIR / "static"

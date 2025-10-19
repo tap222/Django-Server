@@ -3,6 +3,7 @@ sebayett/.env
 media
 sebayett/db.sqlite3
 db.sqlite3
+.env.local
+.env.prod
 .env
-dockerfile
 static

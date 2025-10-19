@@ -1,2 +1,6 @@
 venv
 media
+.env.local
+.env*
+mariadb
+static
