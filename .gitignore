@@ -5,3 +5,4 @@ sebayett/db.sqlite3
 db.sqlite3
 .env
 dockerfile
+static
