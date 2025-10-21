@@ -16,8 +16,7 @@ services:
     depends_on:
       - db
     volumes:
-      - ./staticfiles:/app/staticfiles
-      - ./static:/app/static
+      - ./static:/app/staticfiles
       - media_files:/app/media
     env_file:
       - .env.prod
@@ -28,7 +27,7 @@ services:
       - "8001:80"
     volumes:
       - ./nginx/conf:/etc/nginx/conf:ro
-      - ./staticfiles:/static:ro
+      - ./static:/static:ro
       - media_files:/media:ro
     depends_on:
       - django-web
