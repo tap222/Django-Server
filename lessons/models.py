@@ -20,7 +20,7 @@ class Lessons(models.Model):
     lesson_title = models.CharField(max_length=200)
     lesson_category = models.CharField(choices=CATEGORIES)
     lesson_description = models.TextField()
-    banner = models.ImageField(upload_to='lesson_banner', default='lesson_banner/default_banner.jpg',blank=True)
+    banner = models.ImageField(upload_to='lesson_banner', default='lesson_banner/default_banner.jpg', null=True, blank=True)
     is_active = models.BooleanField(default=True)
     repeating = models.BooleanField(default=False, null=True, blank=True)
     start_date = models.DateField()

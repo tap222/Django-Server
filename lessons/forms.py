@@ -57,12 +57,15 @@ class CreateLesson(forms.Form):
         )
     )
     banner = forms.ImageField(
-        required=False,
+        required=False,  # Makes the field optional
+        allow_empty_file=True,  # Allows empty file submissions
         widget=forms.ClearableFileInput(
             attrs={
                 "class": "w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500",
+                "accept": "image/*",  # Limit to image files in file picker
             }
         ),
+        help_text="Optional: Upload a banner image for your lesson"
     )
 
     start_date = forms.DateField(
@@ -79,20 +82,20 @@ class CreateLesson(forms.Form):
             'min': datetime.date.today().isoformat()
         })
     )
-    # self.teacher_id = kwargs.pop('teacher_id', None)
-    # self.teacher = None
-    # if self.teacher_id is not None:
-    #     try:
-    #         self.teacher = models.Teacher.objects.get(id=self.teacher_id)
-    #     except models.Teacher.DoesNotExist:
-    #         self.teacher = None
-    # super().__init__(*args, **kwargs)
+    # Example usage:
+    # form = CreateLesson(data, files, teacher=teacher_instance)
+    # The teacher kwarg should be a Teacher model instance
+    # The form will raise ValidationError if teacher is missing or invalid
 
 
     
-    def __init__(self, *args, **kwargs):
-        # teacher_id is expected to be a Teacher model instance (not just an id)
-        self.teacher_id = kwargs.pop("teacher_id", None)
+    def __init__(self, *args, teacher=None, **kwargs):
+        """Initialize the form.
+        
+        Args:
+            teacher: Teacher model instance that will create this lesson
+        """
+        self.teacher = teacher
         super().__init__(*args, **kwargs)
 
         for day_code, day_name in DAYS_OF_WEEK:
@@ -114,8 +117,10 @@ class CreateLesson(forms.Form):
 
 
     def clean(self):
-        cleaned_data = super().clean()
+        if not self.teacher:
+            raise forms.ValidationError("A teacher is required to create a lesson")
 
+        cleaned_data = super().clean()
         start_date = cleaned_data.get('start_date')
         end_date = cleaned_data.get('end_date')
 
@@ -172,10 +177,10 @@ class CreateLesson(forms.Form):
 
         Returns the created Lessons instance.
         """
-        if not self.teacher_id:
+        if not self.teacher:
             raise ValueError("Teacher ID (teacher instance) must be provided to save the lesson.")
 
-        teacher = self.teacher_id
+        teacher = self.teacher
         # required fields should already be validated by clean()
         lesson_title = self.cleaned_data.get("lesson_title")
         lesson_category = self.cleaned_data.get("lesson_category")

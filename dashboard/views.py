@@ -488,18 +488,20 @@ def teacher_dashboard_lesson_view(request, lesson_id):
 def teacher_dashboard_create_lesson(request):
     if request.user.groups.filter(name="Teacher").exists():
         if request.method == 'POST':
-            form = forms.CreateLesson(request.POST, request.FILES)
-            if form.is_valid():
-                # save data
-                teacher = Teachers.objects.filter(user=request.user,).first()
-                lesson = form.save(commit=False)
-                # Set the teacher field directly before saving because the form does not include it (it's determined by the logged-in user)
-                lesson.teacher = teacher
-                lesson.save()
+            # get teacher instance and pass it to the form so the form can handle saving
+            teacher = Teachers.objects.filter(user=request.user).first()
+            if not teacher:
+                return HttpResponse("<div class=\"bg-yellow-100 p-4 rounded shadow text-center\">\n                                        <h3 class=\"text-sm sm:text-lg font-semibold\">Teacher profile not found</h3>\n                                    </div>", status=400)
 
+            form = forms.CreateLesson(request.POST, request.FILES, teacher=teacher)
+            if form.is_valid():
+                # form.save() will create the lesson and availability rows and return the lesson
+                lesson = form.save()
                 return redirect('dashboard:teacher_lessons')
         else:
-            form = forms.CreateLesson({}, {})
+            # for GET, pass the teacher instance so widgets/validation that rely on it can behave consistently
+            teacher = Teachers.objects.filter(user=request.user).first()
+            form = forms.CreateLesson(teacher=teacher)
         return render(request, 'dashboard/teachers/createLesson.html', {
             'form': form,
             })
