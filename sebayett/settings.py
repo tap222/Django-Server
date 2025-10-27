@@ -14,7 +14,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-load_dotenv('.env.prod')
+load_dotenv('.env.local')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -202,7 +202,8 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-MEDIA_ROOT = os.getenv('MEDIA_ROOT', '/home/achraf/sebayett/media')
+# Store media files outside the app directory
+MEDIA_ROOT = os.getenv('MEDIA_ROOT', '/var/www/sebayett/media')
 
 STATICFILES_DIRS = [
     BASE_DIR / "static"
