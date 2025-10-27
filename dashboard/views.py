@@ -490,15 +490,16 @@ def teacher_dashboard_create_lesson(request):
         if request.method == 'POST':
             form = forms.CreateLesson(request.POST, request.FILES)
             if form.is_valid():
-            #save data
+                # save data
                 teacher = Teachers.objects.filter(user=request.user,).first()
-                # lesson = form.save(commit=False)
-                form.teacher = teacher
-                form.save()
+                lesson = form.save(commit=False)
+                # Set the teacher field directly before saving because the form does not include it (it's determined by the logged-in user)
+                lesson.teacher = teacher
+                lesson.save()
 
                 return redirect('dashboard:teacher_lessons')
         else:
-            form = forms.CreateLesson()
+            form = forms.CreateLesson({}, {})
         return render(request, 'dashboard/teachers/createLesson.html', {
             'form': form,
             })

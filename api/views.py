@@ -3,20 +3,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from events.models import Events
 from bots.models import Bots
-from api.serializers import EventsSerializer
-from api.utils import same_origin_required
+# from api.utils import same_origin_required
 from rest_framework.decorators import permission_classes
 from api.permissions import BotKeyPermission
 
 # Create your views here.
 
-# class EventsListCreate(viewsets.ModelViewSet):
-#     queryset = Events.objects.all()
-#     serializer_class = EventsSerializer
+
 
 @api_view(["GET"])
 @permission_classes([BotKeyPermission])
-@same_origin_required
+# @same_origin_required
 def events_for_user(request):
     username = request.data.get("username")
 
@@ -39,7 +36,7 @@ def events_for_user(request):
 
 @api_view(["GET"])
 @permission_classes([BotKeyPermission])
-@same_origin_required
+# @same_origin_required
 def event_details(request):
     event_id = request.data.get('event_id')
 
@@ -63,7 +60,7 @@ def event_details(request):
 
 @api_view(["GET"])
 @permission_classes([BotKeyPermission])
-@same_origin_required
+# @same_origin_required
 def get_server_streamer(request):
     server_id = request.data.get('server_id')
     
