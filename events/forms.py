@@ -39,6 +39,8 @@ class Create_Event(forms.Form):
             })
     )
     event_banner = forms.ImageField(
+        required=False,
+        allow_empty_file=True,
         widget=forms.ClearableFileInput(attrs={
             'class': 'w-full p-2 border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500'
         })
@@ -95,17 +97,28 @@ class Create_Event(forms.Form):
         event_time = cleaned_data.get('event_time')
         event_banner = cleaned_data.get('event_banner')
         event_server = cleaned_data.get('event_server')
+        create_kwargs = {
+            'user': user,
+            'server': Servers.objects.filter(server_id=event_server).first(),
+            'lesson': lesson,
+            'event_title': event_title,
+            'event_description': event_description,
+            'event_date': event_date,
+            'event_time': datetime.time(hour=int(event_time), minute=0),
+        }
 
-        Events.objects.create(
-            user=user,
-            server=Servers.objects.filter(server_id=event_server).first(),
-            lesson=lesson,
-            event_title=event_title,
-            event_description=event_description,
-            event_date=event_date,
-            event_time=datetime.time(hour=int(event_time), minute=0),
-            event_banner=event_banner,
-        )
+        # Only include event_banner if a non-empty file was provided so the model's
+        # default banner value is preserved when no file is uploaded.
+        if event_banner is not None:
+            try:
+                size = getattr(event_banner, 'size', None)
+                if size is None or size > 0:
+                    create_kwargs['event_banner'] = event_banner
+            except Exception:
+                # If banner is file-like without size, include it conservatively
+                create_kwargs['event_banner'] = event_banner
+
+        Events.objects.create(**create_kwargs)
 
         
 
