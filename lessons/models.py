@@ -14,13 +14,13 @@ class Lessons(models.Model):
         ('math', 'Math'),
         ('physics', 'Physics'),
     ]
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     teacher = models.ForeignKey(Teachers, on_delete=models.CASCADE)
     lesson_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     lesson_title = models.CharField(max_length=200)
     lesson_category = models.CharField(choices=CATEGORIES)
     lesson_description = models.TextField()
-    banner = models.ImageField(upload_to='lesson_banner', default='lesson_banner/default_banner.jpg', null=True, blank=True)
+    banner = models.ImageField(upload_to='lesson_banner', default='lesson_banner/default_lesson_banner.jpg')
     is_active = models.BooleanField(default=True)
     repeating = models.BooleanField(default=False, null=True, blank=True)
     start_date = models.DateField()

@@ -190,16 +190,29 @@ class CreateLesson(forms.Form):
         end_date = self.cleaned_data.get("end_date")
 
         with transaction.atomic():
-            lesson = models.Lessons.objects.create(
-                user=getattr(teacher, "user", None),
-                teacher=teacher,
-                lesson_title=lesson_title,
-                lesson_category=lesson_category,
-                lesson_description=lesson_description,
-                banner=banner,
-                start_date=start_date,
-                end_date=end_date,
-            )
+            create_kwargs = {
+                "user": getattr(teacher, "user", None),
+                "teacher": teacher,
+                "lesson_title": lesson_title,
+                "lesson_category": lesson_category,
+                "lesson_description": lesson_description,
+                "start_date": start_date,
+                "end_date": end_date,
+            }
+
+            # Only include banner if a non-empty file was provided. This preserves
+            # the model's default value when the form doesn't upload an image.
+            if banner is not None:
+                try:
+                    size = getattr(banner, "size", None)
+                    if size is None or size > 0:
+                        create_kwargs["banner"] = banner
+                except Exception:
+                    # In case banner is some file-like object without size attr,
+                    # include it conservatively.
+                    create_kwargs["banner"] = banner
+
+            lesson = models.Lessons.objects.create(**create_kwargs)
 
             for day_code, _ in DAYS_OF_WEEK:
                 check_field = self.cleaned_data.get(f"{day_code}_check")

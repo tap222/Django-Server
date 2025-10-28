@@ -16,7 +16,7 @@ class Events(models.Model):
         'CANCELED': 'Canceled',
     }
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     server = models.ForeignKey(Servers, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lessons, on_delete=models.CASCADE)
     event_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

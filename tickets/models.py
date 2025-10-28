@@ -13,8 +13,8 @@ class Tickets(models.Model):
     ]
 
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    event= models.ForeignKey(Events, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    event= models.ForeignKey(Events, on_delete=models.CASCADE)
     ticket_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     ticket_status = models.CharField(choices=STATUS, default='normal')
     updated_at = models.DateTimeField(auto_now=True)

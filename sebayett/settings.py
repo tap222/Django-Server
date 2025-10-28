@@ -203,7 +203,7 @@ MEDIA_URL = '/media/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Store media files outside the app directory
-MEDIA_ROOT = os.getenv('MEDIA_ROOT', '/var/www/sebayett/media')
+MEDIA_ROOT = "/home/achraf/sebayett/media"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static"
