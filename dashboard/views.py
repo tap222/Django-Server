@@ -510,6 +510,31 @@ def teacher_dashboard_create_lesson(request):
 
 
 
+@login_required(login_url='users:login')
+def teacher_dashboard_lesson_pause(request, lesson_id):
+    if request.method == 'POST':
+        if request.user.groups.filter(name="Teacher").exists():
+            lesson = Lessons.objects.filter(lesson_id=lesson_id, user=request.user).first()
+            if not lesson:
+                return HttpResponse("""   
+                                    <div class="bg-yellow-100 p-4 rounded shadow text-center">
+                                    <h3 class="text-sm sm:text-lg font-semibold">Lesson Not Found</h3>
+                                    </div>
+                                    """)
+            else:
+                if lesson.is_active == True:
+                    lesson.is_active = False
+                    lesson.save()
+                    return render(request, 'dashboard/teachers/partials/pauseResponse.html', { 'lesson': lesson})
+
+                else:
+                    lesson.is_active = True
+                    lesson.save()
+                    return render(request, 'dashboard/teachers/partials/unpauseResponse.html', { 'lesson': lesson})
+
+
+
+
 
 @login_required(login_url='users:login')
 def teacher_dashboard_events(request):

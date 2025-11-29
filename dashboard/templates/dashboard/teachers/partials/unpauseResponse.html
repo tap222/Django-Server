@@ -1,0 +1,22 @@
+{% csrf_token %}
+<button class="btn btn-primary" 
+        id="pauseButton"
+        hx-post="{% url 'dashboard:teacher_lesson_pause' lesson.lesson_id %}"
+        hx-target="#response"
+        hx-indicator="#loading"
+        >Pause Lesson</button>
+<button class="btn btn-danger" 
+        hx-post=""
+        hx-target="#response"
+        hx-indicator="#loading"
+        role="delete">Delete Lesson</button>
+</div>
+<div id="loading" class="htmx-indicator">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+<div id="notification">
+    <div class="bg-green-100 p-4 rounded shadow text-center">
+    <h3 class="text-sm sm:text-lg font-semibold">Lesson Unpauseded</h3>
+    </div>
+</div>

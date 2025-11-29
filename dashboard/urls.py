@@ -33,15 +33,18 @@ urlpatterns = [
 
 
     path('admin/events', views.admin_dashboard_events, name='admin_events'),
+
     #SERVERS
     path('server/', views.server_dashboard, name='server'),
     path('server/settings/', views.server_dashboard_settings, name='server_settings'),
     path('server/events/', views.server_dashboard_events, name='server_events'),
+
     #TEACHERS
     path('teacher/', views.teacher_dashboard, name='teacher'),
     path('teacher/lessons/', views.teacher_dashboard_lessons, name='teacher_lessons'),
     path('teacher/lessons/<uuid:lesson_id>', views.teacher_dashboard_lesson_view, name='teacher_lesson_view'),
     path('teacher/lessons/create', views.teacher_dashboard_create_lesson, name='teacher_create_lesson'),
+    path('teacher/lessons/<uuid:lesson_id>/activity', views.teacher_dashboard_lesson_pause, name='teacher_lesson_pause'),
 
     path('teacher/events/', views.teacher_dashboard_events, name='teacher_events'),
     path('teacher/events/<uuid:event_id>', views.teacher_dashboard_event_details, name='teacher_event_details'),

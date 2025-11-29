@@ -56,10 +56,13 @@
             </table>
           {% endif %}
       </div>
-      <div>
+      <div id="response">
+        {% csrf_token %}
         <button class="btn btn-primary" 
                 id="pauseButton"
-                hx-post=""
+                hx-post="{% url 'dashboard:teacher_lesson_pause' lesson.lesson_id %}"
+                hx-target="#response"
+                hx-indicator="#loading"
         >{% if lesson.is_active %}Pause{% else %}Unpause{% endif %} Lesson</button>
         <button class="btn btn-danger" 
                 hx-post=""
@@ -71,8 +74,6 @@
           <div class="spinner-border" role="status">
               <span class="visually-hidden">Loading...</span>
           </div>
-      </div>
-      <div id="response"></div>
       </div>
   </div>
 </div>
