@@ -1,0 +1,281 @@
+{% extends "main.html" %}
+
+{% load static %}
+
+{% block head %}
+  <title>Home</title>
+{% endblock %}
+
+
+{% block body %}
+{% include 'navbar.html' %}
+
+<!-- faq  -->
+<div class="bg-gray-50">
+  <div class="max-w-4xl mx-auto p-4 mt-12 mb-12">
+    <h1 class="text-2xl font-bold text-center mb-6">
+      Frequently Asked Questions
+    </h1>
+    <div class="space-y-4">
+      <!-- FAQ Item 1 -->
+      <div
+        class="faq-item border-2 border-solid border-[#3EA190] bg-blue-100 rounded-lg overflow-hidden shadow-sm closed"
+        id="faq1"
+      >
+        <div
+          class="flex justify-between items-center p-4 cursor-pointer"
+          onclick="toggleFAQ(1)"
+        >
+          <h2 class="font-medium text-[#000000]">
+            What types of courses do you offer for Discord server owners?
+          </h2>
+          <span
+            class="text-lg font-bold transform text-[#000000]"
+            id="faq1-icon"
+            >+</span
+          >
+        </div>
+        <div
+          class="p-4 bg-blue-100 text-sm text-[#000000] hidden"
+          id="faq1-answer"
+        >
+          We offer a variety of courses tailored to different levels of
+          experience and needs. Our courses cover everything from basic
+          server setup to advanced strategies for growing your community,
+          increasing engagement, and monetizing your Discord server. Whether
+          you’re a beginner or an experienced server owner.
+        </div>
+      </div>
+
+      <!-- FAQ Item 2 -->
+      <div
+        class="faq-item border-2 border-solid border-[#3EA190] bg-blue-100 rounded-lg overflow-hidden shadow-sm closed"
+        id="faq2"
+      >
+        <div
+          class="flex justify-between items-center p-4 cursor-pointer"
+          onclick="toggleFAQ(2)"
+        >
+          <h2 class="font-medium text-[#000000]">
+            How can I get started with your courses?
+          </h2>
+          <span
+            class="text-lg font-bold transform text-[#000000]"
+            id="faq2-icon"
+            >+</span
+          >
+        </div>
+        <div
+          class="p-4 bg-blue-100 text-sm text-[#000000] hidden"
+          id="faq2-answer"
+        >
+          You can get started by signing up on our platform and browsing our
+          course catalog to find the course that suits your needs.
+        </div>
+      </div>
+
+      <!-- FAQ Item 3 -->
+      <div
+        class="faq-item border-2 border-solid border-[#3EA190] bg-blue-100 rounded-lg overflow-hidden shadow-sm closed"
+        id="faq3"
+      >
+        <div
+          class="flex justify-between items-center p-4 cursor-pointer"
+          onclick="toggleFAQ(3)"
+        >
+          <h2 class="font-medium text-[#000000]">
+            Do your courses cover advanced topics for experienced server
+            owners?
+          </h2>
+          <span
+            class="text-lg font-bold transform text-[#000000]"
+            id="faq3-icon"
+            >+</span
+          >
+        </div>
+        <div
+          class="p-4 bg-blue-100 text-sm text-[#000000] hidden"
+          id="faq3-answer"
+        >
+          Yes, we offer advanced courses for experienced server owners,
+          including monetization strategies, community management, and
+          technical setups.
+        </div>
+      </div>
+
+      <!-- FAQ Item 4 -->
+      <div
+        class="faq-item border-2 border-solid border-[#3EA190] bg-blue-100 rounded-lg overflow-hidden shadow-sm closed"
+        id="faq4"
+      >
+        <div
+          class="flex justify-between items-center p-4 cursor-pointer"
+          onclick="toggleFAQ(4)"
+        >
+          <h2 class="font-medium text-[#000000]">
+            Are the courses live or pre-recorded?
+          </h2>
+          <span
+            class="text-lg font-bold transform text-[#000000]"
+            id="faq4-icon"
+            >+</span
+          >
+        </div>
+        <div
+          class="p-4 bg-blue-100 text-sm text-[#000000] hidden"
+          id="faq4-answer"
+        >
+          Our courses are pre-recorded, allowing you to learn at your own
+          pace.
+        </div>
+      </div>
+
+      <!-- FAQ Item 5 -->
+      <div
+        class="faq-item border-2 border-solid border-[#3EA190] bg-blue-100 rounded-lg overflow-hidden shadow-sm closed"
+        id="faq5"
+      >
+        <div
+          class="flex justify-between items-center p-4 cursor-pointer"
+          onclick="toggleFAQ(5)"
+        >
+          <h2 class="font-medium text-[#000000]">
+            How long will it take to see results from the course content?
+          </h2>
+          <span
+            class="text-lg font-bold transform text-[#000000]"
+            id="faq5-icon"
+            >+</span
+          >
+        </div>
+        <div
+          class="p-4 bg-blue-100 text-sm text-[#000000] hidden"
+          id="faq5-answer"
+        >
+          The time to see results depends on your efforts and how quickly
+          you apply the knowledge gained. Most users see improvements within
+          a few weeks.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- footer -->
+<div class="bg-gray-100">
+  <footer class="bg-teal-500 text-white py-8 pt-10">
+    <!-- Links Section -->
+    <div class="container mx-auto text-center">
+      <div class="flex flex-wrap justify-center gap-3 mb-4 sm:gap-8">
+        <a href="#about" class="hover:underline">About</a>
+        <a href="#services" class="hover:underline">Services</a>
+        <a href="#portfolio" class="hover:underline">Portfolio</a>
+        <a href="#blogs" class="hover:underline">Blogs</a>
+        <a href="#contact" class="hover:underline">Contact</a>
+      </div>
+
+      <!-- Social Media Links -->
+      <div
+        class="flex justify-center gap-6 text-xl mb-4 pt-6 pb-10 social-icons"
+      >
+        <a href="#" class="hover:text-gray-300" aria-label="Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="#" class="hover:text-gray-300" aria-label="Instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="hover:text-gray-300" aria-label="Facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" class="hover:text-gray-300" aria-label="YouTube">
+          <i class="fab fa-youtube"></i>
+        </a>
+      </div>
+
+      <!-- Footer Text -->
+      <p class="text-sm text-gray-200 border-t-2 border-t-gray-600 pt-4">
+        © 2024 All rights reserved. This is Your Company
+      </p>
+    </div>
+  </footer>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Toggle Sidebar
+  const sidebar = document.getElementById("sidebar");
+  const openSidebar = document.getElementById("openSidebar");
+  const closeSidebar = document.getElementById("closeSidebar");
+
+  openSidebar.addEventListener("click", () => {
+    sidebar.classList.remove("-translate-x-full");
+  });
+
+  closeSidebar.addEventListener("click", () => {
+    sidebar.classList.add("-translate-x-full");
+  });
+});
+
+  // Function to handle navigation on small screens
+  function toggleMenu() {
+    const menu = document.getElementById("menu");
+    const menuIcon = document.getElementById("menuIcon");
+
+    const isOpen = menu.classList.contains("hidden");
+    if (isOpen) {
+      menu.classList.remove("hidden");
+      menu.classList.add("block", "shadow-lg", "py-4");
+      menuIcon.classList.remove("fa-bars");
+      menuIcon.classList.add("fa-times");
+    } else {
+      menu.classList.remove("block", "shadow-lg", "py-4");
+      menu.classList.add("hidden");
+      menuIcon.classList.remove("fa-times");
+      menuIcon.classList.add("fa-bars");
+    }
+  }
+  document
+    .getElementById("applyButton")
+    .addEventListener("click", function () {
+      window.location.href = "./ServerForm.html"; // Navigate to the "Become Server" page
+    });
+
+  document
+    .getElementById("createAccountButton")
+    .addEventListener("click", function () {
+      window.location.href = "./Signup.html"; // Redirect to the signup page
+    });
+
+  const toggleFAQ = (index) => {
+    const faqItem = document.getElementById(`faq${index}`);
+    const faqAnswer = document.getElementById(`faq${index}-answer`);
+    const faqIcon = document.getElementById(`faq${index}-icon`);
+
+    // Toggle the answer visibility
+    faqAnswer.classList.toggle("hidden");
+
+    // Update the icon (rotate it when open)
+    faqIcon.textContent = faqAnswer.classList.contains("hidden")
+      ? "+"
+      : "-";
+    faqIcon.classList.toggle("rotate-180");
+
+    // Toggle background color for open/close state
+    faqItem.classList.toggle("open");
+    faqItem.classList.toggle("closed");
+  };
+
+  const socialLinks = document.querySelectorAll(".social-icons a");
+  socialLinks.forEach((link) => {
+    link.addEventListener("mouseover", function () {
+      this.style.color = "#d1d5db"; // Light gray hover color
+    });
+    link.addEventListener("mouseout", function () {
+      this.style.color = ""; // Reset color
+    });
+  });
+</script>
+
+{% endblock %}
+
+
