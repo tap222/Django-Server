@@ -58,9 +58,9 @@
         class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
       >
         <!-- Instructor Cards -->
-        <div
-          class="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer"
-          onclick="navigateToInstructor1()"
+        <a
+          href="{% url 'teachers:instructor_details' 1 %}"
+          class="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer block"
         >
           <img
             src="{% static 'assets/i1.png' %}"
@@ -85,10 +85,10 @@
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer"
-          onclick="navigateToInstructor2()"
+        </a>
+        <a
+          href="{% url 'teachers:instructor_details' 2 %}"
+          class="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer block"
         >
           <img
             src="{% static 'assets/i2.png' %}"
@@ -113,10 +113,10 @@
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer"
-          onclick="navigateToInstructor3()"
+        </a>
+        <a
+          href="{% url 'teachers:instructor_details' 3 %}"
+          class="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer block"
         >
           <img
             src="{% static 'assets/i3.png' %}"
@@ -141,10 +141,10 @@
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer"
-          onclick="navigateToInstructor4()"
+        </a>
+        <a
+          href="{% url 'teachers:instructor_details' 4 %}"
+          class="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer block"
         >
           <img
             src="{% static 'assets/i4.png' %}"
@@ -169,7 +169,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </a>
         <!-- Add similar blocks for other instructors -->
       </div>
       <div class="mt-10 text-center">

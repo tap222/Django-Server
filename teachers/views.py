@@ -18,3 +18,10 @@ def teacher_apply(request):
     else:
         form = forms.CreateTeacherApplication()
     return render(request, 'teachers/teacherApply.html', {'form': form})
+
+@login_required(login_url='users:login')
+def instructor_details(request, instructor_id):
+    if instructor_id not in [1, 2, 3, 4]:
+        return redirect('base:home')
+
+    return render(request, f'instructors/instructor{instructor_id}.html')
