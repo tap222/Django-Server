@@ -77,12 +77,11 @@ AUTHENTICATION_BACKENDS = [
 
 # Allauth settings
 SITE_ID = 1
+#Redirect Link
+LOGIN_REDIRECT_URL = '/'
+# Redirect authenticated users away from login page
+SOCIALACCOUNT_ADAPTER = 'sebayett.adapters.MySocialAdapter'
 
-# Account settings
-# ACCOUNT_EMAIL_REQUIRED = False  # Set to True if you want email verification
-# ACCOUNT_EMAIL_VERIFICATION = 'none'  # 'mandatory', 'optional', or 'none'
-# ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-# ACCOUNT_USERNAME_REQUIRED = True
 
 # Social account settings
 SOCIALACCOUNT_LOGIN_ON_GETREQUEST = True

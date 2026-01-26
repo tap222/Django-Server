@@ -25,15 +25,20 @@
                             <p class="fs-2 text-align-center">Welcome to Sebayett</p>
                             <p class="text-wrap my-2">Sign up to access a world of top-tier coaching</p>
                             <!-- <a href="#" class="d-flex btn btn-light my-3">Sign in with Discord</a> -->
-                             {% element form method="post" no_visible_fields=True %}
+                            {% if not user.is_authenticated %}
+                                {% element form method="post" no_visible_fields=True %}
                                 {% slot actions %}
                                     {% csrf_token %}
-                                    <button class="w-100 btn btn-light my-2" type="submit">
-                                         <img class="me-2" src="{% static 'icon/icons8-discord.svg' %}" width="40" height="40" alt="Discord Logo"></img>
-                                        {% trans "Sign in with Discord" %}
+                                    <button class="btn btn-secondary my-2 d-flex justify-content-center align-items-center gap-2 px-4 mx-auto" type="submit">
+                                         <img src="{% static 'icon/icons8-discord.svg' %}" width="40" height="40" alt="Discord Logo" style="flex-shrink: 0; filter: brightness(0) invert(1);"></img>
+                                        <span>{% trans "Sign in with Discord" %}</span>
                                     </button>
                                 {% endslot %}
                             {% endelement %}
+                            {% else %}
+                                <a href="{% url 'dashboard:dashboard' %}">Go to Dashboard</a>
+                            {% endif %}
+                            
                         </div>
                     </div>  
                 </div>

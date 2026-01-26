@@ -1,6 +1,7 @@
 {% extends "main.html" %}
 
 {% load static %}
+{% load account socialaccount %}
 
 {% block head %}
   <title>Home</title>
@@ -176,19 +177,18 @@
           Thousands of students are waiting for an instructor. Start
           teaching & earning now!.
           <a
-            href="{% url 'teachers:application'}"
-            class="text-teal-500 font-medium hover:underline inline-flex items-center"
+            href="{% url 'teachers:application' %}" class="text-teal-500 font-medium hover:underline inline-flex items-center"
           >
             Become Instructor
             <span class="ml-1">→</span>
           </a>
         </p>
-        <button
-          class="mt-6 px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-teal-600"
-          onclick="navigateToBecomeInstructor()"
+        <a
+          href="{% url 'teachers:application' %}"
+          class="mt-6 px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-teal-600 inline-block"
         >
           Become Instructor
-        </button>
+        </a>
       </div>
     </div>
   </div>
@@ -218,12 +218,12 @@
         Start your journey today with our expert-led courses and transform
         your Discord server into a thriving community.
       </p>
-      <button
-        id="applyButton"
-        class="mt-6 px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-teal-600"
+      <a
+        href="{% url 'servers:application' %}"
+        class="mt-6 px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-teal-600 inline-block"
       >
         Apply As Server
-      </button>
+      </a>
     </div>
 
     <!-- Right Content -->
@@ -265,12 +265,12 @@
         starting out or aiming to scale your server, we are here to guide
         you every step of the way.
       </p>
-      <button
-        id="createAccountButton"
-        class="mt-6 px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-teal-600"
+      <a
+        href="{% provider_login_url 'discord' %}"
+        class="mt-6 px-6 py-3 bg-teal-500 text-white rounded-lg font-medium hover:bg-teal-600 inline-block"
       >
         Create Account
-      </button>
+      </a>
     </div>
   </div>
 </div>
@@ -461,18 +461,6 @@ document.addEventListener("DOMContentLoaded", function () {
       menuIcon.classList.add("fa-bars");
     }
   }
-  document
-    .getElementById("applyButton")
-    .addEventListener("click", function () {
-      window.location.href = "./ServerForm.html"; // Navigate to the "Become Server" page
-    });
-
-  document
-    .getElementById("createAccountButton")
-    .addEventListener("click", function () {
-      window.location.href = "./Signup.html"; // Redirect to the signup page
-    });
-
   const toggleFAQ = (index) => {
     const faqItem = document.getElementById(`faq${index}`);
     const faqAnswer = document.getElementById(`faq${index}-answer`);
