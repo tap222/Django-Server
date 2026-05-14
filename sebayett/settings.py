@@ -37,6 +37,10 @@ CSRF_TRUSTED_ORIGINS = os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', 'http://127.0.0.
 # Application definition
 
 INSTALLED_APPS = [
+    # CORS
+    'corsheaders',
+    
+    # Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,8 +71,11 @@ INSTALLED_APPS = [
     'tickets.apps.TicketsConfig',
     'api.apps.ApiConfig',
     'bots.apps.BotsConfig',
-
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -104,6 +111,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', # CORS hearders middleware
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add WhiteNoise Middleware
     'django.contrib.sessions.middleware.SessionMiddleware',

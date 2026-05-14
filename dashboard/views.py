@@ -1,15 +1,28 @@
+# Django libraries
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User, Group
+
+# REST FrameWork
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+# Models 
 from servers.models import Server_Applications, Servers
 from teachers.models import Teacher_Applications, Teachers
 from lessons.models import Lessons, Teacher_Availability
 from events.models import Events
 from bots.models import Bots
-from bots.forms import AddBot
 from tickets.models import Tickets
+
+# Forms
 from lessons import forms
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User, Group
+from bots.forms import AddBot
+
+# Serializers
+from dashboard.serializers import *
 
 
 
@@ -59,10 +72,13 @@ def admin_dashboard_settings(request):
 
 
 @login_required(login_url='users:login')
+@api_view(['GET'])
 def admin_dashboard_roles(request):
     if request.user.groups.filter(name='Admin').exists():
         groups = Group.objects.all()
-        return render(request, 'dashboard/admin/rolesView.html', {'groups': groups})
+        serializer = GroupSerializer(groups, many=True)
+        return Response(serializer.data)
+
     return redirect('dashboard:dashboard')
 
 
@@ -271,8 +287,9 @@ def admin_dashboard_remove_discord_bot(request, bot_id):
 def admin_dashboard_teacher_applications(request):
     if request.user.groups.filter(name='Admin').exists():
         applications = Teacher_Applications.objects.all()
+        serializer = TeacherApplicationSerializer(applications, many=True)
+        return JsonResponse({'teacher_applications': serializer.data})
 
-        return render(request, 'dashboard/admin/teacherApplications.html', { 'applications': applications })
     return redirect('dashboard:dashboard')
 
 

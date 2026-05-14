@@ -8,6 +8,7 @@ defusedxml==0.7.1
 Django==5.2.5
 django-agenda==0.7.2
 django-allauth==65.11.0
+django-cors-headers==4.9.0
 django-extensions==4.1
 django-recurrence==1.11.1
 django-safedelete==1.4.1
