@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none" role="img" aria-labelledby="title-rm">
+  <title id="title-rm">Role management</title>
+  <rect width="800" height="600" fill="#FAFAFA"/>
+  <path d="M120 380c80-120 200-120 280 0s200 120 280 0" stroke="#E5E5E5" stroke-width="2"/>
+  <circle cx="200" cy="220" r="36" fill="#FFF7ED" stroke="#FF7A00" stroke-width="2.5"/>
+  <circle cx="400" cy="180" r="40" fill="#FFF7ED" stroke="#FF7A00" stroke-width="2.5"/>
+  <circle cx="600" cy="220" r="36" fill="#FFF7ED" stroke="#FF7A00" stroke-width="2.5"/>
+  <path d="M236 220h128M440 180h120M564 220L436 320M364 320L236 220" stroke="#FDBA74" stroke-width="2" stroke-linecap="round"/>
+  <path d="M380 280 400 240l20 40 28-18-12 32h-72l-28-18 28-18Z" fill="#FF7A00" opacity="0.92"/>
+  <path d="M352 308h96v56c0 12-10 22-22 22h-52c-12 0-22-10-22-22v-56Z" fill="#EA580C" opacity="0.35"/>
+  <rect x="480" y="420" width="200" height="48" rx="8" fill="#FFF" stroke="#E5E5E5"/>
+  <rect x="496" y="436" width="72" height="16" rx="4" fill="#FFEDD5"/>
+  <rect x="580" y="436" width="84" height="16" rx="4" fill="#F5F5F5"/>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none" role="img" aria-labelledby="title-an">
+  <title id="title-an">Analytics</title>
+  <rect width="800" height="600" fill="#FAFAFA"/>
+  <rect x="140" y="160" width="520" height="320" rx="16" fill="#FFF" stroke="#E5E5E5"/>
+  <path d="M180 420h440" stroke="#E5E5E5" stroke-width="2"/>
+  <path d="M180 420V200" stroke="#E5E5E5" stroke-width="2"/>
+  <rect x="220" y="340" width="56" height="80" rx="6" fill="#FFEDD5"/>
+  <rect x="312" y="280" width="56" height="140" rx="6" fill="#FDBA74"/>
+  <rect x="404" y="220" width="56" height="200" rx="6" fill="#FF7A00"/>
+  <rect x="496" y="300" width="56" height="120" rx="6" fill="#FB923C"/>
+  <path d="M200 360c80-60 160-20 240-100s160-40 240 20" stroke="#EA580C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="440" cy="260" r="8" fill="#FFF" stroke="#EA580C" stroke-width="2"/>
+  <circle cx="560" cy="200" r="8" fill="#FFF" stroke="#EA580C" stroke-width="2"/>
+  <rect x="560" y="180" width="120" height="40" rx="8" fill="#FFF7ED" stroke="#FF7A00" stroke-width="1.5"/>
+  <path d="M576 200h88M576 208h48" stroke="#F97316" stroke-width="2" stroke-linecap="round"/>
+</svg>

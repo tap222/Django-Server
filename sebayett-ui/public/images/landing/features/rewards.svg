@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none" role="img" aria-labelledby="title-rw">
+  <title id="title-rw">Rewards and resources</title>
+  <rect width="800" height="600" fill="#FAFAFA"/>
+  <circle cx="400" cy="260" r="120" fill="#FFF7ED" stroke="#FFEDD5" stroke-width="2"/>
+  <path d="M320 220h160l-16 72h-128l-16-72Z" fill="#FF7A00"/>
+  <path d="M336 292h128v36c0 22-18 40-40 40h-48c-22 0-40-18-40-40v-36Z" fill="#EA580C"/>
+  <circle cx="400" cy="232" r="28" fill="#FFF" stroke="#F97316" stroke-width="2"/>
+  <path d="M392 228l6 12 14 2-10 10 2 14-12-6-12 6 2-14-10-10 14-2 6-12Z" fill="#FF7A00"/>
+  <rect x="180" y="400" width="160" height="100" rx="12" fill="#FFF" stroke="#E5E5E5"/>
+  <rect x="460" y="400" width="160" height="100" rx="12" fill="#FFF" stroke="#E5E5E5"/>
+  <path d="M210 440h100M210 460h72M210 480h88" stroke="#D4D4D4" stroke-width="4" stroke-linecap="round"/>
+  <path d="M490 440h100M490 460h88M490 480h64" stroke="#FDBA74" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="640" cy="180" r="24" fill="#FFEDD5"/>
+  <path d="M640 168v24M628 180h24" stroke="#FF7A00" stroke-width="3" stroke-linecap="round"/>
+</svg>

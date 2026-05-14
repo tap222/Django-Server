@@ -1,0 +1,18 @@
+export const USER_ROLES = ['admin', 'teacher', 'server', 'student'] as const
+
+export type UserRole = (typeof USER_ROLES)[number]
+
+export function isUserRole(value: string): value is UserRole {
+  return (USER_ROLES as readonly string[]).includes(value)
+}
+
+export interface AuthUser {
+  id: string
+  email: string
+  displayName: string
+  role: UserRole
+}
+
+export interface AuthSession {
+  user: AuthUser
+}
