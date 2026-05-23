@@ -1,6 +1,9 @@
 from django.urls import path, include
 from . import views
 
+# REST framework
+from rest_framework.routers import DefaultRouter
+
 app_name = 'dashboard'
 
 urlpatterns = [
@@ -8,16 +11,16 @@ urlpatterns = [
     #ADMIN
     path('admin/', views.admin_dashboard, name='admin'),
     path('admin/settings/', views.admin_dashboard_settings, name='admin_settings'),
-    path('admin/groups/', views.admin_dashboard_roles, name='groups'),
+    #path('admin/groups/', views.admin_dashboard_roles, name='groups'),
     #ADMIN servers
     path('admin/servers/', views.admin_dashboard_servers, name='admin_servers'),
     path('admin/servers/<int:server_id>/', views.admin_dashboard_server_view, name='server_view'),
     path('admin/servers/delete/<int:server_id>/', views.admin_dashboard_server_delete, name='server_delete'),
     #ADMIN server applications
-    path('admin/server/applications', views.admin_dashboard_server_applications, name='server_applications'),
-    path('admin/server/applications/<int:server_id>', views.admin_dashboard_server_application_view , name='server_application_view'),
-    path('admin/server/applications/accept/<int:server_id>', views.admin_dashboard_server_application_accept, name='server_application_accept'),
-    path('admin/server/applications/reject/<int:server_id>', views.admin_dashboard_server_application_accept, name='server_application_reject'),
+    # path('admin/server/applications', views.admin_dashboard_server_applications, name='server_applications'),
+    # path('admin/server/applications/<int:server_id>', views.admin_dashboard_server_application_view , name='server_application_view'),
+    # path('admin/server/applications/accept/<int:server_id>', views.admin_dashboard_server_application_accept, name='server_application_accept'),
+    # path('admin/server/applications/reject/<int:server_id>', views.admin_dashboard_server_application_accept, name='server_application_reject'),
     #ADMIN bots
     path('admin/bots/', views.admin_dashboard_discord_bots, name='discord_bots'),
     path('admin/bots/add/', views.admin_dashboard_add_discord_bot, name='add_discord_bot'),
@@ -57,6 +60,15 @@ urlpatterns = [
     path('student/settings/', views.student_dashboard_settings, name='student_settings'),
     path('student/tickets/', views.student_dashboard_tickets, name='student_tickets'),
 ]
+
+router = DefaultRouter()
+
+# router registration
+router.register('admin/groups', views.AdminDashboardRoles, basename='groups')
+router.register('admin/server/applications',views.AdminDashboardServerApplications, basename='server_application')
+
+urlpatterns += router.urls
+
 
 
 

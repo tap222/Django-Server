@@ -59,6 +59,10 @@ INSTALLED_APPS = [
 
     # REST framework
     'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+
 
     # my django apps
     'base.apps.BaseConfig',
@@ -74,6 +78,10 @@ INSTALLED_APPS = [
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+]
 
 
 
@@ -111,7 +119,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware', # CORS hearders middleware
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add WhiteNoise Middleware
     'django.contrib.sessions.middleware.SessionMiddleware',

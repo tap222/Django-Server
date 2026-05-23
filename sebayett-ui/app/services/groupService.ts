@@ -36,11 +36,14 @@ const MOCK_USERS_BY_ROLE: Record<string, UserRole[]> = {
   ],
 }
 
+
 export const groupService = {
+
   async getAll(): Promise<GroupRow[]> {
     await Promise.resolve()
     // Swap for $fetch('/api/groups') when the API exists
-    return MOCK_GROUPS
+    const response = await $fetch<GroupRow[]>(`${apiBase}dashboard/admin/groups/`)
+    return response
   },
 
   async getUsersByRole(slug: string): Promise<UserRole[]> {

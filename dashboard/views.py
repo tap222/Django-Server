@@ -1,13 +1,15 @@
 # Django libraries
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse
+from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 
 # REST FrameWork
-from rest_framework.decorators import api_view
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, viewsets, permissions
+from rest_framework.permissions import *
 
 # Models 
 from servers.models import Server_Applications, Servers
@@ -23,6 +25,9 @@ from bots.forms import AddBot
 
 # Serializers
 from dashboard.serializers import *
+
+# Permissions
+from dashboard.permissions import *
 
 
 
@@ -47,6 +52,7 @@ def dashboard(request):
 ####################################ADMIN SECTION####################################
 
 
+@login_required(login_url='users:login')
 def admin_dashboard(request):
     if request.user.groups.filter(name='Admin').exists():
         server_applications_count = Server_Applications.objects.count()
@@ -71,107 +77,117 @@ def admin_dashboard_settings(request):
 
 
 
-@login_required(login_url='users:login')
-@api_view(['GET'])
-def admin_dashboard_roles(request):
-    if request.user.groups.filter(name='Admin').exists():
-        groups = Group.objects.all()
-        serializer = GroupSerializer(groups, many=True)
-        return Response(serializer.data)
-
-    return redirect('dashboard:dashboard')
 
 
-@login_required(login_url='users:login')
-def admin_dashboard_server_applications(request):
-    if request.user.groups.filter(name='Admin').exists():
-        server_applications = Server_Applications.objects.all()
-        
-        return render(request, 'dashboard/admin/serverApplications.html', { 'applications': server_applications })
-    return redirect('dashboard:dashboard')
+class AdminDashboardRoles(viewsets.ReadOnlyModelViewSet):
+    """
+    Listing all the groups
+    """
+
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+    #lookup_field = 'name'
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    # pagination_class = None
 
 
-
-
-@login_required(login_url='users:login')
-def admin_dashboard_server_application_view(request, server_id):
-    if request.user.groups.filter(name='Admin').exists():
-        server_application = Server_Applications.objects.filter(server_id=server_id).first()
-        
-        return render(request, 'dashboard/admin/serverApplicationView.html', { 'application': server_application })
-    return redirect('dashboard:dashboard')
-
-
-
-@login_required(login_url='users:login')
-def admin_dashboard_server_application_accept(request, server_id):
-    if request.method == 'POST':
-        if request.user.groups.filter(name='Admin').exists():
-            server_application = Server_Applications.objects.filter(server_id=server_id).first()
-
-            if not server_application:
-                return HttpResponse("""
-                                    <div class="bg-yellow-100 p-4 rounded shadow text-center">
-                                        <h3 class="text-sm sm:text-lg font-semibold">Server Application Not Found</h3>
-                                    </div>
-                                    """)
-                                    
-            else:
-                server_application.status = 'accepted'
-                server_application.save()
-
-                server = Servers(
-                    user=server_application.user, 
-                    first_name=server_application.first_name,
-                    last_name=server_application.last_name,
-                    server_id=server_application.server_id,
-                    server_name=server_application.server_name,
-                    server_description=server_application.server_description,
-                    server_interests=server_application.server_interests
-                    )
-                server.save()
-                
-                user = server_application.user
-                group, _ = Group.objects.get_or_create(name='Server')
-                user.groups.add(group)
-                user.save()
-
-                server_application.delete()
-            
-                return HttpResponse("""
-                                    <div class="bg-green-100 p-4 rounded shadow text-center">
-                                        <h3 class="text-sm sm:text-lg font-semibold">Server Accepted</h3>
-                                    </div>
-                                    """)
-
-
-    return redirect('dashboard:dashboard')
     
 
-@login_required(login_url='users:login')
-def admin_dashboard_server_application_reject(request, server_id):
-    if request.user.groups.filter(name='Admin').exists():
-        if request.method == 'POST':
-            server_application = Server_Applications.objects.filter(server_id=server_id).first()
 
-            if not server_application:
-                    return HttpResponse("""
-                                        <div class="bg-yellow-100 p-4 rounded shadow text-center">
-                                            <h3 class="text-sm sm:text-lg font-semibold">Server Application Not Found</h3>
-                                        </div>
-                                        """)
-            else:
-                server_application.status = 'rejected'
-                server_application.save()
-                server_application.delete()
+# @login_required(login_url='users:login')
+# def admin_dashboard_server_applications(request):
+#     if request.user.groups.filter(name='Admin').exists():
+#         server_applications = Server_Applications.objects.all()
+        
+#         return render(request, 'dashboard/admin/serverApplications.html', { 'applications': server_applications })
+#     return redirect('dashboard:dashboard')
 
-                return HttpResponse("""
-                                    <div class="bg-red-100 p-4 rounded shadow text-center">
-                                        <h3 class="text-sm sm:text-lg font-semibold">Server Rejected</h3>
-                                    </div>
-                                    """)
+class AdminDashboardServerApplications(viewsets.ReadOnlyModelViewSet):
+    queryset = Server_Applications.objects.all()
+    serializer_class = ServerApplicationSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    
+    @action(detail=True, methods=['post'], url_path='accept')
+    def accept_application(self, request, pk=None):
+        # get the object (drf handles 404 automatically with get_object)
+        application = self.get_object()
+        try:
+            with transaction.atomic():
+                # create Server entity
+                Servers.objects.create(
+                    user=application.user,
+                    first_name=application.first_name,
+                    last_name=application.last_name,
+                    server_id=application.server_id,
+                    server_name=application.server_name,
+                    server_description=application.server_description,
+                    server_interests=application.server_interests
+                )
 
-        return redirect('base:home')
+                # update user group
+                server_group, _ = Group.objects.get_or_create(name='Server')
+                application.user.groups.add(server_group)
+
+                # delete the application
+                application.delete()
+
+                return Response(
+                    {
+                        "status":"success",
+                        "message": "Application accepted",
+                        "data": None
+                    },status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+
+
+    @action(detail=True, methods=['post'], url_path='reject')
+    def reject_application(self, request, pk=None):
+        # get the object (drf handles 404 automatically with get_object)
+        application = self.get_object()
+
+        # change status to 'rejected'
+        application.status = 'rejected'
+        application.save()
+
+        # delete the application
+        application.delete()
+
+        return Response({
+                        "status":"success",
+                        "message": "Application rejected",
+                        "data": None
+                        }, status=status.HTTP_200_OK)
+
+
+    
+
+# @login_required(login_url='users:login')
+# def admin_dashboard_server_application_reject(request, server_id):
+#     if request.user.groups.filter(name='Admin').exists():
+#         if request.method == 'POST':
+#             server_application = Server_Applications.objects.filter(server_id=server_id).first()
+
+#             if not server_application:
+#                     return HttpResponse("""
+#                                         <div class="bg-yellow-100 p-4 rounded shadow text-center">
+#                                             <h3 class="text-sm sm:text-lg font-semibold">Server Application Not Found</h3>
+#                                         </div>
+#                                         """)
+#             else:
+#                 server_application.status = 'rejected'
+#                 server_application.save()
+#                 server_application.delete()
+
+#                 return HttpResponse("""
+#                                     <div class="bg-red-100 p-4 rounded shadow text-center">
+#                                         <h3 class="text-sm sm:text-lg font-semibold">Server Rejected</h3>
+#                                     </div>
+#                                     """)
+
+#         return redirect('base:home')
 
 
 
@@ -352,7 +368,7 @@ def admin_dashboard_teacher_application_reject(request, application_id):
     if request.user.groups.filter(name='Admin').exists():
         if request.method == 'POST':
             teacher_application = Teacher_Applications.objects.filter(application_id=application_id).first()
-            if not application:
+            if not teacher_application:
                 return HttpResponse("""
                                         <div class="bg-yellow-100 p-4 rounded shadow text-center">
                                             <h3 class="text-sm sm:text-lg font-semibold">Teacher Application Not Found</h3>
