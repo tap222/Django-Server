@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'dj_rest_auth',
     'dj_rest_auth.registration',
+    'drf_spectacular',
 
 
     # my django apps
@@ -232,3 +233,22 @@ WHITENOISE_ROOT = STATIC_ROOT
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# API docs (Swagger UI at /api/docs/)
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Sebayett API',
+    'DESCRIPTION': 'Endpoints used by the Discord bots.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'APPEND_COMPONENTS': {
+        'securitySchemes': {
+            'BotKey': {'type': 'apiKey', 'in': 'header', 'name': 'X-Bot-Key'},
+        },
+    },
+    'SECURITY': [{'BotKey': []}],
+}
