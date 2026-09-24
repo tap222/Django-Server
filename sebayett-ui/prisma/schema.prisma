@@ -1,0 +1,561 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../server/generated/prisma"
+  previewFeatures = ["partialIndexes"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model account_emailaddress {
+  id                        Int                         @id @default(autoincrement())
+  email                     String                      @unique(map: "unique_verified_email", where: raw("verified")) @db.VarChar(254)
+  verified                  Boolean
+  primary                   Boolean
+  user_id                   Int
+  auth_user                 auth_user                   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "account_emailaddress_user_id_2c513194_fk_auth_user_id")
+  account_emailconfirmation account_emailconfirmation[]
+
+  @@unique([user_id, email], map: "account_emailaddress_user_id_email_987c8728_uniq")
+  @@unique([user_id, primary], map: "unique_primary_email", where: raw("\"primary\""))
+  @@index([email], map: "account_emailaddress_email_03be32b2")
+  @@index([email], map: "account_emailaddress_email_03be32b2_like")
+  @@index([user_id], map: "account_emailaddress_user_id_2c513194")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model account_emailconfirmation {
+  id                   Int                  @id @default(autoincrement())
+  created              DateTime             @db.Timestamptz(6)
+  sent                 DateTime?            @db.Timestamptz(6)
+  key                  String               @unique @db.VarChar(64)
+  email_address_id     Int
+  account_emailaddress account_emailaddress @relation(fields: [email_address_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "account_emailconfirm_email_address_id_5b7f8c58_fk_account_e")
+
+  @@index([email_address_id], map: "account_emailconfirmation_email_address_id_5b7f8c58")
+  @@index([key], map: "account_emailconfirmation_key_f43612bd_like")
+}
+
+model auth_group {
+  id                     Int                      @id @default(autoincrement())
+  name                   String                   @unique @db.VarChar(150)
+  auth_group_permissions auth_group_permissions[]
+  auth_user_groups       auth_user_groups[]
+
+  @@index([name], map: "auth_group_name_a6ea08ec_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_group_permissions {
+  id              BigInt          @id @default(autoincrement())
+  group_id        Int
+  permission_id   Int
+  auth_permission auth_permission @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm")
+  auth_group      auth_group      @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id")
+
+  @@unique([group_id, permission_id], map: "auth_group_permissions_group_id_permission_id_0cd325b0_uniq")
+  @@index([group_id], map: "auth_group_permissions_group_id_b120cbf9")
+  @@index([permission_id], map: "auth_group_permissions_permission_id_84c5c92e")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_permission {
+  id                         Int                          @id @default(autoincrement())
+  name                       String                       @db.VarChar(255)
+  content_type_id            Int
+  codename                   String                       @db.VarChar(100)
+  auth_group_permissions     auth_group_permissions[]
+  django_content_type        django_content_type          @relation(fields: [content_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_permission_content_type_id_2f476e4b_fk_django_co")
+  auth_user_user_permissions auth_user_user_permissions[]
+
+  @@unique([content_type_id, codename], map: "auth_permission_content_type_id_codename_01ab375a_uniq")
+  @@index([content_type_id], map: "auth_permission_content_type_id_2f476e4b")
+}
+
+model auth_user {
+  id                                     Int                                      @id @default(autoincrement())
+  password                               String                                   @db.VarChar(128)
+  last_login                             DateTime?                                @db.Timestamptz(6)
+  is_superuser                           Boolean
+  username                               String                                   @unique @db.VarChar(150)
+  first_name                             String                                   @db.VarChar(150)
+  last_name                              String                                   @db.VarChar(150)
+  email                                  String                                   @db.VarChar(254)
+  is_staff                               Boolean
+  is_active                              Boolean
+  date_joined                            DateTime                                 @db.Timestamptz(6)
+  account_emailaddress                   account_emailaddress[]
+  auth_user_groups                       auth_user_groups[]
+  auth_user_user_permissions             auth_user_user_permissions[]
+  authtoken_token                        authtoken_token?
+  django_admin_log                       django_admin_log[]
+  events_archived_events                 events_archived_events[]
+  events_events                          events_events[]
+  lessons_archived_lessons               lessons_archived_lessons[]
+  lessons_lessons                        lessons_lessons[]
+  servers_archived_server_applications   servers_archived_server_applications[]
+  servers_archived_servers               servers_archived_servers[]
+  servers_server_applications            servers_server_applications[]
+  servers_servers                        servers_servers[]
+  socialaccount_socialaccount            socialaccount_socialaccount[]
+  teachers_archived_teacher_applications teachers_archived_teacher_applications[]
+  teachers_archived_teachers             teachers_archived_teachers[]
+  teachers_teacher_applications          teachers_teacher_applications[]
+  teachers_teachers                      teachers_teachers[]
+  tickets_archived_tickets               tickets_archived_tickets[]
+  tickets_tickets                        tickets_tickets[]
+
+  @@index([username], map: "auth_user_username_6821ab7c_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_user_groups {
+  id         BigInt     @id @default(autoincrement())
+  user_id    Int
+  group_id   Int
+  auth_group auth_group @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_groups_group_id_97559544_fk_auth_group_id")
+  auth_user  auth_user  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_groups_user_id_6a12ed8b_fk_auth_user_id")
+
+  @@unique([user_id, group_id], map: "auth_user_groups_user_id_group_id_94350c0c_uniq")
+  @@index([group_id], map: "auth_user_groups_group_id_97559544")
+  @@index([user_id], map: "auth_user_groups_user_id_6a12ed8b")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_user_user_permissions {
+  id              BigInt          @id @default(autoincrement())
+  user_id         Int
+  permission_id   Int
+  auth_permission auth_permission @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm")
+  auth_user       auth_user       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id")
+
+  @@unique([user_id, permission_id], map: "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq")
+  @@index([permission_id], map: "auth_user_user_permissions_permission_id_1fbb5f2c")
+  @@index([user_id], map: "auth_user_user_permissions_user_id_a95ead1b")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model authtoken_token {
+  key       String    @id @db.VarChar(40)
+  created   DateTime  @db.Timestamptz(6)
+  user_id   Int       @unique
+  auth_user auth_user @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "authtoken_token_user_id_35299eff_fk_auth_user_id")
+
+  @@index([key], map: "authtoken_token_key_10f0b77e_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model bots_bots {
+  bot_id          BigInt          @id
+  bot_self_token  String          @db.VarChar
+  updated_at      DateTime        @db.Timestamptz(6)
+  created_at      DateTime        @db.Timestamptz(6)
+  server_id       BigInt
+  servers_servers servers_servers @relation(fields: [server_id], references: [server_id], onDelete: NoAction, onUpdate: NoAction, map: "bots_bots_server_id_de21969f_fk_servers_servers_server_id")
+
+  @@index([server_id], map: "bots_bots_server_id_de21969f")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model django_admin_log {
+  id                  Int                  @id @default(autoincrement())
+  action_time         DateTime             @db.Timestamptz(6)
+  object_id           String?
+  object_repr         String               @db.VarChar(200)
+  action_flag         Int                  @db.SmallInt
+  change_message      String
+  content_type_id     Int?
+  user_id             Int
+  django_content_type django_content_type? @relation(fields: [content_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "django_admin_log_content_type_id_c4bce8eb_fk_django_co")
+  auth_user           auth_user            @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "django_admin_log_user_id_c564eba6_fk_auth_user_id")
+
+  @@index([content_type_id], map: "django_admin_log_content_type_id_c4bce8eb")
+  @@index([user_id], map: "django_admin_log_user_id_c564eba6")
+}
+
+model django_content_type {
+  id               Int                @id @default(autoincrement())
+  app_label        String             @db.VarChar(100)
+  model            String             @db.VarChar(100)
+  auth_permission  auth_permission[]
+  django_admin_log django_admin_log[]
+
+  @@unique([app_label, model], map: "django_content_type_app_label_model_76bd3d3b_uniq")
+}
+
+model django_migrations {
+  id      BigInt   @id @default(autoincrement())
+  app     String   @db.VarChar(255)
+  name    String   @db.VarChar(255)
+  applied DateTime @db.Timestamptz(6)
+}
+
+model django_session {
+  session_key  String   @id @db.VarChar(40)
+  session_data String
+  expire_date  DateTime @db.Timestamptz(6)
+
+  @@index([expire_date], map: "django_session_expire_date_a5c62663")
+  @@index([session_key], map: "django_session_session_key_c0390e0f_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model events_archived_events {
+  event_id          String           @id @db.Uuid
+  event_title       String           @db.VarChar(200)
+  event_description String
+  event_date        DateTime?        @db.Date
+  event_time        DateTime?        @db.Time(6)
+  updated_at        DateTime         @db.Timestamptz(6)
+  created_at        DateTime         @db.Timestamptz(6)
+  deleted_at        DateTime         @db.Timestamptz(6)
+  lesson_id         String?          @db.Uuid
+  server_id         BigInt?
+  user_id           Int?
+  lessons_lessons   lessons_lessons? @relation(fields: [lesson_id], references: [lesson_id], onDelete: NoAction, onUpdate: NoAction, map: "events_archived_even_lesson_id_1bb58f08_fk_lessons_l")
+  servers_servers   servers_servers? @relation(fields: [server_id], references: [server_id], onDelete: NoAction, onUpdate: NoAction, map: "events_archived_even_server_id_1b45cd5a_fk_servers_s")
+  auth_user         auth_user?       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "events_archived_events_user_id_3a098dc5_fk_auth_user_id")
+
+  @@index([lesson_id], map: "events_archived_events_lesson_id_1bb58f08")
+  @@index([server_id], map: "events_archived_events_server_id_1b45cd5a")
+  @@index([user_id], map: "events_archived_events_user_id_3a098dc5")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model events_events {
+  event_id                 String                     @id @db.Uuid
+  event_title              String                     @db.VarChar(200)
+  event_description        String
+  event_date               DateTime?                  @db.Date
+  event_time               DateTime?                  @db.Time(6)
+  event_status             String                     @db.VarChar
+  event_banner             String                     @db.VarChar(100)
+  updated_at               DateTime                   @db.Timestamptz(6)
+  created_at               DateTime                   @db.Timestamptz(6)
+  lesson_id                String                     @db.Uuid
+  server_id                BigInt
+  user_id                  Int
+  lessons_lessons          lessons_lessons            @relation(fields: [lesson_id], references: [lesson_id], onDelete: NoAction, onUpdate: NoAction, map: "events_events_lesson_id_47bcb621_fk_lessons_lessons_lesson_id")
+  servers_servers          servers_servers            @relation(fields: [server_id], references: [server_id], onDelete: NoAction, onUpdate: NoAction, map: "events_events_server_id_afd52afb_fk_servers_servers_server_id")
+  auth_user                auth_user                  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "events_events_user_id_67db8d11_fk_auth_user_id")
+  tickets_archived_tickets tickets_archived_tickets[]
+  tickets_tickets          tickets_tickets[]
+
+  @@index([lesson_id], map: "events_events_lesson_id_47bcb621")
+  @@index([server_id], map: "events_events_server_id_afd52afb")
+  @@index([user_id], map: "events_events_user_id_67db8d11")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model lessons_archived_lessons {
+  lesson_id          String             @id @db.Uuid
+  lesson_title       String             @db.VarChar(200)
+  lesson_category    String             @db.VarChar(200)
+  lesson_description String
+  banner             String             @db.VarChar(100)
+  is_active          Boolean
+  repeating          Boolean?
+  start_date         DateTime           @db.Date
+  end_date           DateTime           @db.Date
+  updated_at         DateTime           @db.Timestamptz(6)
+  created_at         DateTime           @db.Timestamptz(6)
+  delete_at          DateTime           @db.Timestamptz(6)
+  teacher_id         String?            @db.Uuid
+  user_id            Int?
+  teachers_teachers  teachers_teachers? @relation(fields: [teacher_id], references: [teacher_id], onDelete: NoAction, onUpdate: NoAction, map: "lessons_archived_les_teacher_id_b5928157_fk_teachers_")
+  auth_user          auth_user?         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lessons_archived_lessons_user_id_0312d5e4_fk_auth_user_id")
+
+  @@index([teacher_id], map: "lessons_archived_lessons_teacher_id_b5928157")
+  @@index([user_id], map: "lessons_archived_lessons_user_id_0312d5e4")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model lessons_archived_teacher_availability {
+  id                BigInt             @id @default(autoincrement())
+  day               String             @db.VarChar
+  start_time        DateTime           @db.Time(6)
+  end_time          DateTime           @db.Time(6)
+  updated_at        DateTime           @db.Timestamptz(6)
+  created_at        DateTime           @db.Timestamptz(6)
+  deleted_at        DateTime           @db.Timestamptz(6)
+  teacher_id        String?            @db.Uuid
+  lesson_id         String?            @db.Uuid
+  lessons_lessons   lessons_lessons?   @relation(fields: [lesson_id], references: [lesson_id], onDelete: NoAction, onUpdate: NoAction, map: "lessons_archived_tea_lesson_id_fae09879_fk_lessons_l")
+  teachers_teachers teachers_teachers? @relation(fields: [teacher_id], references: [teacher_id], onDelete: NoAction, onUpdate: NoAction, map: "lessons_archived_tea_teacher_id_f4128ebc_fk_teachers_")
+
+  @@index([lesson_id], map: "lessons_archived_teacher_availability_lesson_id_fae09879")
+  @@index([teacher_id], map: "lessons_archived_teacher_availability_teacher_id_f4128ebc")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model lessons_lessons {
+  lesson_id                             String                                  @id @db.Uuid
+  lesson_title                          String                                  @db.VarChar(200)
+  lesson_category                       String                                  @db.VarChar
+  lesson_description                    String
+  banner                                String                                  @db.VarChar(100)
+  is_active                             Boolean
+  repeating                             Boolean?
+  start_date                            DateTime                                @db.Date
+  end_date                              DateTime                                @db.Date
+  updated_at                            DateTime                                @db.Timestamptz(6)
+  created_at                            DateTime                                @db.Timestamptz(6)
+  teacher_id                            String                                  @db.Uuid
+  user_id                               Int
+  events_archived_events                events_archived_events[]
+  events_events                         events_events[]
+  lessons_archived_teacher_availability lessons_archived_teacher_availability[]
+  teachers_teachers                     teachers_teachers                       @relation(fields: [teacher_id], references: [teacher_id], onDelete: NoAction, onUpdate: NoAction, map: "lessons_lessons_teacher_id_5c6e0da8_fk_teachers_")
+  auth_user                             auth_user                               @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lessons_lessons_user_id_98c2f9f5_fk_auth_user_id")
+  lessons_teacher_availability          lessons_teacher_availability[]
+
+  @@index([teacher_id], map: "lessons_lessons_teacher_id_5c6e0da8")
+  @@index([user_id], map: "lessons_lessons_user_id_98c2f9f5")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model lessons_teacher_availability {
+  id                BigInt            @id @default(autoincrement())
+  day               String            @db.VarChar
+  start_time        DateTime          @db.Time(6)
+  end_time          DateTime          @db.Time(6)
+  updated_at        DateTime          @db.Timestamptz(6)
+  created_at        DateTime          @db.Timestamptz(6)
+  lesson_id         String            @db.Uuid
+  teacher_id        String            @db.Uuid
+  lessons_lessons   lessons_lessons   @relation(fields: [lesson_id], references: [lesson_id], onDelete: NoAction, onUpdate: NoAction, map: "lessons_teacher_avai_lesson_id_1cd1578b_fk_lessons_l")
+  teachers_teachers teachers_teachers @relation(fields: [teacher_id], references: [teacher_id], onDelete: NoAction, onUpdate: NoAction, map: "lessons_teacher_avai_teacher_id_159aefd4_fk_teachers_")
+
+  @@unique([teacher_id, day, start_time, end_time], map: "lessons_teacher_availabi_teacher_id_day_start_tim_261a8e83_uniq")
+  @@index([lesson_id], map: "lessons_teacher_availability_lesson_id_1cd1578b")
+  @@index([teacher_id], map: "lessons_teacher_availability_teacher_id_159aefd4")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model servers_archived_server_applications {
+  first_name         String     @db.VarChar(20)
+  last_name          String     @db.VarChar(20)
+  server_id          BigInt     @id
+  server_name        String     @db.VarChar(50)
+  server_description String
+  server_interests   String
+  status             String     @db.VarChar
+  updated_at         DateTime   @db.Timestamptz(6)
+  created_at         DateTime   @db.Timestamptz(6)
+  delete_at          DateTime   @db.Timestamptz(6)
+  user_id            Int?
+  auth_user          auth_user? @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "servers_archived_ser_user_id_08b8e666_fk_auth_user")
+
+  @@index([user_id], map: "servers_archived_server_applications_user_id_08b8e666")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model servers_archived_servers {
+  first_name         String     @db.VarChar(20)
+  last_name          String     @db.VarChar(20)
+  server_id          BigInt     @id
+  server_name        String     @db.VarChar(50)
+  server_description String
+  server_interests   String     @db.VarChar
+  updated_at         DateTime   @db.Timestamptz(6)
+  created_at         DateTime   @db.Timestamptz(6)
+  deleted_at         DateTime   @db.Timestamptz(6)
+  user_id            Int?
+  auth_user          auth_user? @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "servers_archived_servers_user_id_8178d8e8_fk_auth_user_id")
+
+  @@index([user_id], map: "servers_archived_servers_user_id_8178d8e8")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model servers_server_applications {
+  first_name         String     @db.VarChar(20)
+  last_name          String     @db.VarChar(20)
+  server_id          BigInt     @id
+  server_name        String     @db.VarChar(50)
+  server_description String
+  server_interests   String
+  status             String     @db.VarChar
+  updated_at         DateTime   @db.Timestamptz(6)
+  created_at         DateTime   @db.Timestamptz(6)
+  user_id            Int?
+  auth_user          auth_user? @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "servers_server_applications_user_id_29d205af_fk_auth_user_id")
+
+  @@index([user_id], map: "servers_server_applications_user_id_29d205af")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model servers_servers {
+  first_name             String                   @db.VarChar(20)
+  last_name              String                   @db.VarChar(20)
+  server_id              BigInt                   @id
+  server_name            String                   @db.VarChar(50)
+  server_description     String
+  server_interests       String                   @db.VarChar
+  updated_at             DateTime                 @db.Timestamptz(6)
+  created_at             DateTime                 @db.Timestamptz(6)
+  user_id                Int
+  bots_bots              bots_bots[]
+  events_archived_events events_archived_events[]
+  events_events          events_events[]
+  auth_user              auth_user                @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "servers_servers_user_id_40cecccb_fk_auth_user_id")
+
+  @@index([user_id], map: "servers_servers_user_id_40cecccb")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model socialaccount_socialaccount {
+  id                        Int                         @id @default(autoincrement())
+  provider                  String                      @db.VarChar(200)
+  uid                       String                      @db.VarChar(191)
+  last_login                DateTime                    @db.Timestamptz(6)
+  date_joined               DateTime                    @db.Timestamptz(6)
+  extra_data                Json
+  user_id                   Int
+  auth_user                 auth_user                   @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "socialaccount_socialaccount_user_id_8146e70c_fk_auth_user_id")
+  socialaccount_socialtoken socialaccount_socialtoken[]
+
+  @@unique([provider, uid], map: "socialaccount_socialaccount_provider_uid_fc810c6e_uniq")
+  @@index([user_id], map: "socialaccount_socialaccount_user_id_8146e70c")
+}
+
+model socialaccount_socialapp {
+  id                        Int                         @id @default(autoincrement())
+  provider                  String                      @db.VarChar(30)
+  name                      String                      @db.VarChar(40)
+  client_id                 String                      @db.VarChar(191)
+  secret                    String                      @db.VarChar(191)
+  key                       String                      @db.VarChar(191)
+  provider_id               String                      @db.VarChar(200)
+  settings                  Json
+  socialaccount_socialtoken socialaccount_socialtoken[]
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model socialaccount_socialtoken {
+  id                          Int                         @id @default(autoincrement())
+  token                       String
+  token_secret                String
+  expires_at                  DateTime?                   @db.Timestamptz(6)
+  account_id                  Int
+  app_id                      Int?
+  socialaccount_socialaccount socialaccount_socialaccount @relation(fields: [account_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "socialaccount_social_account_id_951f210e_fk_socialacc")
+  socialaccount_socialapp     socialaccount_socialapp?    @relation(fields: [app_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "socialaccount_social_app_id_636a42d7_fk_socialacc")
+
+  @@unique([app_id, account_id], map: "socialaccount_socialtoken_app_id_account_id_fca4e0ac_uniq")
+  @@index([account_id], map: "socialaccount_socialtoken_account_id_951f210e")
+  @@index([app_id], map: "socialaccount_socialtoken_app_id_636a42d7")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model teachers_archived_teacher_applications {
+  application_id String     @db.Uuid
+  teacher_id     String     @id @db.Uuid
+  first_name     String     @db.VarChar(20)
+  last_name      String     @db.VarChar(20)
+  date_of_birth  DateTime   @db.Date
+  gender         String     @db.VarChar
+  expertise      String     @db.VarChar(300)
+  status         String     @db.VarChar
+  updated_at     DateTime   @db.Timestamptz(6)
+  created_at     DateTime   @db.Timestamptz(6)
+  deleted_at     DateTime   @db.Timestamptz(6)
+  user_id        Int?
+  auth_user      auth_user? @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "teachers_archived_te_user_id_77f6fd1b_fk_auth_user")
+
+  @@index([user_id], map: "teachers_archived_teacher_applications_user_id_77f6fd1b")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model teachers_archived_teachers {
+  teacher_id    String     @id @db.Uuid
+  first_name    String     @db.VarChar(20)
+  last_name     String     @db.VarChar(20)
+  date_of_birth DateTime   @db.Date
+  gender        String     @db.VarChar
+  expertise     String     @db.VarChar(300)
+  updated_at    DateTime   @db.Timestamptz(6)
+  created_at    DateTime   @db.Timestamptz(6)
+  deleted_at    DateTime   @db.Timestamptz(6)
+  user_id       Int?
+  auth_user     auth_user? @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "teachers_archived_teachers_user_id_17b40f98_fk_auth_user_id")
+
+  @@index([user_id], map: "teachers_archived_teachers_user_id_17b40f98")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model teachers_teacher_applications {
+  application_id String     @db.Uuid
+  teacher_id     String     @id @db.Uuid
+  first_name     String     @db.VarChar(20)
+  last_name      String     @db.VarChar(20)
+  date_of_birth  DateTime   @db.Date
+  gender         String     @db.VarChar
+  expertise      String     @db.VarChar(300)
+  status         String     @db.VarChar
+  updated_at     DateTime   @db.Timestamptz(6)
+  created_at     DateTime   @db.Timestamptz(6)
+  user_id        Int?
+  auth_user      auth_user? @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "teachers_teacher_applications_user_id_45269d68_fk_auth_user_id")
+
+  @@index([user_id], map: "teachers_teacher_applications_user_id_45269d68")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model teachers_teachers {
+  teacher_id                            String                                  @id @db.Uuid
+  first_name                            String                                  @db.VarChar(20)
+  last_name                             String                                  @db.VarChar(20)
+  date_of_birth                         DateTime                                @db.Date
+  gender                                String                                  @db.VarChar
+  expertise                             String                                  @db.VarChar(300)
+  updated_at                            DateTime                                @db.Timestamptz(6)
+  created_at                            DateTime                                @db.Timestamptz(6)
+  user_id                               Int
+  lessons_archived_lessons              lessons_archived_lessons[]
+  lessons_archived_teacher_availability lessons_archived_teacher_availability[]
+  lessons_lessons                       lessons_lessons[]
+  lessons_teacher_availability          lessons_teacher_availability[]
+  auth_user                             auth_user                               @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "teachers_teachers_user_id_6dfbf838_fk_auth_user_id")
+
+  @@index([user_id], map: "teachers_teachers_user_id_6dfbf838")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model tickets_archived_tickets {
+  ticket_id     String         @id @db.Uuid
+  ticket_status String         @db.VarChar
+  updated_at    DateTime       @db.Timestamptz(6)
+  created_at    DateTime       @db.Timestamptz(6)
+  delete_at     DateTime       @db.Timestamptz(6)
+  event_id      String?        @db.Uuid
+  user_id       Int?
+  events_events events_events? @relation(fields: [event_id], references: [event_id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_archived_tic_event_id_0806b88f_fk_events_ev")
+  auth_user     auth_user?     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_archived_tickets_user_id_19fb2ee4_fk_auth_user_id")
+
+  @@index([event_id], map: "tickets_archived_tickets_event_id_0806b88f")
+  @@index([user_id], map: "tickets_archived_tickets_user_id_19fb2ee4")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model tickets_tickets {
+  ticket_id     String        @id @db.Uuid
+  ticket_status String        @db.VarChar
+  updated_at    DateTime      @db.Timestamptz(6)
+  created_at    DateTime      @db.Timestamptz(6)
+  event_id      String        @db.Uuid
+  user_id       Int
+  events_events events_events @relation(fields: [event_id], references: [event_id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_tickets_event_id_8f0fc703_fk_events_events_event_id")
+  auth_user     auth_user     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tickets_tickets_user_id_55b1a554_fk_auth_user_id")
+
+  @@index([event_id], map: "tickets_tickets_event_id_8f0fc703")
+  @@index([user_id], map: "tickets_tickets_user_id_55b1a554")
+}
+
+model users_users {
+  title       String @db.VarChar
+  description String
+  id          String @id @db.Uuid
+}

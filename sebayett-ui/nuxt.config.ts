@@ -30,6 +30,8 @@ export default defineNuxtConfig({
   },
   modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', 'shadcn-nuxt'],
   runtimeConfig: {
+    /** Shared secret the Discord bots send as X-Bot-Key (set NUXT_BOT_API_KEY) */
+    botApiKey: '',
     public: {
       /** Demo: admin | teacher | server | student */
       mockUserRole: 'admin',
