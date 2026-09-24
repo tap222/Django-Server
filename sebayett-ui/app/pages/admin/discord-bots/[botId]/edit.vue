@@ -5,9 +5,10 @@ import { nextTick, reactive } from 'vue'
 import BackButton from '@/components/common/BackButton.vue'
 import FormInput from '@/components/common/FormInput.vue'
 import { Dropdown } from '@/components/ui/dropdown'
-import { discordBotService, AVAILABLE_SERVERS } from '@/services/discordBotService'
-import type { BotFormData } from '@/services/discordBotService'
+import { discordBotService } from '@/services/discordBotService'
 import { discordBotFieldErrors } from '@/utils/formValidation'
+import type { DiscordBotFormShape } from '@/utils/formValidation'
+import { serverOptionLabel, useServerOptions } from '@/composables/useServerOptions'
 
 const route = useRoute()
 const rawId = route.params.botId
@@ -17,8 +18,11 @@ const decodedId = (() => { try { return decodeURIComponent(botId) } catch { retu
 const { data } = await useAsyncData(`bot-edit-${decodedId}`, () => discordBotService.getById(decodedId))
 const initialBot = data.value
 
-const form = reactive<BotFormData>({
-  server: initialBot?.server ?? '',
+const { options: serverOptions, idForLabel } = useServerOptions()
+const router = useRouter()
+
+const form = reactive<DiscordBotFormShape>({
+  server: initialBot ? serverOptionLabel(initialBot.server, initialBot.serverId) : '',
   botId: initialBot?.botId ?? '',
   token: initialBot?.token ?? '',
 })
@@ -45,7 +49,7 @@ function clearErrors() {
 
 function validate(): boolean {
   clearErrors()
-  const e = discordBotFieldErrors(form)
+  const e = discordBotFieldErrors(form, serverOptions.value)
   errors.server = e.server
   errors.botId = e.botId
   errors.token = e.token
@@ -62,7 +66,15 @@ function validate(): boolean {
 
 async function onUpdate() {
   if (!validate()) return
-  await discordBotService.update(decodedId, form)
+  try {
+    await discordBotService.update(decodedId, { serverId: idForLabel(form.server), botId: form.botId, token: form.token })
+    await router.push('/admin/discord-bots')
+  } catch (error) {
+    const fieldErrors = apiFieldErrors(error)
+    errors.server = fieldErrors.server ?? ''
+    errors.botId = fieldErrors.botId ?? ''
+    errors.token = fieldErrors.token ?? ''
+  }
 }
 </script>
 
@@ -82,7 +94,7 @@ async function onUpdate() {
               :button-id="fieldIds.server"
               :listbox-id="fieldIds.listbox"
               :model-value="form.server"
-              :options="[...AVAILABLE_SERVERS]"
+              :options="serverOptions"
               width-class="w-full"
               :error-message="errors.server"
               @update:model-value="form.server = $event"

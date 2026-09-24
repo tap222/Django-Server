@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { nextTick, reactive } from 'vue'
+import { nextTick, reactive, watch } from 'vue'
 import FormInput from '@/components/common/FormInput.vue'
 import { Dropdown } from '@/components/ui/dropdown'
-import { discordBotService, AVAILABLE_SERVERS } from '@/services/discordBotService'
+import { discordBotService } from '@/services/discordBotService'
 import type { BotFormData } from '@/services/discordBotService'
 import { discordBotFieldErrors } from '@/utils/formValidation'
+import type { DiscordBotFormShape } from '@/utils/formValidation'
+import { useServerOptions } from '@/composables/useServerOptions'
 
 interface Props {
   initialServer?: string
@@ -13,7 +15,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  initialServer: AVAILABLE_SERVERS[0] ?? '',
+  initialServer: '',
   fieldIdPrefix: 'discord-bot-add',
 })
 
@@ -22,10 +24,17 @@ const emit = defineEmits<{
   success: []
 }>()
 
-const form = reactive<BotFormData>({
+const { options: serverOptions, idForLabel } = useServerOptions()
+
+const form = reactive<DiscordBotFormShape>({
   server: props.initialServer,
   botId: '',
   token: '',
+})
+
+// Pre-select the first server once the list has loaded
+watch(serverOptions, (options) => {
+  if (!form.server && options[0]) form.server = options[0]
 })
 
 const errors = reactive({
@@ -49,7 +58,7 @@ function clearErrors() {
 
 function validate(): boolean {
   clearErrors()
-  const e = discordBotFieldErrors(form)
+  const e = discordBotFieldErrors(form, serverOptions.value)
   errors.server = e.server
   errors.botId = e.botId
   errors.token = e.token
@@ -66,9 +75,10 @@ function validate(): boolean {
 
 async function onSubmit() {
   if (!validate()) return
+  const data: BotFormData = { serverId: idForLabel(form.server), botId: form.botId, token: form.token }
   try {
-    await discordBotService.create(form)
-    emit('submit', form)
+    await discordBotService.create(data)
+    emit('submit', data)
     emit('success')
 
     form.botId = ''
@@ -76,6 +86,11 @@ async function onSubmit() {
     clearErrors()
   }
   catch (error) {
+    // Show the server's validation messages (e.g. duplicate bot or token) on the fields
+    const fieldErrors = apiFieldErrors(error)
+    errors.server = fieldErrors.server ?? ''
+    errors.botId = fieldErrors.botId ?? ''
+    errors.token = fieldErrors.token ?? ''
     console.error('Failed to create Discord bot:', error)
   }
 }
@@ -89,7 +104,7 @@ async function onSubmit() {
         :button-id="id.server"
         :listbox-id="id.listbox"
         :model-value="form.server"
-        :options="[...AVAILABLE_SERVERS]"
+        :options="serverOptions"
         width-class="w-full"
         :error-message="errors.server"
         @update:model-value="form.server = $event"

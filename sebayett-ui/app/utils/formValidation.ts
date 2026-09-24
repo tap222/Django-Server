@@ -3,7 +3,6 @@
  */
 
 import { dateOnlyCompare, parseIsoDate } from '@/components/common/datePickerCalendar'
-import { AVAILABLE_SERVERS } from '@/services/discordBotService'
 
 export type StringValidator = (value: string) => string | null
 
@@ -173,11 +172,14 @@ export interface DiscordBotFormShape {
   token: string
 }
 
-export function discordBotFieldErrors(data: DiscordBotFormShape): Record<keyof DiscordBotFormShape, string> {
+export function discordBotFieldErrors(
+  data: DiscordBotFormShape,
+  serverOptions: readonly string[],
+): Record<keyof DiscordBotFormShape, string> {
   return {
     server: firstError(data.server, [
       trimmedRequired(),
-      oneOf(AVAILABLE_SERVERS, 'Please select a server from the list.'),
+      oneOf(serverOptions, 'Please select a server from the list.'),
     ]) ?? '',
     botId: firstError(data.botId, [trimmedRequired(), discordSnowflakeId()]) ?? '',
     token: firstError(data.token, [
