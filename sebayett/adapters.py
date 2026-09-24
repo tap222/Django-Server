@@ -1,4 +1,5 @@
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
+from allauth.core.exceptions import ImmediateHttpResponse
 from django.shortcuts import redirect
 from django.conf import settings
 from django.urls import reverse

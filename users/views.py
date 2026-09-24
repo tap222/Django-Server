@@ -1,12 +1,13 @@
 # Django
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth import logout as auth_logout
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.models import User
 
 # REST framework
 from rest_framework import viewsets
-from rest_framework.decorators import permission_classes, action
+from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -31,7 +32,7 @@ def login(request):
 
 # a view for logging out
 def logout(request):
-    logout(request) 
+    auth_logout(request)
     return redirect('/')
 
 
@@ -50,5 +51,15 @@ def logout(request):
 #         serializer = self.get_serializer(request.user)
 #         return Response(serializer.data)
     
+@ensure_csrf_cookie
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def current_user(request):
+    """
+        Get the logged-in user's information (also sets the CSRF cookie for the Nuxt app)
+    """
+    return Response(CurrentUserSerializer(request.user).data)
+
+
 class DiscordLogin(SocialLoginView):
     adapter_class = DiscordOAuth2Adapter

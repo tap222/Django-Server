@@ -11,3 +11,7 @@ db.sqlite3
 # Python bytecode (regenerated automatically)
 __pycache__/
 *.py[cod]
+
+# Environment files (secrets)
+.env.*
+!.env.example

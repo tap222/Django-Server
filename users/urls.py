@@ -13,6 +13,7 @@ urlpatterns = [
 
     # dj_rest_auth endpoints
     path('api/auth/', include('dj_rest_auth.urls')),
+    path('api/me/', views.current_user, name='current_user'),
     path('api/auth/discord/', views.DiscordLogin.as_view(), name= 'discord_login'),
 ]
 
