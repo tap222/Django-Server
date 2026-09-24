@@ -111,45 +111,5 @@
       menuIcon.classList.add("fa-bars");
     }
   }
-  document
-    .getElementById("applyButton")
-    .addEventListener("click", function () {
-      window.location.href = "./ServerForm.html"; // Navigate to the "Become Server" page
-    });
-
-  document
-    .getElementById("createAccountButton")
-    .addEventListener("click", function () {
-      window.location.href = "./Signup.html"; // Redirect to the signup page
-    });
-
-  const toggleFAQ = (index) => {
-    const faqItem = document.getElementById(`faq${index}`);
-    const faqAnswer = document.getElementById(`faq${index}-answer`);
-    const faqIcon = document.getElementById(`faq${index}-icon`);
-
-    // Toggle the answer visibility
-    faqAnswer.classList.toggle("hidden");
-
-    // Update the icon (rotate it when open)
-    faqIcon.textContent = faqAnswer.classList.contains("hidden")
-      ? "+"
-      : "-";
-    faqIcon.classList.toggle("rotate-180");
-
-    // Toggle background color for open/close state
-    faqItem.classList.toggle("open");
-    faqItem.classList.toggle("closed");
-  };
-
-  const socialLinks = document.querySelectorAll(".social-icons a");
-  socialLinks.forEach((link) => {
-    link.addEventListener("mouseover", function () {
-      this.style.color = "#d1d5db"; // Light gray hover color
-    });
-    link.addEventListener("mouseout", function () {
-      this.style.color = ""; // Reset color
-    });
-  });
 </script>
 {% comment %} <script defer src="{% static, 'bundles/home.bundle.js' %}"></script> {% endcomment %}

@@ -434,13 +434,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const openSidebar = document.getElementById("openSidebar");
   const closeSidebar = document.getElementById("closeSidebar");
 
-  openSidebar.addEventListener("click", () => {
-    sidebar.classList.remove("-translate-x-full");
-  });
+  if (sidebar && openSidebar && closeSidebar) {
+    openSidebar.addEventListener("click", () => {
+      sidebar.classList.remove("-translate-x-full");
+    });
 
-  closeSidebar.addEventListener("click", () => {
-    sidebar.classList.add("-translate-x-full");
-  });
+    closeSidebar.addEventListener("click", () => {
+      sidebar.classList.add("-translate-x-full");
+    });
+  }
 });
 
   // Function to handle navigation on small screens
