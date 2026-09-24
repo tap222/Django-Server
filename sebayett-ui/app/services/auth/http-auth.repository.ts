@@ -5,7 +5,8 @@ import { isUserRole } from '~/types/auth'
 function mapDjangoUserToAuthUser(djangoUser: any): AuthUser {
   // Map your Django user object to AuthUser
   // Adjust based on what your Django API returns
-  const role: UserRole = djangoUser.groups?.[0]?.name?.toLowerCase() || 'student'
+  const group: string | undefined = djangoUser.groups?.[0]?.name?.toLowerCase()
+  const role: UserRole = group ?? (djangoUser.is_superuser ? 'admin' : 'student')
   return {
     id: String(djangoUser.id),
     email: djangoUser.email,
@@ -16,17 +17,28 @@ function mapDjangoUserToAuthUser(djangoUser: any): AuthUser {
   }
 }
 
+function readCookie(name: string): string | undefined {
+  if (import.meta.server) return undefined
+  return document.cookie
+    .split('; ')
+    .find((c) => c.startsWith(`${name}=`))
+    ?.split('=')[1]
+}
+
 export function createHttpAuthRepository(): IAuthRepository {
   const config = useRuntimeConfig()
   const apiBase = config.public.apiBase
+  // During SSR the browser isn't making the request, so pass its cookies (incl. Django's sessionid) along
+  const headers = import.meta.server ? useRequestHeaders(['cookie']) : undefined
 
   return {
     async fetchSession(): Promise<AuthSession | null> {
       try {
         // Get current authenticated user from Django
-        const user = await $fetch(`${apiBase}user/me`, {
+        const user = await $fetch(`${apiBase}users/api/me/`, {
           method: 'GET',
           credentials: 'include', // Send cookies for session auth
+          headers,
         })
 
         if (!user) return null
@@ -36,6 +48,14 @@ export function createHttpAuthRepository(): IAuthRepository {
         // Not authenticated
         return null
       }
+    },
+
+    async logout(): Promise<void> {
+      await $fetch(`${apiBase}users/api/auth/logout/`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'X-CSRFToken': readCookie('csrftoken') ?? '' },
+      })
     },
   }
 }

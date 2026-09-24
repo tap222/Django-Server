@@ -48,7 +48,7 @@ export function usePublicSiteNav() {
   }
 
   async function signOut() {
-    authStore.clearSession()
+    await authStore.logout()
     await navigateTo('/login')
   }
 

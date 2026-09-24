@@ -6,7 +6,8 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig()
-const djangoBase = 'http://localhost:8000'
+const route = useRoute()
+const authStore = useAuthStore()
 
 const loading = ref(false)
 const error = ref<string | null>(null)
@@ -14,15 +15,15 @@ const error = ref<string | null>(null)
 function loginWithDiscord() {
   // Redirect to Django discord OAuth endpoint
   // Django-allauth will handle the OAuth flow and redirect back
-  window.location.href = `${djangoBase}/accounts/discord/login/?process=login`
+  // `next` sends the user back to this Nuxt app (not Django's own home page) after Discord
+  const redirect = typeof route.query.redirect === 'string' ? route.query.redirect : '/'
+  const next = encodeURIComponent(`${window.location.origin}${redirect}`)
+  window.location.href = `${config.public.apiBase}accounts/discord/login/?process=login&next=${next}`
 }
 
 async function logout() {
   try {
-    await $fetch(`${config.public.apiBase}auth/logout/`, {
-      method: 'POST',
-      credentials: 'include',
-    })
+    await authStore.logout()
     window.location.href = '/login'
   } catch (err) {
     console.error('Logout failed:', err)

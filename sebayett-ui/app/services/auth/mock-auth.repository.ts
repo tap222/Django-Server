@@ -23,5 +23,6 @@ export function createMockAuthRepository(): IAuthRepository {
 
       return { user: createMockAuthUser(role) }
     },
+    async logout(): Promise<void> {},
   }
 }

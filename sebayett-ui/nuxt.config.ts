@@ -35,7 +35,7 @@ export default defineNuxtConfig({
       mockUserRole: 'admin',
       /** Canonical / OG base URL (override per deployment) */
       siteUrl: 'https://sebayett.com',
-      apiBase: 'http://localhost:8000/'
+      apiBase: 'http://127.0.0.1:8000/'
     },
   },
   css: ['~/assets/tailwind.css'],

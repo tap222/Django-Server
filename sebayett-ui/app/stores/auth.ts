@@ -27,6 +27,13 @@ export const useAuthStore = defineStore('auth', {
     clearSession() {
       this.user = null
     },
+    async logout() {
+      try {
+        await createAuthRepository().logout()
+      } finally {
+        this.user = null
+      }
+    },
     hasPermission(required: Permission | Permission[], mode: 'all' | 'any' = 'any'): boolean {
       const perms = this.permissions
       const list = Array.isArray(required) ? required : [required]
